@@ -1,0 +1,22 @@
+language: node_js
+sudo: false
+node_js:
+  - "stable"
+cache:
+  directories:
+    - "$HOME/.npm"
+install:
+  - "npm ci"
+script:
+  - "npm run lint"
+before_deploy:
+  - "npm run build"
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local-dir: dist
+  github-token: $GITHUB_TOKEN
+  on:
+    repo: Dreamacro/clash-dashboard
+    branch: master
+    tags: true
