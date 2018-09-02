@@ -1,5 +1,5 @@
 import renderApp from './render'
-import { isClashX, setupJsBridge } from './lib/jsBridge'
+import { isClashX, setupJsBridge } from '@lib/jsBridge'
 
 /**
  * Global entry

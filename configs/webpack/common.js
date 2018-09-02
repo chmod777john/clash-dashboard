@@ -1,6 +1,6 @@
 // shared config (dev and prod)
 const { resolve } = require('path')
-const { CheckerPlugin } = require('awesome-typescript-loader')
+const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -52,5 +52,11 @@ module.exports = {
     },
     performance: {
         hints: false,
+    },
+    resolve: {
+        extensions: ['.jsx', '.js', '.tsx', '.ts'],
+        plugins: [
+            new TsConfigPathsPlugin()
+        ]
     },
 }

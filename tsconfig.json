@@ -7,7 +7,21 @@
         "module": "commonjs",
         "target": "es5",
         "jsx": "react",
-        "lib": ["es5", "es6", "dom"]
+        "lib": ["es5", "es6", "dom"],
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "@lib": ["src/libs"],
+            "@lib/*": ["src/lib/*"],
+            "@components": ["src/components"],
+            "@components/*": ["src/components/*"],
+            "@containers": ["src/containers"],
+            "@containers/*": ["src/containers/*"],
+            "@models": ["src/models"],
+            "@models/*": ["src/models/*"],
+            "@stores": ["src/stores"],
+            "@stores/*": ["src/stores/*"]
+        }
     },
     "include": [
         "./src/**/*"
