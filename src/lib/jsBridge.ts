@@ -124,6 +124,22 @@ export class JsBridge {
             )
         })
     }
+
+    public ping () {
+        return this.callHandler('ping')
+    }
+
+    public readConfigString () {
+        return this.callHandler('readConfigString')
+    }
+
+    public getPasteboard () {
+        return this.callHandler('getPasteboard')
+    }
+
+    public setPasteboard (data: string) {
+        return this.callHandler('setPasteboard', data)
+    }
 }
 
 export function setupJsBridge (callback) {
