@@ -6,7 +6,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss'],
+        plugins: [
+            new TsConfigPathsPlugin()
+        ],
+        alias: {
+            '@styles': resolve(__dirname, 'src/styles/')
+        },
     },
     context: resolve(__dirname, '../../src'),
     module: {
@@ -52,11 +58,5 @@ module.exports = {
     },
     performance: {
         hints: false,
-    },
-    resolve: {
-        extensions: ['.jsx', '.js', '.tsx', '.ts'],
-        plugins: [
-            new TsConfigPathsPlugin()
-        ]
     },
 }

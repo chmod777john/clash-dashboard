@@ -1,12 +1,11 @@
-$color: #d8dee2;
-$active-color: #57befc;
-$active-color-right: #2c8af8;
+@import '~@styles/variables';
 
 .slidebar {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 120px;
+    background: #fff;
 }
 
 .slidebar-logo {
@@ -37,13 +36,14 @@ $active-color-right: #2c8af8;
         > a,
         a:active,
         a:visited {
-            color: $color;
+            color: $color-gray;
             text-decoration: none;
         }
 
         > a.active {
-            background: linear-gradient(to right, $active-color, $active-color-right);
+            background: linear-gradient(to right, $color-primary, $color-primary-dark);
             color: #fff;
+            box-shadow: 0 2px 8px rgba($color: $color-primary-dark, $alpha: 0.5);
         }
     }
 }
