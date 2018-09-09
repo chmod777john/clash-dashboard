@@ -25,7 +25,7 @@ export default class App extends React.Component<AppProps, {}> {
         ]
 
         return (
-            <div className='app'>
+            <div className="app">
                 <SlideBar routes={routes} />
                 <div>
                     {

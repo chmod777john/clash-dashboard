@@ -18,14 +18,14 @@ class Sidebar extends React.Component<SidebarProps, {}> {
     render () {
         const { routes, t } = this.props
         return (
-            <div className='slidebar'>
-                <img src={logo} className='slidebar-logo' />
-                <ul className='slidebar-menu'>
+            <div className="slidebar">
+                <img src={logo} className="slidebar-logo" />
+                <ul className="slidebar-menu">
                     {
                         routes.map(
                             ({ path, name, exact }) => (
-                                <li className='item'>
-                                    <NavLink to={path} activeClassName='active' exact={!!exact}>{ t(name) }</NavLink>
+                                <li className="item">
+                                    <NavLink to={path} activeClassName="active" exact={!!exact}>{ t(name) }</NavLink>
                                 </li>
                             )
                         )

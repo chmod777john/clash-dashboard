@@ -12,16 +12,16 @@ const options = {
                 Overview: 'Overview',
                 Logs: 'Logs',
                 Rules: 'Rules',
-                Setting: 'Setting'
+                Settings: 'Setting'
             }
         },
-        cn: {
+        'zh-CN': {
             slidebar: {
                 Proxies: '代理',
                 Overview: '总览',
                 Logs: '日志',
                 Rules: '规则',
-                Setting: '设置'
+                Settings: '设置'
             }
         }
     },

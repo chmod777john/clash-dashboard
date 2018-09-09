@@ -3,6 +3,7 @@
     "rules": {
         "indent": [true, "spaces", 4],
         "ter-indent": [true, 4],
-        "no-empty": false
+        "no-empty": false,
+        "quotemark": [true, "single", "jsx-double"]
     }
 }
