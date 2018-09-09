@@ -1,0 +1,49 @@
+$color: #d8dee2;
+$active-color: #57befc;
+$active-color-right: #2c8af8;
+
+.slidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+}
+
+.slidebar-logo {
+    margin-top: 50px;
+    width: 35px;
+    height: 35px;
+}
+
+.slidebar-menu {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+
+    .item {
+        display: block;
+        margin-top: 18px;
+
+        > a {
+            display: block;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        > a,
+        a:active,
+        a:visited {
+            color: $color;
+            text-decoration: none;
+        }
+
+        > a.active {
+            background: linear-gradient(to right, $active-color, $active-color-right);
+            color: #fff;
+        }
+    }
+}

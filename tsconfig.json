@@ -11,14 +11,18 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "@lib": ["src/libs"],
+            "@assets": ["src/assets"],
+            "@assets/*": ["src/assets/*"],
+            "@lib": ["src/lib"],
             "@lib/*": ["src/lib/*"],
             "@components": ["src/components"],
             "@components/*": ["src/components/*"],
             "@containers": ["src/containers"],
             "@containers/*": ["src/containers/*"],
-            "@models": ["src/models"],
-            "@models/*": ["src/models/*"],
+            "@views": ["src/views"],
+            "@views/*": ["src/views/*"],
+            "@i18n": ["src/i18n"],
+            "@i18n/*": ["src/i18n/*"],
             "@stores": ["src/stores"],
             "@stores/*": ["src/stores/*"]
         }
