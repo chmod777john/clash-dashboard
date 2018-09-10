@@ -25,6 +25,8 @@
             "@i18n/*": ["src/i18n/*"],
             "@stores": ["src/stores"],
             "@stores/*": ["src/stores/*"],
+            "@models": ["src/models"],
+            "@models/*": ["src/models/*"],
             "@styles": ["src/styles"],
             "@styles/*": ["src/styles/*"]
         }
