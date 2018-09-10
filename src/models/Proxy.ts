@@ -76,7 +76,7 @@ export interface SelectProxyGroup {
 
     type?: 'select'
 
-    proxies?: Proxy[]
+    proxies?: string[] // proxy names
 
 }
 
@@ -84,7 +84,7 @@ export interface UrlTestProxyGroup {
 
     type?: 'url-test'
 
-    proxies?: Proxy[]
+    proxies?: string[] // proxy names
 
     url?: string
 
