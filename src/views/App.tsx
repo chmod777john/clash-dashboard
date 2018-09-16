@@ -27,7 +27,7 @@ export default class App extends React.Component<AppProps, {}> {
         return (
             <div className="app">
                 <SlideBar routes={routes} />
-                <div>
+                <div className="page-container">
                     {
                         routes.map(
                             route => <Route exact={!!route.exact} path={route.path} component={route.component}/>
