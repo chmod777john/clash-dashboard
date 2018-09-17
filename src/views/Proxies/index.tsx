@@ -4,11 +4,11 @@ import * as React from 'react'
 import ProxiesContainer from '@containers/Proxies'
 import ProxyGroupContainer from '@containers/ProxyGroup'
 
-export default class Proxies extends React.Component<{}, {}> {
-    render () {
-        return <div className="page">
-            <ProxiesContainer />
-            <ProxyGroupContainer />
-        </div>
-    }
-}
+const Proxies: React.SFC = () => (
+    <div className="page">
+        <ProxiesContainer />
+        <ProxyGroupContainer />
+    </div>
+)
+
+export default Proxies
