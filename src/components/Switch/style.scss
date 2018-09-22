@@ -1,0 +1,57 @@
+@import '~@styles/variables';
+
+$height: 14px;
+$switch-radius: 16px;
+$switch-offset: 2px;
+$width: 28px;
+
+.switch {
+    display: inline-block;
+    width: $width;
+    height: $height;
+    border-radius: $height / 2;
+    background-color: $color-gray;
+    transition: background-color 0.3s ease;
+    position: relative;
+    cursor: pointer;
+
+    &.checked {
+        background-color: $color-primary;
+
+        &::after {
+            transform: translateX(-$switch-offset);
+        }
+    }
+
+    &.disabled {
+        background-color: $color-gray-dark;
+
+        &::after {
+            background-color: #f6f6f6;
+        }
+    }
+
+    &.checked.disabled {
+        background-color: $color-primary-lightly;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: ($switch-radius - $height) / -2;
+        height: $switch-radius;
+        width: $switch-radius;
+        border-radius: $switch-radius / 2;
+        background-color: #fff;
+        box-shadow: 0 0 8px rgba($color-primary-dark, 0.25);
+        transition: transform 0.3s ease;
+        transform: translateX($width - $switch-radius + $switch-offset);
+    }
+}
+
+.switch-icon {
+    position: absolute;
+    right: $switch-offset * 2;
+    color: #fff;
+    line-height: $height;
+}
