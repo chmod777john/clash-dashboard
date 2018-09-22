@@ -1,1 +1,15 @@
 @import '~@styles/variables';
+
+.proxies-container {
+    margin-top: 20px;
+}
+
+.proxies-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+
+    li {
+        margin: 20px 15px 0 0;
+    }
+}

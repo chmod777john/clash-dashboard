@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-Vmess</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+    </defs>
+    <g id="icon-Vmess" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <circle stroke="#DB0D82" cx="20" cy="20" r="19.5"></circle>
+        <rect id="Rectangle-4" fill="#DB0D82" fill-rule="nonzero" mask="url(#mask-2)" x="0" y="0" width="40" height="20"></rect>
+        <g id="三角形" mask="url(#mask-2)" fill="#FFFFFF" fill-rule="nonzero">
+            <g transform="translate(3.000000, 3.000000)">
+                <polygon id="Rectangle" points="4.36334582 12.7584642 34 17 0 17"></polygon>
+                <polygon id="Rectangle-2" points="11.5531686 5.57403581 33.7709345 16.9601915 7.96918628 9.05707955"></polygon>
+                <polygon id="Rectangle-3" points="17.0024557 0.139281027 33.7759553 16.9586254 14.5515616 2.57241522"></polygon>
+            </g>
+        </g>
+        <g id="三角形" mask="url(#mask-2)" fill="#DB0D82" fill-rule="nonzero">
+            <g transform="translate(20.000000, 28.500000) scale(1, -1) translate(-20.000000, -28.500000) translate(3.000000, 20.000000)">
+                <polygon id="Rectangle" points="4.36334582 12.7584642 34 17 0 17"></polygon>
+                <polygon id="Rectangle-2" points="11.5531686 5.57403581 33.7709345 16.9601915 7.96918628 9.05707955"></polygon>
+                <polygon id="Rectangle-3" points="17.0024557 0.139281027 33.7759553 16.9586254 14.5515616 2.57241522"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

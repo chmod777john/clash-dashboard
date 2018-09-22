@@ -1,6 +1,13 @@
 /**
  * proxy config interface
  */
+
+export enum ProxyType {
+    Shadowsocks = 'Shadowsocks',
+    Vmess = 'Vmess',
+    Socks5 = 'Socks5'
+}
+
 export interface Proxy {
 
     /**
