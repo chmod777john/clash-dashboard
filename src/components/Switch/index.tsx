@@ -17,8 +17,7 @@ export class Switch extends React.Component<SwitchProps, {}> {
         onChange: () => {}
     }
 
-    handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        e.stopPropagation()
+    handleClick = () => {
         if (!this.props.disabled) {
             this.props.onChange(!this.props.checked)
         }

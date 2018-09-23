@@ -5,7 +5,7 @@ import { HashRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import { AppContainer } from 'react-hot-loader'
 import { rootStores } from '@lib/createStore'
-import App from '@views/App'
+import App from '@containers/App'
 import i18n from '@i18n'
 
 const rootEl = document.getElementById('root')
@@ -28,8 +28,8 @@ export default function renderApp () {
     )
 
     if (module.hot) {
-        module.hot.accept('./views/App', () => {
-            const NewApp = require('./views/App').default
+        module.hot.accept('./containers/App', () => {
+            const NewApp = require('./containers/App').default
             render(
                 <AppContainer>
                     <Provider {...rootStores}>

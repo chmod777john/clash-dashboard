@@ -19,8 +19,6 @@
             "@components/*": ["src/components/*"],
             "@containers": ["src/containers"],
             "@containers/*": ["src/containers/*"],
-            "@views": ["src/views"],
-            "@views/*": ["src/views/*"],
             "@i18n": ["src/i18n"],
             "@i18n/*": ["src/i18n/*"],
             "@stores": ["src/stores"],

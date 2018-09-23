@@ -3,12 +3,11 @@ import { Route } from 'react-router-dom'
 import { I18nProps } from '@i18n'
 import './App.scss'
 
-import Overview from '@views/Overview'
-import Proxies from '@views/Proxies'
-import Logs from '@views/Logs'
-import Rules from '@views/Rules'
-import Settings from '@views/Settings'
-
+import Overview from '@containers/Overview'
+import Proxies from '@containers/Proxies'
+import Logs from '@containers/Logs'
+import Rules from '@containers/Rules'
+import Settings from '@containers/Settings'
 import SlideBar from '@containers/Sidebar'
 
 export interface AppProps extends I18nProps {
