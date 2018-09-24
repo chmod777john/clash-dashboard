@@ -3,5 +3,11 @@
     "rules": {
         "indentation": 4,
         "font-family-no-missing-generic-family-keyword": null
-    }
+    },
+    "ignoreFiles": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.js",
+        "**/*.jsx"
+    ]
 }
