@@ -1,3 +1,27 @@
 .logs-card {
-    margin-top: 20px;
+    flex: 1;
+    margin-top: 25px;
+}
+
+.logs-panel {
+    display: flex;
+    flex-direction: column;
+    height: 0;
+    list-style: none;
+    padding: 10px;
+    border-radius: 2px;
+    background-color: #f3f6f9;
+    font-size: 14px;
+    color: #73808f;
+    overflow-y: auto;
+
+    li {
+        line-height: 20px;
+        display: inline-block;
+    }
+}
+
+.logs-panel-time {
+    margin-right: 10px;
+    color: #adb7c3;
 }
