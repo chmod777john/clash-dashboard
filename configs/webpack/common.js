@@ -3,15 +3,14 @@ const { resolve } = require('path')
 const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const OfflinePlugin = require('offline-plugin')
 
 module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss'],
-        plugins: [
-            new TsConfigPathsPlugin()
-        ],
+        plugins: [new TsConfigPathsPlugin()],
         alias: {
-            '@styles': resolve(__dirname, 'src/styles/')
+            '@styles': resolve(__dirname, 'src/styles/'),
         },
     },
     context: resolve(__dirname, '../../src'),
@@ -32,11 +31,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: [
-                    'style-loader',
-                    { loader: 'css-loader', options: { importLoaders: 1 } },
-                    'sass-loader',
-                ],
+                loaders: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } }, 'sass-loader'],
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
@@ -50,10 +45,19 @@ module.exports = {
     plugins: [
         new CheckerPlugin(),
         new StyleLintPlugin(),
-        new HtmlWebpackPlugin({ template: 'index.html.ejs', }),
+        new HtmlWebpackPlugin({ template: 'index.html.ejs' }),
+        new OfflinePlugin({
+            ServiceWorker: {
+                events: true,
+            },
+            externals: [
+                'https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js',
+            ],
+        }),
     ],
     externals: {
-        'react': 'React',
+        react: 'React',
         'react-dom': 'ReactDOM',
     },
     performance: {

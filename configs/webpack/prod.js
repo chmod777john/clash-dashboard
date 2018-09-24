@@ -1,6 +1,7 @@
 // production config
 const merge = require('webpack-merge')
 const { resolve } = require('path')
+const ManifestPlugin = require('webpack-pwa-manifest')
 
 const commonConfig = require('./common')
 
@@ -13,5 +14,20 @@ module.exports = merge(commonConfig, {
         publicPath: '/',
     },
     devtool: 'source-map',
-    plugins: [],
+    plugins: [
+        new ManifestPlugin({
+            name: 'Clash',
+            background_color: '#FFFFFF',
+            crossorigin: 'anonymous',
+            inject: true,
+            fingerprints: false,
+            icons: [
+                {
+                    src: resolve('src/assets/logo.png'),
+                    sizes: [96, 128, 192, 256],
+                    destination: 'img/icons',
+                },
+            ],
+        }),
+    ],
 })
