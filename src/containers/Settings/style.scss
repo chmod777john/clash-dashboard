@@ -1,0 +1,12 @@
+@import '~@styles/variables';
+
+.proxies-list {
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+
+    li {
+        margin: 20px 15px 20px 0;
+    }
+}
