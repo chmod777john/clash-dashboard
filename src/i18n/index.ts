@@ -10,7 +10,8 @@ const options = {
 
     ns: [
         'SideBar',
-        'Settings'
+        'Settings',
+        'Logs'
     ],
 
     resources: {

@@ -27,5 +27,8 @@ export default {
         },
         versionString: 'Current ClashX is the latest version：{{version}}',
         checkUpdate: 'Check Update'
+    },
+    Logs: {
+        title: 'Logs'
     }
 }

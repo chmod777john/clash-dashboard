@@ -27,5 +27,8 @@ export default {
         },
         versionString: '当前 ClashX 已是最新版本：{{version}}',
         checkUpdate: '检查更新'
+    },
+    Logs: {
+        title: '日志'
     }
 }

@@ -1,19 +1,37 @@
 import * as React from 'react'
 import * as dayjs from 'dayjs'
+import { translate } from 'react-i18next'
+import { I18nProps } from '@i18n'
 import { Card, Header } from '@components'
 import './style.scss'
 
-interface LogsState {
-    listHeight: number
+interface Log {
+    type: string
+    payload: string,
+    time: Date
 }
 
-export default class Logs extends React.Component<{}, LogsState> {
+interface LogsProps extends I18nProps {}
+
+interface LogsState {
+    listHeight: number
+    logs: Log[]
+}
+
+class Logs extends React.Component<LogsProps, LogsState> {
     state: LogsState = {
-        listHeight: 0
+        listHeight: 0,
+        logs: []
     }
 
+    private listRef = React.createRef<HTMLUListElement>()
     componentDidMount () {
         this.setListHeight()
+        const logs: Log[] = Array.from(
+            { length: 32 },
+            () => ({ type: 'info', payload: 'google.com match DomainSuffix using Proxy', time: new Date() })
+        )
+        this.setState({ logs }, () => this.scrollToBottom())
     }
 
     setListHeight = () => {
@@ -22,45 +40,21 @@ export default class Logs extends React.Component<{}, LogsState> {
         })
     }
 
-    render () {
-        const logs = [
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() },
-            { type: 'info', payload: 'google.com match DomainSuffix using Proxy', timestamp: +new Date() }
-        ]
+    scrollToBottom = () => {
+        const ul = this.listRef.current
+        ul.scrollTop = ul.scrollHeight
+    }
 
+    render () {
         const listHeight = { height: this.state.listHeight }
+        const { t } = this.props
         return (
             <div className="page">
-                <Header title="日志" />
+                <Header title={ t('title') } />
                 <Card className="logs-card">
-                    <ul className="logs-panel" style={listHeight}>
+                    <ul className="logs-panel" style={listHeight} ref={this.listRef}>
                         {
-                            logs.map(
+                            this.state.logs.map(
                                 log => (
                                     <li>
                                         <span className="logs-panel-time">{ dayjs().format('YYYY-MM-DD HH:mm:ss') }</span>
@@ -75,3 +69,5 @@ export default class Logs extends React.Component<{}, LogsState> {
         )
     }
 }
+
+export default translate(['Logs'])(Logs)
