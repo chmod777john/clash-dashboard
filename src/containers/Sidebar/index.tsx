@@ -18,9 +18,9 @@ class Sidebar extends React.Component<SidebarProps, {}> {
     render () {
         const { routes, t } = this.props
         return (
-            <div className="slidebar">
-                <img src={logo} className="slidebar-logo" />
-                <ul className="slidebar-menu">
+            <div className="sidebar">
+                <img src={logo} className="sidebar-logo" />
+                <ul className="sidebar-menu">
                     {
                         routes.map(
                             ({ path, name, exact }) => (
@@ -36,4 +36,4 @@ class Sidebar extends React.Component<SidebarProps, {}> {
     }
 }
 
-export default translate(['slidebar'])(Sidebar)
+export default translate(['SideBar'])(Sidebar)

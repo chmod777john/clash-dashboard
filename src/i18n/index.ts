@@ -1,30 +1,23 @@
 import * as i18n from 'i18next'
 import * as LanguageDetector from 'i18next-browser-languagedetector'
 
-const options = {
-    fallbackLng: 'en',
+// locales
+import en_US from './en_US'
+import zh_CN from './zh_CN'
 
-    ns: ['slidebar'],
+const options = {
+    fallbackLng: 'en_US',
+
+    ns: [
+        'SideBar',
+        'Settings'
+    ],
+
     resources: {
-        en: {
-            slidebar: {
-                Proxies: 'Proxies',
-                Overview: 'Overview',
-                Logs: 'Logs',
-                Rules: 'Rules',
-                Settings: 'Setting'
-            }
-        },
-        'zh-CN': {
-            slidebar: {
-                Proxies: '代理',
-                Overview: '总览',
-                Logs: '日志',
-                Rules: '规则',
-                Settings: '设置'
-            }
-        }
+        en: en_US,
+        zh: zh_CN
     },
+
     react: {
         wait: true
     }
