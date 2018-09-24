@@ -4,6 +4,7 @@ const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loade
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
+const autoprefixer = require('autoprefixer')
 
 module.exports = {
     resolve: {
@@ -26,12 +27,13 @@ module.exports = {
                 use: ['babel-loader', 'awesome-typescript-loader'],
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } }],
-            },
-            {
                 test: /\.scss$/,
-                loaders: ['style-loader', { loader: 'css-loader', options: { importLoaders: 1 } }, 'sass-loader'],
+                loaders: [
+                    'style-loader',
+                    { loader: 'css-loader', options: { importLoaders: 1 } },
+                    { loader: 'postcss-loader', options: { plugins: [autoprefixer] } },
+                    'sass-loader',
+                ],
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
