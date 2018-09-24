@@ -16,7 +16,7 @@ interface ProxyProps extends BaseComponentProps {
     name: string
 }
 
-const Proxy: React.SFC<ProxyProps> = props => {
+export const Proxy: React.SFC<ProxyProps> = props => {
     const { type, name, className } = props
     const icon = iconMapping[type]
     return (
@@ -26,5 +26,3 @@ const Proxy: React.SFC<ProxyProps> = props => {
         </div>
     )
 }
-
-export default Proxy

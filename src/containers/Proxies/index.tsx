@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Header, Icon } from '@components'
 import { ProxyType } from '@models'
 
-import Proxy from './Proxy'
+import { Proxy } from './components'
 import './style.scss'
 
 export class Proxies extends React.Component<{}, {}> {
