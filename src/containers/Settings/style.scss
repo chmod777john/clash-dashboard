@@ -1,12 +1,19 @@
 @import '~@styles/variables';
 
-.proxies-list {
-    margin: 10px 0;
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
+.settings-card {
+    margin-top: 25px;
+    padding: 20px 0;
 
-    li {
-        margin: 20px 15px 20px 0;
+    .column {
+        align-items: center;
+    }
+
+    .value-column {
+        justify-content: flex-end;
+    }
+
+    .label {
+        font-size: 14px;
+        color: $color-primary-darken;
     }
 }

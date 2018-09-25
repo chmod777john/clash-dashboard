@@ -1,0 +1,41 @@
+@import '~@styles/variables';
+
+.button-select {
+    display: flex;
+    flex-direction: row;
+
+    .button-select-options {
+        height: 30px;
+        padding: 0 15px;
+        color: $color-primary-darken;
+        font-size: 12px;
+        line-height: 30px;
+        background: $color-white;
+        border: 1px solid $color-primary-lightly;
+        border-right: none;
+        transition: all 300ms ease;
+        cursor: pointer;
+        outline: 0;
+        display: block;
+    }
+
+    .button-select-options:first-child {
+        border-radius: 3px 0 0 3px;
+    }
+
+    .button-select-options:last-child {
+        border-radius: 0 3px 3px 0;
+        border-right: 1px solid $color-primary-lightly;
+    }
+
+    .button-select-options.actived {
+        background: $color-primary;
+        color: $color-white;
+        border-color: $color-primary;
+        box-shadow: 0 2px 5px rgba($color: $color-primary, $alpha: 0.5);
+
+        &:active {
+            box-shadow: none;
+        }
+    }
+}

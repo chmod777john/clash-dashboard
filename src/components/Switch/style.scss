@@ -1,9 +1,9 @@
 @import '~@styles/variables';
 
-$height: 14px;
-$switch-radius: 16px;
+$height: 16px;
+$switch-radius: 18px;
 $switch-offset: 2px;
-$width: 28px;
+$width: 32px;
 
 .switch {
     display: inline-block;
@@ -43,7 +43,7 @@ $width: 28px;
         width: $switch-radius;
         border-radius: $switch-radius / 2;
         background-color: #fff;
-        box-shadow: 0 0 8px rgba($color-primary-dark, 0.25);
+        box-shadow: 0 0 8px rgba($color-primary-dark, 0.4);
         transition: transform 0.3s ease;
         transform: translateX($width - $switch-radius + $switch-offset);
     }
