@@ -1,4 +1,6 @@
 .logs-card {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     margin-top: 25px;
 }
@@ -6,7 +8,8 @@
 .logs-panel {
     display: flex;
     flex-direction: column;
-    height: 0;
+    flex-grow: 1;
+    flex-basis: 0;
     list-style: none;
     padding: 10px;
     border-radius: 2px;

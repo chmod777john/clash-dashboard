@@ -14,30 +14,21 @@ interface Log {
 interface LogsProps extends I18nProps {}
 
 interface LogsState {
-    listHeight: number
     logs: Log[]
 }
 
 class Logs extends React.Component<LogsProps, LogsState> {
     state: LogsState = {
-        listHeight: 0,
         logs: []
     }
 
     private listRef = React.createRef<HTMLUListElement>()
     componentDidMount () {
-        this.setListHeight()
         const logs: Log[] = Array.from(
             { length: 32 },
             () => ({ type: 'info', payload: 'google.com match DomainSuffix using Proxy', time: new Date() })
         )
         this.setState({ logs }, () => this.scrollToBottom())
-    }
-
-    setListHeight = () => {
-        this.setState({
-            listHeight: document.querySelector('.logs-card').clientHeight - 30
-        })
     }
 
     scrollToBottom = () => {
@@ -46,13 +37,12 @@ class Logs extends React.Component<LogsProps, LogsState> {
     }
 
     render () {
-        const listHeight = { height: this.state.listHeight }
         const { t } = this.props
         return (
             <div className="page">
                 <Header title={ t('title') } />
                 <Card className="logs-card">
-                    <ul className="logs-panel" style={listHeight} ref={this.listRef}>
+                    <ul className="logs-panel" ref={this.listRef}>
                         {
                             this.state.logs.map(
                                 log => (
