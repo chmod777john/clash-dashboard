@@ -9,6 +9,7 @@
         "jsx": "react",
         "lib": ["es5", "es6", "dom"],
         "experimentalDecorators": true,
+        "downlevelIteration": true,
         "baseUrl": ".",
         "paths": {
             "@assets": ["src/assets"],
