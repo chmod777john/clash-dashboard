@@ -29,7 +29,7 @@ module.exports = merge(commonConfig, {
             fingerprints: false,
             icons: [
                 {
-                    src: resolve('src/assets/logo.png'),
+                    src: resolve('src/assets/Icon.png'),
                     sizes: [96, 128, 192, 256],
                     destination: 'img/icons',
                 },
