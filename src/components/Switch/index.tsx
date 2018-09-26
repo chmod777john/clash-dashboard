@@ -28,7 +28,7 @@ export class Switch extends React.Component<SwitchProps, {}> {
 
         return (
             <div className={classnames('switch', { checked, disabled }, className)} onClick={this.handleClick}>
-                <Icon className="switch-icon" type="check" size={8} style={{ fontWeight: 'bold' }} />
+                <Icon className="switch-icon" type="check" size={20} style={{ fontWeight: 'bold' }} />
             </div>
         )
     }

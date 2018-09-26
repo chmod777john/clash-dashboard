@@ -51,7 +51,7 @@ $width: 32px;
 
 .switch-icon {
     position: absolute;
-    right: $switch-offset * 2;
+    transform: translateX(13px) scale(0.4);
     color: #fff;
     line-height: $height;
 }
