@@ -8,6 +8,8 @@ interface IconProps extends BaseComponentProps {
 
     // icon size
     size?: number
+
+    onClick?: React.FormEventHandler
 }
 
 export const Icon: React.SFC<IconProps> = props => {
