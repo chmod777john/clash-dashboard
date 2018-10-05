@@ -16,6 +16,7 @@ $padding: 12px;
         .column {
             padding: 0 $padding / 2;
             display: flex;
+            flex-shrink: 0;
         }
 
         @for $c from 1 through 24 {

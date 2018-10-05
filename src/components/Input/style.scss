@@ -1,21 +1,41 @@
 @import '~@styles/variables';
 
+$height: 30px;
+
 .input {
     display: inline-block;
-    height: 30px;
+    height: $height;
     width: 100%;
-    border-radius: 3px;
-    border: 1px solid $color-primary-lightly;
-    padding: 4px 11px;
+    padding: 0 10px;
     font-size: 14px;
     color: $color-primary-darken;
-    text-align: center;
-    line-height: 1.5;
+    border-radius: 3px;
+    border: 1px solid $color-primary-lightly;
+    line-height: $height;
     transition: all 0.3s;
 
     &:focus {
         outline: 0;
         border-color: $color-primary;
+        color: $color-primary-dark;
         box-shadow: 0 2px 5px rgba($color: $color-primary, $alpha: 0.5);
+    }
+}
+
+.input-align-left {
+    text-align: left;
+}
+
+.input-align-center {
+    text-align: center;
+}
+
+.input-align-right {
+    text-align: right;
+}
+
+.input-inside {
+    &:focus {
+        box-shadow: none;
     }
 }

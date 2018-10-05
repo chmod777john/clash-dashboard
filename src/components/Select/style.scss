@@ -1,0 +1,65 @@
+@import '~@styles/variables';
+
+.select {
+    flex: 1;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 30px;
+    color: $color-primary-darken;
+    display: flex;
+    overflow: hidden;
+
+    > i {
+        margin-left: 5px;
+        color: $color-primary-darken;
+    }
+}
+
+.select-list {
+    position: fixed;
+    max-width: 170px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba($color: $color-gray-dark, $alpha: 0.5);
+    opacity: 0.8;
+    pointer-events: none;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: all 200ms linear;
+
+    .list {
+        max-height: 300px;
+        overflow: auto;
+        background: $color-white;
+        padding: 5px 0;
+        transform: scaleY(2);
+        transform-origin: top;
+        transition: all 200ms linear;
+
+        > .option {
+            color: $color-primary-darken;
+            padding: 10px 15px;
+            font-size: 14px;
+            list-style: none;
+            cursor: pointer;
+
+            &:hover {
+                background: rgba($color: $color-primary-lightly, $alpha: 0.5);
+            }
+        }
+
+        > .selected {
+            background: rgba($color: $color-primary-lightly, $alpha: 0.5);
+        }
+    }
+}
+
+.select-list-show {
+    opacity: 1;
+    pointer-events: visible;
+    transform: scaleY(1);
+
+    .list {
+        transform: scaleY(1);
+    }
+}

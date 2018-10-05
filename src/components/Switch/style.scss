@@ -24,10 +24,12 @@ $width: 32px;
     }
 
     &.disabled {
+        cursor: not-allowed;
         background-color: $color-gray-dark;
 
         &::after {
             background-color: #f6f6f6;
+            box-shadow: 0 0 8px rgba($color-gray-darken, 0.5);
         }
     }
 
