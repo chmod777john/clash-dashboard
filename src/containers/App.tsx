@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { hot } from 'react-hot-loader'
+import classnames from 'classnames'
 import { I18nProps } from '@models'
+import { isClashX } from '@lib/jsBridge'
 import './App.scss'
 
 import Overview from '@containers/Overview'
@@ -26,7 +28,7 @@ export default class App extends React.Component<AppProps, {}> {
         ]
 
         return (
-            <div className="app">
+            <div className={classnames('app', { 'clash-x': !isClashX() })}>
                 <SlideBar routes={routes} />
                 <div className="page-container">
                     {
