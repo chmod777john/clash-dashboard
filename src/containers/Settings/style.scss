@@ -5,6 +5,7 @@
     padding: 20px 0;
 
     .column {
+        font-weight: bold;
         align-items: center;
     }
 
@@ -15,5 +16,49 @@
     .label {
         font-size: 14px;
         color: $color-primary-darken;
+    }
+}
+
+.clash-version {
+    position: relative;
+    margin-top: 25px;
+    padding: 20px 45px;
+    display: flex;
+
+    .check-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > i {
+            transform: scale(0.5);
+            color: #fff;
+            font-weight: bold;
+        }
+    }
+
+    .version-info {
+        margin-left: 10px;
+        font-size: 14px;
+        line-height: 24px;
+        color: $color-primary-darken;
+    }
+
+    .check-update-btn {
+        position: absolute;
+        right: 45px;
+        font-size: 14px;
+        line-height: 24px;
+        color: $color-gray-dark;
+        cursor: pointer;
+        transition: all 150ms ease;
+
+        &:hover {
+            color: $color-primary-darken;
+        }
     }
 }
