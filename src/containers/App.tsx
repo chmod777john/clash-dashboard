@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
+import { hot } from 'react-hot-loader'
 import { I18nProps } from '@i18n'
 import './App.scss'
 
@@ -13,6 +14,7 @@ import SlideBar from '@containers/Sidebar'
 export interface AppProps extends I18nProps {
 }
 
+@hot(module)
 export default class App extends React.Component<AppProps, {}> {
     render () {
         const routes = [

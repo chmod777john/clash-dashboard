@@ -24,7 +24,6 @@ OfflinePluginRuntime.install({
         // Reload the webpage to load into the new version
         window.location.reload()
     },
-
     onUpdateFailed: () => {
         console.error('SW Event:', 'onUpdateFailed')
     }
