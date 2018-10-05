@@ -16,6 +16,6 @@
     &:focus {
         outline: 0;
         border-color: $color-primary;
-        box-shadow: 0 2px 10px rgba($color: $color-primary, $alpha: 0.5);
+        box-shadow: 0 2px 5px rgba($color: $color-primary, $alpha: 0.5);
     }
 }

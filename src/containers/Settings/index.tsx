@@ -12,7 +12,7 @@ class Settings extends React.Component<I18nProps, {}> {
         setAsSystemProxy: true,
         allowConnectFromLan: true,
         proxyMode: 'rule',
-        socketProxyPort: 7891,
+        socks5ProxyPort: 7891,
         httpProxyPort: 7890,
         externalController: '127.0.0.1:7892'
     }
@@ -36,9 +36,9 @@ class Settings extends React.Component<I18nProps, {}> {
             setAsSystemProxy,
             allowConnectFromLan,
             proxyMode,
-            socketProxyPort,
+            socks5ProxyPort,
             httpProxyPort,
-            externalController,
+            externalController
         } = this.state
 
         return (
@@ -99,11 +99,11 @@ class Settings extends React.Component<I18nProps, {}> {
                                 onSelect={proxyMode => this.setState({ proxyMode })}
                             />
                         </Col>
-                        <Col span={4} offset={1}>
-                            <span className="label">{t('labels.socketProxyPort')}</span>
+                        <Col span={5} offset={1}>
+                            <span className="label">{t('labels.socks5ProxyPort')}</span>
                         </Col>
-                        <Col span={3} offset={4}>
-                            <Input value={socketProxyPort} onChange={socketProxyPort => this.setState({socketProxyPort})}></Input>
+                        <Col span={3} offset={3}>
+                            <Input value={socks5ProxyPort} onChange={socks5ProxyPort => this.setState({ socks5ProxyPort })}></Input>
                         </Col>
                     </Row>
                     <Row gutter={24} align="middle">
@@ -111,7 +111,7 @@ class Settings extends React.Component<I18nProps, {}> {
                             <span className="label">{t('labels.httpProxyPort')}</span>
                         </Col>
                         <Col span={3} offset={3}>
-                            <Input value={httpProxyPort} onChange={httpProxyPort => this.setState({httpProxyPort})}></Input>
+                            <Input value={httpProxyPort} onChange={httpProxyPort => this.setState({ httpProxyPort })}></Input>
                         </Col>
                         <Col span={4} offset={1}>
                             <span className="label">{t('labels.externalController')}</span>

@@ -16,7 +16,7 @@ export class Input extends React.Component<InputProps, {}> {
         onChange: () => {}
     }
 
-    render() {
+    render () {
         const { onChange, value } = this.props
         return (
             <input className="input" onChange={(event) => {

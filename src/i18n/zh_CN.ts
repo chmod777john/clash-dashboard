@@ -14,7 +14,7 @@ export default {
             setAsSystemProxy: '设置为系统代理',
             allowConnectFromLan: '允许来自局域网的连接',
             proxyMode: '代理模式',
-            socketProxyPort: 'Socket 代理端口',
+            socks5ProxyPort: 'Socks5 代理端口',
             httpProxyPort: 'HTTP 代理端口',
             externalController: '外部控制设置'
         },
