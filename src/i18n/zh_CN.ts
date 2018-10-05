@@ -30,5 +30,8 @@ export default {
     },
     Logs: {
         title: '日志'
+    },
+    Rules: {
+        title: '规则'
     }
 }

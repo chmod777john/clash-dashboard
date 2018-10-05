@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
 import { translate } from 'react-i18next'
-import { I18nProps } from '@i18n'
+import { I18nProps } from '@models'
 
 import './style.scss'
 const logo = require('@assets/logo.png')

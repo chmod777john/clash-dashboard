@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as dayjs from 'dayjs'
 import { translate } from 'react-i18next'
-import { I18nProps } from '@i18n'
+import { I18nProps } from '@models'
 import { Card, Header } from '@components'
 import './style.scss'
 

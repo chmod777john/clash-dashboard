@@ -30,5 +30,8 @@ export default {
     },
     Logs: {
         title: 'Logs'
+    },
+    Rules: {
+        title: 'Rules'
     }
 }

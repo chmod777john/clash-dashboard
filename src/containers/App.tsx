@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
 import { hot } from 'react-hot-loader'
-import { I18nProps } from '@i18n'
+import { I18nProps } from '@models'
 import './App.scss'
 
 import Overview from '@containers/Overview'

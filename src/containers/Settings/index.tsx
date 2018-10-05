@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { translate } from 'react-i18next'
 import { changeLanguage } from 'i18next'
-import { I18nProps } from '@i18n'
+import { I18nProps } from '@models'
 import './style.scss'
 
 class Settings extends React.Component<I18nProps, {}> {
