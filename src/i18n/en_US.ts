@@ -33,5 +33,9 @@ export default {
     },
     Rules: {
         title: 'Rules'
+    },
+    Proxies: {
+        title: 'Proxies',
+        groupTitle: 'Policy Group'
     }
 }

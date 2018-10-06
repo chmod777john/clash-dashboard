@@ -1,12 +1,14 @@
 import * as React from 'react'
+import { translate } from 'react-i18next'
 import { Header, Icon } from '@components'
-import { ProxyType } from '@models'
+import { ProxyType, I18nProps } from '@models'
 
 import { Proxy } from './components'
 import './style.scss'
 
-export class Proxies extends React.Component<{}, {}> {
+class Proxies extends React.Component<I18nProps, {}> {
     render () {
+        const { t } = this.props
         const proxies: { type: ProxyType, name: string }[] = [
             { type: ProxyType.Shadowsocks, name: 'shadowsocks' },
             { type: ProxyType.Vmess, name: 'vmess' }
@@ -15,7 +17,7 @@ export class Proxies extends React.Component<{}, {}> {
         return (
             <div className="page">
                 <div className="proxies-container">
-                    <Header title="代理" >
+                    <Header title={t('title')} >
                         <Icon type="plus" size={20} style={{ fontWeight: 'bold' }} />
                     </Header>
                     <ul className="proxies-list">
@@ -31,11 +33,11 @@ export class Proxies extends React.Component<{}, {}> {
                     </ul>
                 </div>
                 <div className="proxies-container">
-                    <Header title="策略组" />
+                    <Header title={t('groupTitle')} />
                 </div>
             </div>
         )
     }
 }
 
-export default Proxies
+export default translate(['Proxies'])(Proxies)

@@ -33,5 +33,9 @@ export default {
     },
     Rules: {
         title: '规则'
+    },
+    Proxies: {
+        title: '代理',
+        groupTitle: '策略组'
     }
 }
