@@ -68,6 +68,27 @@ class Rules extends React.Component<I18nProps, RulesState> {
         })
     }
 
+    private addRule = () => {
+        const { rules } = this.state
+        const newRule = { type: RuleType['DOMAIN-SUFFIX'], payload: 'google.com.hk', proxy: 'DIRECT' }
+        const newRules = produce(rules, draftState => {
+            draftState.unshift(newRule)
+        })
+
+        this.setState({
+            rules: newRules,
+            modifiedIndex: 0
+        })
+    }
+
+    private removeRule = (index) => {
+        const { rules } = this.state
+
+        this.setState({
+            rules: rules.filter((r, idx) => idx !== index)
+        })
+    }
+
     onSortEnd = ({ oldIndex, newIndex }) => {
         this.setState({
             rules: arrayMove(this.state.rules, oldIndex, newIndex)
@@ -156,7 +177,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
                         </Select>
                     </Col>
                     <Col className="delete-btn" span={2} offset={3}>
-                        {!isFinal && <span>删除</span>}
+                        {!isFinal && <span onClick={() => this.removeRule(index)}>删除</span>}
                     </Col>
                 </Row>
             </li>
@@ -171,7 +192,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
         return (
             <div className="page">
                 <Header title={t('title')} >
-                    <Icon type="plus" size={20} style={{ fontWeight: 'bold', cursor: 'pointer' }} />
+                    <Icon type="plus" size={20} style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={this.addRule}/>
                 </Header>
 
                 <Card className="rules-card">
