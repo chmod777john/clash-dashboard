@@ -1,5 +1,5 @@
-export function getLocalStorageItem (key: string) {
-    return window.localStorage.getItem(key)
+export function getLocalStorageItem (key: string, defaultValue = '') {
+    return window.localStorage.getItem(key) || defaultValue
 }
 
 export function setLocalStorageItem (key: string, value: string) {
@@ -22,3 +22,5 @@ export async function to <T, E = Error> (promise: any): Promise<[T, E]> {
         return [null as T, e]
     }
 }
+
+export type Partial<T> = { [P in keyof T]?: T[P] }

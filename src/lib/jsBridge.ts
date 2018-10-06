@@ -25,7 +25,7 @@ export interface JsBridgeAPI {
     /**
      * Call a native handle
      */
-    callHandler: (handleName: string, data?: any, responseCallback?: (responseData: any) => void) => void
+    callHandler: <T>(handleName: string, data?: any, responseCallback?: (responseData: T) => void) => void
 
     /**
      * Who knows
@@ -115,8 +115,8 @@ export class JsBridge {
         setTimeout(() => document.documentElement.removeChild(WVJBIframe), 0)
     }
 
-    public callHandler (handleName: string, data?: any) {
-        return new Promise(resolve => {
+    public callHandler<T> (handleName: string, data?: any) {
+        return new Promise<T>((resolve) => {
             this.instance.callHandler(
                 handleName,
                 data || undefined,
@@ -130,11 +130,11 @@ export class JsBridge {
     }
 
     public readConfigString () {
-        return this.callHandler('readConfigString')
+        return this.callHandler<string>('readConfigString')
     }
 
     public getPasteboard () {
-        return this.callHandler('getPasteboard')
+        return this.callHandler<string>('getPasteboard')
     }
 
     public setPasteboard (data: string) {

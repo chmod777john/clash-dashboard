@@ -30,9 +30,13 @@ export interface ShadowsocksProxy {
 
     port?: number
 
-    cipter?: string
+    cipher?: string
 
     password?: string
+
+    obfs?: string
+
+    'obfs-host'?: string
 
 }
 
@@ -48,7 +52,7 @@ export interface VmessProxy {
 
     alterid?: number
 
-    cipter?: string
+    cipher?: string
 
     tls?: boolean
 
@@ -75,7 +79,7 @@ export interface ProxyGroup {
      * configs of proxy server
      * now support select and url-test
      */
-    config?: SelectProxyGroup | UrlTestProxyGroup
+    config?: SelectProxyGroup | UrlTestProxyGroup | FallbackProxyGroup
 
 }
 
@@ -84,6 +88,18 @@ export interface SelectProxyGroup {
     type?: 'select'
 
     proxies?: string[] // proxy names
+
+}
+
+export interface FallbackProxyGroup {
+
+    type?: 'fallback'
+
+    proxies?: string[] // proxy names
+
+    url?: string
+
+    interval?: number  // second
 
 }
 

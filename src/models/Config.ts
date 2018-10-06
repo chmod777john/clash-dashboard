@@ -20,10 +20,39 @@ export interface Config {
         socksPort?: number
 
         /**
+         * redir proxy port
+         */
+        redirPort?: number
+
+        /**
+         * proxy is allow lan
+         */
+        allowLan?: boolean
+
+        /**
          * controller port
          */
-        externalController: number
+        externalControllerPort?: number
 
+        /**
+         * controller address
+         */
+        externalControllerAddr?: string
+
+        /**
+         * controller secret
+         */
+        secret?: string
+
+        /**
+         * clash proxy mode
+         */
+        mode?: string
+
+        /**
+         * clash tty log level
+         */
+        logLevel?: string
     }
 
     proxy?: Proxy[]
