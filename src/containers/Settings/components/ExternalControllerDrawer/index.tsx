@@ -1,50 +1,55 @@
 import * as React from 'react'
+import { translate } from 'react-i18next'
 import { Modal, Input, Row, Col, Alert } from '@components'
+import { I18nProps } from '@models'
 import './style.scss'
 
-interface ExternalControllerDrawerProps {
+interface ExternalControllerModalProps extends I18nProps {
     show: boolean
     host: string
     port: string
-    onConfirm: (host: string, port: string) => void
+    secret?: string
+    onConfirm: (host: string, port: string, secret: string) => void
     onCancel: () => void
 }
 
-interface ExternalControllerDrawerState {
-    host: string,
+interface ExternalControllerModalState {
+    host: string
     port: string
+    secret: string
 }
 
-export class ExternalControllerDrawer extends React.Component<ExternalControllerDrawerProps, ExternalControllerDrawerState> {
+class ExternalController extends React.Component<ExternalControllerModalProps, ExternalControllerModalState> {
 
     state = {
         host: this.props.host,
-        port: this.props.port
+        port: this.props.port,
+        secret: this.props.secret || ''
     }
 
     private handleOk = () => {
         const { onConfirm } = this.props
-        const { host, port } = this.state
-        onConfirm(host, port)
+        const { host, port, secret } = this.state
+        onConfirm(host, port, secret)
     }
 
     render () {
-        const { show, onCancel } = this.props
-        const { host, port } = this.state
+        const { show, onCancel, t } = this.props
+        const { host, port, secret } = this.state
 
         return (
             <Modal
                 show={show}
-                title="编辑外部控制设置"
+                title={t('externalControllerSetting.title')}
                 bodyClassName="external-controller"
                 onClose={onCancel}
                 onOk={this.handleOk}
             >
                 <Alert type="info" inside={true}>
-                    <p>请注意，修改该配置项并不会修改你的 Clash 配置文件，请确认修改后的外部控制地址和 Clash 配置文件内的地址一致，否则会导致 Dashboard 无法连接。</p>
+                    <p>{t('externalControllerSetting.note')}</p>
                 </Alert>
                 <Row gutter={24} align="middle">
-                    <Col span={4} className="title">Host</Col>
+                    <Col span={4} className="title">{t('externalControllerSetting.host')}</Col>
                     <Col span={20} className="form">
                         <Input
                             align="left"
@@ -55,7 +60,7 @@ export class ExternalControllerDrawer extends React.Component<ExternalController
                     </Col>
                 </Row>
                 <Row gutter={24} align="middle">
-                    <Col span={4} className="title">端口</Col>
+                    <Col span={4} className="title">{t('externalControllerSetting.port')}</Col>
                     <Col span={20} className="form">
                         <Input
                             align="left"
@@ -65,7 +70,20 @@ export class ExternalControllerDrawer extends React.Component<ExternalController
                         />
                     </Col>
                 </Row>
+                <Row gutter={24} align="middle">
+                    <Col span={4} className="title">{t('externalControllerSetting.secret')}</Col>
+                    <Col span={20} className="form">
+                        <Input
+                            align="left"
+                            inside={true}
+                            value={secret}
+                            onChange={secret => this.setState({ secret })}
+                        />
+                    </Col>
+                </Row>
             </Modal>
         )
     }
 }
+
+export const ExternalControllerModal = translate(['Settings'])(ExternalController)

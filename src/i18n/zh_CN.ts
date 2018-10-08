@@ -26,7 +26,14 @@ export default {
             direct: '直连'
         },
         versionString: '当前 ClashX 已是最新版本：{{version}}',
-        checkUpdate: '检查更新'
+        checkUpdate: '检查更新',
+        externalControllerSetting: {
+            title: '编辑外部控制设置',
+            note: '请注意，修改该配置项并不会修改你的 Clash 配置文件，请确认修改后的外部控制地址和 Clash 配置文件内的地址一致，否则会导致 Dashboard 无法连接。',
+            host: 'Host',
+            port: '端口',
+            secret: '密钥'
+        }
     },
     Logs: {
         title: '日志'

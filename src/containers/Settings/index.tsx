@@ -2,7 +2,7 @@ import * as React from 'react'
 import { translate } from 'react-i18next'
 import { changeLanguage } from 'i18next'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
-import { ExternalControllerDrawer } from './components'
+import { ExternalControllerModal } from './components'
 import { I18nProps } from '@models'
 import './style.scss'
 
@@ -17,6 +17,7 @@ class Settings extends React.Component<I18nProps, {}> {
         httpProxyPort: 7890,
         externalControllerHost: '127.0.0.1',
         externalControllerPort: '7892',
+        externalControllerSecret: '',
         showEditDrawer: false
     }
 
@@ -40,6 +41,7 @@ class Settings extends React.Component<I18nProps, {}> {
             httpProxyPort,
             externalControllerHost,
             externalControllerPort,
+            externalControllerSecret,
             showEditDrawer
         } = this.state
         const proxyModeOptions: ButtonSelectOptions[] = [
@@ -142,15 +144,14 @@ class Settings extends React.Component<I18nProps, {}> {
                     <span className="check-update-btn">{t('checkUpdate')}</span>
                 </Card>
 
-                <ExternalControllerDrawer
+                <ExternalControllerModal
                     show={showEditDrawer}
                     host={externalControllerHost}
                     port={externalControllerPort}
-                    onConfirm={(host, port) => console.log(host, port)}
+                    secret={externalControllerSecret}
+                    onConfirm={(host, port, secret) => console.log(host, port, secret)}
                     onCancel={() => this.setState({ showEditDrawer: false })}
-                >
-                    <div>666666</div>
-                </ExternalControllerDrawer>
+                />
             </div>
         )
     }
