@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: "clash-iconfont";
-    src: url('//at.alicdn.com/t/font_841708_2viqaiy9h37.ttf') format('truetype');
+    src: url('//at.alicdn.com/t/font_841708_h6oakuryxxb.ttf') format('truetype');
 }
 
 .clash-iconfont {
@@ -19,8 +19,6 @@
 }
 
 .icon-close::before { content: "\e602"; }
-
-.icon-info::before { content: "\e603"; }
 
 .icon-drag::before { content: "\e604"; }
 
@@ -35,3 +33,7 @@
 .icon-triangle-down::before { content: "\e609"; }
 
 .icon-up-arrow-o::before { content: "\e60a"; }
+
+.icon-info::before { content: "\e60b"; }
+
+.icon-info-o::before { content: "\e60c"; }

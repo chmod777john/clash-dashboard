@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { translate } from 'react-i18next'
 import { changeLanguage } from 'i18next'
+import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
+import { ExternalControllerDrawer } from './components'
 import { I18nProps } from '@models'
 import './style.scss'
 
@@ -14,7 +15,9 @@ class Settings extends React.Component<I18nProps, {}> {
         proxyMode: 'Rule',
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
-        externalController: '127.0.0.1:7892'
+        externalControllerHost: '127.0.0.1',
+        externalControllerPort: '7892',
+        showEditDrawer: false
     }
 
     languageOptions: ButtonSelectOptions[] = [
@@ -35,7 +38,9 @@ class Settings extends React.Component<I18nProps, {}> {
             proxyMode,
             socks5ProxyPort,
             httpProxyPort,
-            externalController
+            externalControllerHost,
+            externalControllerPort,
+            showEditDrawer
         } = this.state
         const proxyModeOptions: ButtonSelectOptions[] = [
             { label: t('values.global'), value: 'Global' },
@@ -116,11 +121,15 @@ class Settings extends React.Component<I18nProps, {}> {
                         <Col span={3} offset={2}>
                             <Input value={httpProxyPort} onChange={httpProxyPort => this.setState({ httpProxyPort })}></Input>
                         </Col>
-                        <Col span={5} offset={1}>
+                        <Col span={4} offset={1}>
                             <span className="label">{t('labels.externalController')}</span>
                         </Col>
-                        <Col span={5} offset={1}>
-                            <Input value={externalController} ></Input>
+                        <Col className="external-controller" span={6} offset={1}>
+                            <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
+                            <span
+                                className="modify-btn"
+                                onClick={() => this.setState({ showEditDrawer: true })}
+                            >修改</span>
                         </Col>
                     </Row>
                 </Card>
@@ -132,6 +141,16 @@ class Settings extends React.Component<I18nProps, {}> {
                     <p className="version-info">{t('versionString', { version: 'unknown' })}</p>
                     <span className="check-update-btn">{t('checkUpdate')}</span>
                 </Card>
+
+                <ExternalControllerDrawer
+                    show={showEditDrawer}
+                    host={externalControllerHost}
+                    port={externalControllerPort}
+                    onConfirm={(host, port) => console.log(host, port)}
+                    onCancel={() => this.setState({ showEditDrawer: false })}
+                >
+                    <div>666666</div>
+                </ExternalControllerDrawer>
             </div>
         )
     }

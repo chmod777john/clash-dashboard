@@ -1,0 +1,97 @@
+@import '~@styles/variables';
+
+$iconSize: 20px;
+$borderWidth: 4px;
+
+@mixin box ($color) {
+    background: linear-gradient(135deg, darken($color, 5%), $color);
+    box-shadow: 0 2px 8px rgba($color: darken($color, 5%), $alpha: 0.3);
+
+    .alert-icon > i {
+        color: $color;
+    }
+}
+
+@mixin note ($color) {
+    background: rgba($color: $color, $alpha: 0.05);
+    border-radius: 1px 4px 4px 1px;
+    border-left: 2px solid $color;
+    box-shadow: 0 2px 8px rgba($color: darken($color, 5%), $alpha: 0.3);
+
+    .alert-icon {
+        background: $color;
+
+        > i {
+            color: $color-white;
+        }
+    }
+
+    .alert-message {
+        color: darken($color: $color, $amount: 20%);
+    }
+}
+
+.alert {
+    padding: 15px;
+    background: $color-white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba($color: $color-primary-dark, $alpha: 0.3);
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: justify;
+    display: flex;
+
+    .alert-icon {
+        margin-right: 10px;
+        width: $iconSize;
+        height: $iconSize;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $color-white;
+
+        > i {
+            transform: scale(0.5);
+            font-weight: bold;
+        }
+    }
+
+    .alert-message {
+        width: 100%;
+        color: $color-white;
+    }
+}
+
+.alert-box-success {
+    @include box($color-green);
+}
+
+.alert-box-info {
+    @include box($color-primary);
+}
+
+.alert-box-warning {
+    @include box($color-orange);
+}
+
+.alert-box-error {
+    @include box($color-red);
+}
+
+.alert-note-success {
+    @include note($color-green);
+}
+
+.alert-note-info {
+    @include note($color-primary);
+}
+
+.alert-note-warning {
+    @include note($color-orange);
+}
+
+.alert-note-error {
+    @include note($color-red);
+}

@@ -1,0 +1,88 @@
+@import '~@styles/variables';
+
+.button {
+    outline: 0;
+    padding: 0 15px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.button-primary {
+    color: $color-white;
+    border: none;
+    background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+    box-shadow: 0 2px 8px rgba($color: $color-primary-dark, $alpha: 0.5);
+
+    &:hover {
+        border: none;
+    }
+
+    &:active {
+        box-shadow: 0 0 2px rgba($color: $color-primary-dark, $alpha: 0.5);
+    }
+}
+
+.button-normal {
+    color: $color-gray-darken;
+    background: $color-white;
+    border: 1px solid rgba($color: $color-black, $alpha: 0.1);
+
+    &:hover {
+        border-color: $color-gray-dark;
+        color: $color-primary-darken;
+    }
+
+    &:active {
+        background: darken($color-white, 2%);
+        color: $color-primary-darken;
+    }
+}
+
+.button-danger {
+    color: $color-white;
+    border: none;
+    background: linear-gradient(135deg, $color-red, darken($color-red, 10%));
+    box-shadow: 0 2px 8px rgba($color: darken($color-red, 10%), $alpha: 0.5);
+
+    &:hover {
+        border: none;
+    }
+
+    &:active {
+        box-shadow: 0 0 2px rgba($color: darken($color-red, 10%), $alpha: 0.5);
+    }
+}
+
+.button-success {
+    color: $color-white;
+    border: none;
+    background: linear-gradient(135deg, $color-green, darken($color-green, 5%));
+    box-shadow: 0 2px 8px rgba($color: darken($color-green, 5%), $alpha: 0.5);
+
+    &:hover {
+        border: none;
+    }
+
+    &:active {
+        box-shadow: 0 0 2px rgba($color: darken($color-green, 5%), $alpha: 0.5);
+    }
+}
+
+.button-warning {
+    color: $color-white;
+    border: none;
+    background: linear-gradient(135deg, $color-orange, darken($color-orange, 5%));
+    box-shadow: 0 2px 8px rgba($color: darken($color-orange, 5%), $alpha: 0.5);
+
+    &:hover {
+        border: none;
+    }
+
+    &:active {
+        box-shadow: 0 0 2px rgba($color: darken($color-orange, 5%), $alpha: 0.5);
+    }
+}

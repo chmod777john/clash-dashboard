@@ -1,0 +1,22 @@
+@import '~@styles/variables';
+
+.external-controller {
+    .row {
+        padding: 0;
+    }
+
+    .alert {
+        margin: 10px 0;
+    }
+
+    .title,
+    .form {
+        margin: 15px 0;
+    }
+
+    .title {
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
