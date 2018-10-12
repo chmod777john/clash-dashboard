@@ -4,9 +4,11 @@ import { changeLanguage } from 'i18next'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { ExternalControllerModal } from './components'
 import { I18nProps } from '@models'
-import { getConfig, updateConfig } from '@lib/request'
-import { getLocalStorageItem, setLocalStorageItem } from '@lib/helper'
+import { updateConfig } from '@lib/request'
+import { setLocalStorageItem, to } from '@lib/helper'
+import { rootStores } from '@lib/createStore'
 import './style.scss'
+import { isClashX } from '@lib/jsBridge'
 
 class Settings extends React.Component<I18nProps, {}> {
     state = {
@@ -16,9 +18,9 @@ class Settings extends React.Component<I18nProps, {}> {
         proxyMode: 'Rule',
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
-        externalControllerHost: getLocalStorageItem('externalControllerAddr', '127.0.0.1'),
-        externalControllerPort: getLocalStorageItem('externalControllerPort', '8080'),
-        externalControllerSecret: getLocalStorageItem('secret', ''),
+        externalControllerHost: '127.0.0.1',
+        externalControllerPort: '8080',
+        externalControllerSecret: '',
         showEditDrawer: false
     }
 
@@ -41,57 +43,45 @@ class Settings extends React.Component<I18nProps, {}> {
     }
 
     handleProxyModeChange = async (mode: string) => {
-        try {
-            await updateConfig({ mode })
+        const [, err] = await to(updateConfig({ mode }))
+        if (err === null) {
             this.setState({ proxyMode: mode })
-        } catch (err) {
-            throw err
         }
     }
 
     handleHttpPortSave = async () => {
-        try {
-            await updateConfig({
-                'redir-port': this.state.httpProxyPort
-            })
-        } catch (err) {
-            throw err
-        }
+        const [, err] = await to(updateConfig({ 'redir-port': this.state.httpProxyPort }))
+        if (err === null) {}
     }
 
     handleSocksPortSave = async () => {
-        try {
-            await updateConfig({
-                'socket-port': this.state.socks5ProxyPort
-            })
-        } catch (err) {
-            throw err
-        }
+        const [, err] = await to(updateConfig({ 'socket-port': this.state.socks5ProxyPort }))
+        if (err === null) {}
     }
 
     handleAllowLanChange = async (state: boolean) => {
-        try {
-            await updateConfig({
-                'allow-lan': state
-            })
+        const [, err] = await to(updateConfig({ 'allow-lan': state }))
+        if (err === null) {
             this.setState({ allowConnectFromLan: state })
-        } catch (err) {
-            throw err
         }
     }
 
     async componentDidMount () {
-        try {
-            const { data: config } = await getConfig()
-            this.setState({
-                proxyMode: config.mode,
-                httpProxyPort: config['redir-port'],
-                socks5ProxyPort: config['socket-port'],
-                allowConnectFromLan: config['allow-lan']
-            })
-        } catch (err) {
-            throw err
+        if (isClashX()) {
+            await rootStores.config.fetchAndParseConfig()
+        } else {
+            await rootStores.config.fetchConfig()
         }
+        const general = rootStores.config.config.general
+        this.setState({
+            allowConnectFromLan: general.allowLan,
+            proxyMode: general.mode,
+            socks5ProxyPort: general.socksPort,
+            httpProxyPort: general.port,
+            externalControllerHost: general.externalControllerAddr,
+            externalControllerPort: general.externalControllerPort,
+            externalControllerSecret: general.secret
+        })
     }
 
     render () {

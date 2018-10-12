@@ -2,6 +2,8 @@ import { observable, action, runInAction } from 'mobx'
 import * as yaml from 'yaml'
 import * as Models from '@models'
 import { jsBridge } from '@lib/jsBridge'
+import { getConfig } from '@lib/request'
+import { getLocalStorageItem } from '@lib/helper'
 
 export class ConfigStore {
 
@@ -48,7 +50,7 @@ export class ConfigStore {
                     redirPort: config['redir-port'] || 0,
                     allowLan: config['allow-lan'] || false,
                     externalControllerAddr: host[0] || '',
-                    externalControllerPort: parseInt(host[1], 10) || 0,
+                    externalControllerPort: host[1] || '',
                     secret: config.secret || '',
                     logLevel: config['log-level'] || 'info',
                     mode: config.mode || 'Rule'
@@ -59,6 +61,23 @@ export class ConfigStore {
             }
             this.state = 'ok'
         })
+    }
+
+    @action
+    async fetchConfig () {
+        const { data: config } = await getConfig()
+        this.config = {
+            general: {
+                port: config.port,
+                socksPort: config['socket-port'],
+                redirPort: config['redir-port'],
+                allowLan: config['allow-lan'],
+                mode: config.mode,
+                externalControllerAddr: getLocalStorageItem('externalControllerAddr', '127.0.0.1'),
+                externalControllerPort: getLocalStorageItem('externalControllerPort', '8080'),
+                secret: getLocalStorageItem('secret', '')
+            }
+        }
     }
 
 }

@@ -32,7 +32,7 @@ export interface Config {
         /**
          * controller port
          */
-        externalControllerPort?: number
+        externalControllerPort?: string
 
         /**
          * controller address
