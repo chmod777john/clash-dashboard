@@ -1,7 +1,7 @@
 import * as React from 'react'
 import produce from 'immer'
 import { translate } from 'react-i18next'
-import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
+import { SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { Header, Icon, Card, Row, Col, Select, Option, Input } from '@components'
 import { I18nProps, RuleType } from '@models'
 import './style.scss'
@@ -66,7 +66,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
             { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
             { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
             { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' }
         ],
         proxies: {
             DIRECT: { type: 'Direct' },
@@ -227,7 +227,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
     render () {
         const { t } = this.props
         const { rules } = this.state
-        const SortableList = SortableContainer<{ rules: Rule[] }>(this.renderRules)
+        // const SortableList = SortableContainer<{ rules: Rule[] }>(this.renderRules)
         return (
             <div className="page">
                 <Header title={t('title')} >
@@ -237,7 +237,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
                 <Card className="rules-card">
                     <div className="rules">
                         {
-                            rules.map((rule: Rule, index )=> this.renderRuleItem(rule, index))
+                            rules.map((rule: Rule, index) => this.renderRuleItem(rule, index))
                         }
                         {/* <SortableList rules={rules} onSortEnd={this.onSortEnd} useDragHandle={true} /> */}
                     </div>

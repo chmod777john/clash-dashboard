@@ -44,7 +44,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
         super(props)
     }
 
-    componentDidUpdate() {
+    componentDidUpdate () {
         console.log('update')
     }
 
@@ -62,7 +62,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
         document.body.removeChild(this.$container)
         document.removeEventListener('click', this.handleGlobalClick, true)
     }
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate (nextProps, nextState) {
         if (nextProps.value === this.props.value && nextState.showDropDownList === this.state.showDropDownList) {
             return false
         }
@@ -72,7 +72,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
     handleShowDropList = () => {
         if (!this.state.hasCreateDropList) {
             this.setState({
-                hasCreateDropList: true,
+                hasCreateDropList: true
             })
         }
         this.setState({
