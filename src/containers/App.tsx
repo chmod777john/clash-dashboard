@@ -33,7 +33,7 @@ export default class App extends React.Component<AppProps, {}> {
                 <div className="page-container">
                     {
                         routes.map(
-                            route => <Route exact={!!route.exact} path={route.path} component={route.component}/>
+                            route => <Route exact={!!route.exact} path={route.path} key={route.path} component={route.component}/>
                         )
                     }
                 </div>

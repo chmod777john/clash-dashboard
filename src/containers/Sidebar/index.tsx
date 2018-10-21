@@ -24,7 +24,7 @@ class Sidebar extends React.Component<SidebarProps, {}> {
                     {
                         routes.map(
                             ({ path, name, exact }) => (
-                                <li className="item">
+                                <li className="item" key={name}>
                                     <NavLink to={path} activeClassName="active" exact={!!exact}>{ t(name) }</NavLink>
                                 </li>
                             )

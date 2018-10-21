@@ -25,7 +25,48 @@ class Rules extends React.Component<I18nProps, RulesState> {
             { type: RuleType['DOMAIN-SUFFIX'], payload: 'google.com.hk', proxy: 'HK' },
             { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
             { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['FINAL'], payload: '', proxy: 'DIRECT' }
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
+            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
         ],
         proxies: {
             DIRECT: { type: 'Direct' },
@@ -115,7 +156,6 @@ class Rules extends React.Component<I18nProps, RulesState> {
         const { modifiedIndex, proxies } = this.state
         const isFinal = rule.type === 'FINAL'
         const DragHandle = SortableHandle(() => <Icon type="drag" size={16} />)
-
         return (
             <li className="rule-item" key={index}>
                 <Row className="rule-item-row" gutter={24} align="middle">
@@ -127,7 +167,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
                             isFinal
                                 ? rule.type
                                 : (
-                                    <Select value={rule.type} onSelect={type => this.handleModifyType(index, type)}>
+                                    <Select key={index} value={rule.type} onSelect={type => this.handleModifyType(index, type)}>
                                         {
                                             Object.keys(RuleType)
                                                 .filter(type => type !== 'FINAL')
@@ -162,7 +202,7 @@ class Rules extends React.Component<I18nProps, RulesState> {
                         }
                     </Col>
                     <Col className="rule-proxy" span={5}>
-                        <Select className="rule-proxy-option" value={rule.proxy} onSelect={proxy => this.handleModifyProxy(index, proxy)}>
+                        <Select className="rule-proxy-option" key={index} value={rule.proxy} onSelect={proxy => this.handleModifyProxy(index, proxy)}>
                             {
                                 Object.keys(proxies).map(proxyName => {
                                     const proxy = proxies[proxyName]
@@ -188,7 +228,6 @@ class Rules extends React.Component<I18nProps, RulesState> {
         const { t } = this.props
         const { rules } = this.state
         const SortableList = SortableContainer<{ rules: Rule[] }>(this.renderRules)
-
         return (
             <div className="page">
                 <Header title={t('title')} >
@@ -197,7 +236,10 @@ class Rules extends React.Component<I18nProps, RulesState> {
 
                 <Card className="rules-card">
                     <div className="rules">
-                        <SortableList rules={rules} onSortEnd={this.onSortEnd} useDragHandle={true} />
+                        {
+                            rules.map((rule: Rule, index )=> this.renderRuleItem(rule, index))
+                        }
+                        {/* <SortableList rules={rules} onSortEnd={this.onSortEnd} useDragHandle={true} /> */}
                     </div>
                 </Card>
             </div>

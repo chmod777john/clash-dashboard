@@ -19,7 +19,8 @@ interface SelectProps extends BaseComponentProps {
 
 interface SelectState {
     dropdownListStyles: React.CSSProperties
-    showDropDownList: boolean
+    showDropDownList: boolean,
+    hasCreateDropList: boolean
 }
 
 export class Select extends React.Component<SelectProps, SelectState> {
@@ -35,27 +36,48 @@ export class Select extends React.Component<SelectProps, SelectState> {
 
     state = {
         dropdownListStyles: {},
-        showDropDownList: false
+        showDropDownList: false,
+        hasCreateDropList: false
     }
 
     constructor (props) {
         super(props)
+    }
 
+    componentDidUpdate() {
+        console.log('update')
+    }
+
+    componentDidMount () {
         // create container element
         const container = document.createElement('div')
         document.body.appendChild(container)
         this.$container = container
 
         document.addEventListener('click', this.handleGlobalClick, true)
-    }
-
-    componentDidMount () {
         this.setState({ dropdownListStyles: this.calculateAttachmentPosition() })
     }
 
     componentWillUnmount () {
         document.body.removeChild(this.$container)
         document.removeEventListener('click', this.handleGlobalClick, true)
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.value === this.props.value && nextState.showDropDownList === this.state.showDropDownList) {
+            return false
+        }
+        return true
+    }
+
+    handleShowDropList = () => {
+        if (!this.state.hasCreateDropList) {
+            this.setState({
+                hasCreateDropList: true,
+            })
+        }
+        this.setState({
+            showDropDownList: true
+        })
     }
 
     private handleGlobalClick = (e) => {
@@ -118,7 +140,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
 
     render () {
         const { value, onSelect, children, className: cn, style } = this.props
-        const { dropdownListStyles, showDropDownList } = this.state
+        const { dropdownListStyles, showDropDownList, hasCreateDropList } = this.state
         const matchChild = this.getSelectedOption(value, children)
         const dropDownList = (
             <div
@@ -137,12 +159,12 @@ export class Select extends React.Component<SelectProps, SelectState> {
                 className={classnames('select', cn)}
                 style={style}
                 ref={this.$target}
-                onClick={() => this.setState({ showDropDownList: !showDropDownList })}
+                onClick={this.handleShowDropList}
             >
                 {matchChild.props.children}
                 <Icon type="triangle-down" />
             </div>
-            {createPortal(dropDownList, this.$container)}
+            {hasCreateDropList && createPortal(dropDownList, this.$container)}
         </>
     }
 }
