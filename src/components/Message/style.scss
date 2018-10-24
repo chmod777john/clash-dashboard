@@ -3,12 +3,61 @@
 .message {
     position: fixed;
     top: 20px;
-    left: 50%;
+    right: 20px;
+    border-radius: 4px;
     opacity: 0;
-    transition: all 2000ms ease-out;
+    background: $color-white;
+    display: flex;
+    box-shadow: 0 0 20px rgba($color-primary-dark, 0.2);
+    transition: all 200ms ease;
+    transform: translateX(100%);
+
+    .message-icon {
+        width: 36px;
+        flex: 1;
+        border-radius: 4px 0 0 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > i {
+            color: $color-white;
+        }
+    }
+
+    .message-content {
+        padding: 10px 15px;
+        font-size: 13px;
+        color: $color-primary-darken;
+    }
+}
+
+.message-info {
+    .message-icon {
+        background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+    }
+}
+
+.message-success {
+    .message-icon {
+        background: linear-gradient(135deg, $color-green, darken($color-green, 5%));
+    }
+}
+
+.message-warning {
+    .message-icon {
+        background: linear-gradient(135deg, $color-orange, darken($color-orange, 5%));
+    }
+}
+
+.message-error {
+    .message-icon {
+        background: linear-gradient(135deg, $color-red, darken($color-red, 10%));
+    }
 }
 
 .message-show {
     opacity: 1;
-    transition: all 2000ms ease-out;
+    transition: all 200ms ease;
+    transform: translateX(0);
 }
