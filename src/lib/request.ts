@@ -57,17 +57,22 @@ export async function getProxies () {
 
 export async function getProxy (name: string) {
     const req = await getInstance()
-    return req.get<Proxy>('proxies/:name', { params: { name } })
+    return req.get<Proxy>(`proxies/${name}`)
 }
 
 export async function getProxyDelay (name: string) {
     const req = await getInstance()
-    return req.get<{ delay: number }>('proxies/:name/delay', { params: { name } })
+    return req.get<{ delay: number }>(`proxies/${name}/delay`, {
+        params: {
+            timeout: 2000,
+            url: 'http://www.gstatic.com/generate_204'
+        }
+    })
 }
 
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
-    return req.get<void>('proxies/:name', { params: { name }, data: { name: select } })
+    return req.get<void>(`proxies/${name}`, { data: { name: select } })
 }
 
 export async function getInstance () {

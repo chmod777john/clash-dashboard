@@ -1,6 +1,6 @@
 @import '~@styles/variables';
 
-.proxy {
+.proxy-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,19 +9,29 @@
     width: 100px;
     box-shadow: 0 0 20px rgba($color-primary-dark, 0.2);
     border-radius: 4px;
-}
 
-.proxy-icon {
-    height: 40px;
-    width: 40px;
-}
+    .proxy-icon {
+        height: 40px;
+        width: 40px;
+    }
 
-.proxy-name {
-    width: 80%;
-    margin-top: 8px;
-    color: $color-primary-dark;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-align: center;
+    .proxy-name {
+        width: 80%;
+        margin-top: 8px;
+        color: $color-primary-dark;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .proxy-delay {
+        width: 80%;
+        margin-top: 8px;
+        color: $color-primary-dark;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: center;
+    }
 }

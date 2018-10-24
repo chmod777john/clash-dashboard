@@ -14,7 +14,7 @@ export function removeLocalStorageItem (key: string) {
  * to return Promise<[T, Error]>
  * @param {Promise<T>} promise
  */
-export async function to <T, E = Error> (promise: any): Promise<[T, E]> {
+export async function to <T, E = Error> (promise: Promise<T>): Promise<[T, E]> {
     try {
         const ret = await promise
         return [ret, null as E]
