@@ -5,14 +5,16 @@ import { getProxyDelay } from '@lib/request'
 import { to } from '@lib/helper'
 import './style.scss'
 
-interface ProxyProps extends BaseComponentProps, IProxy {}
+interface ProxyProps extends BaseComponentProps {
+    config: IProxy
+}
 
 interface ProxyState {
     delay: number
     hasError: boolean
 }
 
-export class Proxy extends React.Component<ProxyProps, ProxyState> {
+export class Proxy extends React.Component<ProxyProps , ProxyState> {
 
     state = {
         delay: -1,
@@ -20,8 +22,8 @@ export class Proxy extends React.Component<ProxyProps, ProxyState> {
     }
 
     async componentDidMount () {
-        const { name } = this.props
-        const [res, err] = await to(getProxyDelay(name))
+        const { config } = this.props
+        const [res, err] = await to(getProxyDelay(config.name))
 
         if (err) {
             return this.setState({ hasError: true })
@@ -32,12 +34,12 @@ export class Proxy extends React.Component<ProxyProps, ProxyState> {
     }
 
     render () {
-        const { name, className } = this.props
+        const { config, className } = this.props
         const { delay, hasError } = this.state
 
         return (
             <div className={classnames('proxy-item', { 'proxy-error': hasError }, className)}>
-                <span className="proxy-name">{name}</span>
+                <span className="proxy-name">{config.name}</span>
                 <span className="proxy-delay">{delay === -1 ? '-' : `${delay}s`}</span>
             </div>
         )

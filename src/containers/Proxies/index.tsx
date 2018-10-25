@@ -33,7 +33,7 @@ class Proxies extends React.Component<ProxiesProps, {}> {
                                 config.config.proxy.map(
                                     (p, index) => (
                                         <li key={index}>
-                                            <Proxy name={p.name} config={p.config} />
+                                            <Proxy config={p} />
                                         </li>
                                     )
                                 )
