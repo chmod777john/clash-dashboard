@@ -8,21 +8,10 @@ export enum ProxyType {
     Socks5 = 'Socks5'
 }
 
-export interface Proxy {
-
-    /**
-     * proxy name
-     */
-    name?: string
-
-    /**
-     * configs of proxy server
-     * now support shadowsocks, v2ray and socks5
-     */
-    config?: ShadowsocksProxy | VmessProxy | Socks5Proxy
-}
+export type Proxy = ShadowsocksProxy | VmessProxy | Socks5Proxy
 
 export interface ShadowsocksProxy {
+    name?: string
 
     type?: 'ss'
 
@@ -41,6 +30,7 @@ export interface ShadowsocksProxy {
 }
 
 export interface VmessProxy {
+    name?: string
 
     type?: 'vmess'
 
@@ -59,6 +49,7 @@ export interface VmessProxy {
 }
 
 export interface Socks5Proxy {
+    name?: string
 
     type?: 'socks5'
 

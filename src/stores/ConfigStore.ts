@@ -4,6 +4,7 @@ import * as Models from '@models'
 import { jsBridge } from '@lib/jsBridge'
 import { getConfig } from '@lib/request'
 import { getLocalStorageItem } from '@lib/helper'
+import { Rule, RuleType } from '@models';
 
 export class ConfigStore {
 
@@ -36,13 +37,17 @@ export class ConfigStore {
             const proxies = config.Proxy as any[] || []
             const proxy: Models.Proxy[] = proxies
                 .filter(p => ['vmess', 'ss', 'socks5'].includes(p.type))
-                .map(p => ({ name: p.name, config: p }))
 
             const proxyGroups = config['Proxy Group'] as any[] || []
             const proxyGroup: Models.ProxyGroup[] = proxyGroups
                 .filter(p => ['url-test', 'select', 'fallback'].includes(p.type))
                 .map(p => ({ name: p.name, config: p }))
-
+            const rules = config['Rule'] as any[] || []
+            const rule: Rule[] = rules.map(r => r.split(',')).filter(r => r.length !== 3).map(r => ({
+                type: RuleType[r[0] as string],
+                payload: r[1],
+                proxy: r[2]
+            }))
             this.config = {
                 general: {
                     port: config.port || 0,
@@ -57,7 +62,7 @@ export class ConfigStore {
                 },
                 proxy,
                 proxyGroup,
-                rules: config['Rule'] || []
+                rules: rule || []
             }
             this.state = 'ok'
         })
@@ -79,5 +84,29 @@ export class ConfigStore {
             }
         }
     }
-
+    @action
+    async updateConfig () {
+        const { general, proxy, proxyGroup, rules } = this.config
+        const externalController = `${general.externalControllerAddr}:${general.externalControllerPort}`
+        const proxyGroups = proxyGroup.map(p => ({
+            name: p.name,
+            ...p.config
+        }))
+        const config = {
+            'external-controller': externalController,
+            port: general.port,
+            'socks-port': general.socksPort,
+            'redir-port': general.redirPort,
+            'allow-lan': general.allowLan,
+            secret: general.secret,
+            'log-level': general.logLevel,
+            mode: general.mode,
+            Proxy: proxy,
+            'Proxy Group': proxyGroups,
+            Rule: rules
+        }
+        const data = yaml.stringify(config)
+        console.log(data)
+        // jsBridge.writeConfigWithString(data)
+    }
 }

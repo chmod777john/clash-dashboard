@@ -13,5 +13,6 @@ export enum RuleType {
     'DOMAIN-SUFFIX' = 'DOMAIN-SUFFIX',
     'DOMAIN-KEYWORD' = 'DOMAIN-KEYWORD',
     'GEOIP' = 'GEOIP',
-    'FINAL' = 'FINAL'
+    'FINAL' = 'FINAL',
+    'IP-CIDR' = 'IP-CIDR'
 }

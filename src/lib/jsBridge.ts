@@ -140,6 +140,10 @@ export class JsBridge {
     public setPasteboard (data: string) {
         return this.callHandler('setPasteboard', data)
     }
+
+    public writeConfigWithString (data: string) {
+        return this.callHandler('writeConfigWithString', data)
+    }
 }
 
 export function setupJsBridge (callback) {

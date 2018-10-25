@@ -49,17 +49,15 @@ export class Select extends React.Component<SelectProps, SelectState> {
     }
 
     componentDidMount () {
-        // create container element
-        const container = document.createElement('div')
-        document.body.appendChild(container)
-        this.$container = container
 
         document.addEventListener('click', this.handleGlobalClick, true)
         this.setState({ dropdownListStyles: this.calculateAttachmentPosition() })
     }
 
     componentWillUnmount () {
-        document.body.removeChild(this.$container)
+        if (this.state.hasCreateDropList) {
+            document.body.removeChild(this.$container)
+        }
         document.removeEventListener('click', this.handleGlobalClick, true)
     }
     shouldComponentUpdate (nextProps, nextState) {
@@ -71,6 +69,10 @@ export class Select extends React.Component<SelectProps, SelectState> {
 
     handleShowDropList = () => {
         if (!this.state.hasCreateDropList) {
+            // create container element
+            const container = document.createElement('div')
+            document.body.appendChild(container)
+            this.$container = container
             this.setState({
                 hasCreateDropList: true
             })
