@@ -4,7 +4,6 @@ import * as Models from '@models'
 import { jsBridge } from '@lib/jsBridge'
 import { getConfig } from '@lib/request'
 import { getLocalStorageItem } from '@lib/helper'
-import { Rule, RuleType } from '@models';
 
 export class ConfigStore {
 
@@ -43,8 +42,8 @@ export class ConfigStore {
                 .filter(p => ['url-test', 'select', 'fallback'].includes(p.type))
                 .map(p => ({ name: p.name, config: p }))
             const rules = config['Rule'] as any[] || []
-            const rule: Rule[] = rules.map(r => r.split(',')).filter(r => r.length !== 3).map(r => ({
-                type: RuleType[r[0] as string],
+            const rule: Models.Rule[] = rules.map(r => r.split(',')).filter(r => r.length !== 3).map(r => ({
+                type: Models.RuleType[r[0] as string],
                 payload: r[1],
                 proxy: r[2]
             }))
