@@ -3,89 +3,62 @@ import produce from 'immer'
 import { translate } from 'react-i18next'
 import { SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { Header, Icon, Card, Row, Col, Select, Option, Input } from '@components'
-import { I18nProps, RuleType } from '@models'
+import { I18nProps, RuleType, Rule, BaseRouterProps } from '@models'
 import './style.scss'
+import { storeKeys } from '@lib/createStore'
+import { inject } from 'mobx-react'
 
-interface Rule {
-    type: RuleType
-    payload: string
-    proxy: string
-}
-
+interface RulesProps extends BaseRouterProps, I18nProps {}
 interface RulesState {
     rules: Rule[]
     proxies: { [key: string]: { type: string } }
     modifiedIndex: number
 }
 
-class Rules extends React.Component<I18nProps, RulesState> {
+@inject(...storeKeys)
+class Rules extends React.Component<RulesProps, RulesState> {
 
     state = {
         rules: [
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'google.com.hk', proxy: 'HK' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN-SUFFIX'], payload: 'twitter.com', proxy: 'HKG' },
-            { type: RuleType['DOMAIN'], payload: 'pornhub.com', proxy: 'HKG' }
         ],
         proxies: {
-            DIRECT: { type: 'Direct' },
-            GLOBAL: { type: 'Selector' },
-            HKG: { type: 'URLTest' },
-            HK: { type: 'Shadowsocks' },
-            SGGGGGGGGGG: { type: 'Vmess' },
-            REJECT: { type: 'Reject' }
         },
         modifiedIndex: -1
     }
 
+    async componentDidMount () {
+        const { config } = this.props
+        await config.fetchAndParseConfig()
+        const rules = config.config.rules
+        const proxies = {
+            'REJECT': { type: 'Reject' }
+        }
+        config.config.proxy.map(p => {
+            proxies[p.name] = { type: p.type }
+        })
+        this.setState({
+            rules,
+            proxies
+        })
+
+    }
+
+    private saveConfig = async () => {
+        const { config } = this.props
+        const { rules } = this.state
+        config.config.rules = rules
+        console.log(config)
+        await config.updateConfig()
+    }
+
     private handleModifyType = (index, type) => {
         const { rules } = this.state
-
         this.setState({
             rules: produce(rules, draftState => {
                 draftState[index].type = type
             })
+        }, () => {
+            this.saveConfig()
         })
     }
 
@@ -96,16 +69,19 @@ class Rules extends React.Component<I18nProps, RulesState> {
             rules: produce(rules, draftState => {
                 draftState[index].payload = payload
             })
+        }, () => {
+            this.saveConfig()
         })
     }
 
     private handleModifyProxy = (index, proxy) => {
         const { rules } = this.state
-
         this.setState({
             rules: produce(rules, draftState => {
                 draftState[index].proxy = proxy
             })
+        }, () => {
+            this.saveConfig()
         })
     }
 
@@ -119,6 +95,8 @@ class Rules extends React.Component<I18nProps, RulesState> {
         this.setState({
             rules: newRules,
             modifiedIndex: 0
+        }, () => {
+            this.saveConfig()
         })
     }
 
@@ -127,6 +105,8 @@ class Rules extends React.Component<I18nProps, RulesState> {
 
         this.setState({
             rules: rules.filter((r, idx) => idx !== index)
+        }, () => {
+            this.saveConfig()
         })
     }
 

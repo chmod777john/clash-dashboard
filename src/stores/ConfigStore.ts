@@ -87,6 +87,7 @@ export class ConfigStore {
     async updateConfig () {
         const { general, proxy, proxyGroup, rules } = this.config
         const externalController = `${general.externalControllerAddr}:${general.externalControllerPort}`
+        const Rule = rules.map(r => [r.type, r.payload, r.proxy].join(','))
         const proxyGroups = proxyGroup.map(p => ({
             name: p.name,
             ...p.config
@@ -102,7 +103,7 @@ export class ConfigStore {
             mode: general.mode,
             Proxy: proxy,
             'Proxy Group': proxyGroups,
-            Rule: rules
+            Rule
         }
         const data = yaml.stringify(config)
         console.log(data)
