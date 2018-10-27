@@ -1,24 +1,51 @@
 import * as React from 'react'
 import classnames from 'classnames'
-import { BaseComponentProps, Proxy as IProxy } from '@models'
+import { Icon } from '@components'
+import { BaseComponentProps, Proxy as IProxy, TagColors } from '@models'
 import { getProxyDelay } from '@lib/request'
-import { to } from '@lib/helper'
+import { to, getLocalStorageItem, setLocalStorageItem, sample, noop } from '@lib/helper'
 import './style.scss'
 
 interface ProxyProps extends BaseComponentProps {
     config: IProxy
+    onEdit?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 interface ProxyState {
     delay: number
     hasError: boolean
+    color: string
 }
 
 export class Proxy extends React.Component<ProxyProps , ProxyState> {
 
-    state = {
-        delay: -1,
-        hasError: false
+    constructor (props) {
+        super(props)
+
+        const { config } = props
+        const { name } = config
+        let color = getLocalStorageItem(name)
+
+        if (!color) {
+            color = sample(TagColors)
+            setLocalStorageItem(name, color)
+        }
+
+        this.state = {
+            delay: -1,
+            hasError: false,
+            color
+        }
+    }
+
+    componentWillUpdate () {
+        const { config: { name } } = this.props
+        const { color: rawColor } = this.state
+        const color = getLocalStorageItem(name)
+
+        if (rawColor !== color) {
+            this.setState({ color })
+        }
     }
 
     async componentDidMount () {
@@ -34,13 +61,16 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
     }
 
     render () {
-        const { config, className } = this.props
-        const { delay, hasError } = this.state
+        const { config, className, onEdit = noop } = this.props
+        const { delay, color, hasError } = this.state
+        const backgroundColor = hasError ? undefined : color
 
         return (
             <div className={classnames('proxy-item', { 'proxy-error': hasError }, className)}>
-                <span className="proxy-name">{config.name}</span>
-                <span className="proxy-delay">{delay === -1 ? '-' : `${delay}s`}</span>
+                <span className="proxy-type" style={{ backgroundColor }}>{config.type}</span>
+                <p className="proxy-name">{config.name}</p>
+                <p className="proxy-delay">{delay === -1 ? '-' : `${delay}ms`}</p>
+                <Icon className="proxy-editor" type="setting" onClick={onEdit} />
             </div>
         )
     }

@@ -1,11 +1,15 @@
 @import '~@styles/variables';
 
 .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
     width: 140px;
+    user-select: none;
 }
 
 .sidebar-logo {
@@ -42,7 +46,7 @@
 
         > a.active {
             background: linear-gradient(135deg, $color-primary, $color-primary-dark);
-            color: #fff;
+            color: $color-white;
             box-shadow: 0 2px 8px rgba($color: $color-primary-dark, $alpha: 0.5);
         }
     }

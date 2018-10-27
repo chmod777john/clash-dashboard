@@ -43,6 +43,21 @@ export default {
     },
     Proxies: {
         title: '代理',
+        editDialog: {
+            title: '编辑代理',
+            color: '颜色',
+            name: '名字',
+            type: '类型',
+            server: '服务器',
+            port: '端口',
+            password: '密码',
+            cipher: '加密方式',
+            obfs: 'Obfs',
+            'obfs-host': 'Obfs-host',
+            uuid: 'Uuid',
+            alterid: 'Alterid',
+            tls: 'TLS'
+        },
         groupTitle: '策略组'
     }
 }

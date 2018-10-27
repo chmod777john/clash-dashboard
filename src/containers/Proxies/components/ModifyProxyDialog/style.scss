@@ -1,0 +1,29 @@
+@import '~@styles/variables';
+
+.proxy-editor {
+    .proxy-editor-color-selector {
+        display: flex;
+        align-items: center;
+
+        .color-item {
+            position: relative;
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .color-item-active::after {
+            position: absolute;
+            left: -3px;
+            top: -3px;
+            content: '';
+            display: block;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid $color-gray-dark;
+        }
+    }
+}

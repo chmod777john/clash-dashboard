@@ -43,6 +43,21 @@ export default {
     },
     Proxies: {
         title: 'Proxies',
+        editDialog: {
+            title: 'Edit Proxy',
+            color: 'Color',
+            name: 'Name',
+            type: 'Type',
+            server: 'Server',
+            port: 'Port',
+            password: 'Password',
+            cipher: 'Cipher',
+            obfs: 'Obfs',
+            'obfs-host': 'Obfs-host',
+            uuid: 'Uuid',
+            alterid: 'Alterid',
+            tls: 'TLS'
+        },
         groupTitle: 'Policy Group'
     }
 }

@@ -7,6 +7,11 @@
     list-style: none;
 
     li {
-        margin: 20px 15px 20px 0;
+        margin: 8px 0;
+        margin-right: 15px;
+
+        &:nth-child(6n) {
+            margin-right: 0;
+        }
     }
 }

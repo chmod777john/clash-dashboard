@@ -44,7 +44,7 @@ $width: 32px;
         height: $switch-radius;
         width: $switch-radius;
         border-radius: $switch-radius / 2;
-        background-color: #fff;
+        background-color: $color-white;
         box-shadow: 0 0 8px rgba($color-primary-dark, 0.4);
         transition: transform 0.3s ease;
         transform: translateX($width - $switch-radius + $switch-offset);
@@ -54,6 +54,6 @@ $width: 32px;
 .switch-icon {
     position: absolute;
     transform: translateX(13px) scale(0.4);
-    color: #fff;
+    color: $color-white;
     line-height: $height;
 }
