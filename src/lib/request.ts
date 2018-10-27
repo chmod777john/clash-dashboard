@@ -2,8 +2,10 @@ import axios, { AxiosInstance } from 'axios'
 import { Partial, getLocalStorageItem } from '@lib/helper'
 import { isClashX } from '@lib/jsBridge'
 import { rootStores } from '@lib/createStore'
+import { StreamReader } from './streamer'
 
 let instance: AxiosInstance
+let logsStreamReader = null
 
 export interface Config {
     port: number
@@ -115,4 +117,15 @@ export async function getExternalControllerConfig () {
     }
 
     return { hostname, port, secret }
+}
+
+export async function getLogsStreamReader () {
+    if (logsStreamReader) {
+        return logsStreamReader
+    }
+    const externalController = await getExternalControllerConfig()
+    const { data: config } = await getConfig()
+    const logUrl = `http://${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
+    logsStreamReader = new StreamReader({ url: logUrl, bufferLength: 200 })
+    return logsStreamReader
 }

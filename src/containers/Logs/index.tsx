@@ -4,8 +4,7 @@ import { translate } from 'react-i18next'
 import { I18nProps } from '@models'
 import { Card, Header } from '@components'
 import './style.scss'
-import { StreamReader } from '@lib/streamer'
-import { getExternalControllerConfig, getConfig } from '@lib/request'
+import { getLogsStreamReader } from '@lib/request'
 
 interface Log {
     type: string
@@ -27,11 +26,9 @@ class Logs extends React.Component<LogsProps, LogsState> {
     private streamReader = null
     private listRef = React.createRef<HTMLUListElement>()
     async componentDidMount () {
-        const externalController = await getExternalControllerConfig()
-        const { data: config } = await getConfig()
-        const logUrl = `http://${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
-        this.streamReader = new StreamReader({ url: logUrl })
-        let logs = []
+        this.streamReader = await getLogsStreamReader()
+        let logs = this.streamReader.buffer()
+        this.setState({ logs }, () => this.scrollToBottom())
         this.streamReader.subscribe('data', (data) => {
             logs = [].concat(this.state.logs, data.map(d => ({ ...d, time: new Date() })))
             this.setState({ logs }, () => this.scrollToBottom())

@@ -29,7 +29,6 @@ export class ConfigStore {
 
             // otherwise parse ini
             const config = yaml.parse(rawConfig)
-            console.log(config)
             const externalController = config['external-controller'] as string || ''
             const host = externalController.split(':')
 
