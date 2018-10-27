@@ -4,6 +4,8 @@ import { translate } from 'react-i18next'
 import { I18nProps } from '@models'
 import { Card, Header } from '@components'
 import './style.scss'
+import { StreamReader } from '@lib/streamer'
+import { getExternalControllerConfig, getConfig } from '@lib/request'
 
 interface Log {
     type: string
@@ -22,13 +24,18 @@ class Logs extends React.Component<LogsProps, LogsState> {
         logs: []
     }
 
+    private streamReader = null
     private listRef = React.createRef<HTMLUListElement>()
-    componentDidMount () {
-        const logs: Log[] = Array.from(
-            { length: 32 },
-            () => ({ type: 'info', payload: 'google.com match DomainSuffix using Proxy', time: new Date() })
-        )
-        this.setState({ logs }, () => this.scrollToBottom())
+    async componentDidMount () {
+        const externalController = await getExternalControllerConfig()
+        const { data: config } = await getConfig()
+        const logUrl = `http://${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
+        this.streamReader = new StreamReader({ url: logUrl })
+        let logs = []
+        this.streamReader.subscribe('data', (data) => {
+            logs = [].concat(this.state.logs, data.map(d => ({ ...d, time: new Date() })))
+            this.setState({ logs }, () => this.scrollToBottom())
+        })
     }
 
     scrollToBottom = () => {
@@ -45,9 +52,9 @@ class Logs extends React.Component<LogsProps, LogsState> {
                     <ul className="logs-panel" ref={this.listRef}>
                         {
                             this.state.logs.map(
-                                log => (
-                                    <li>
-                                        <span className="logs-panel-time">{ dayjs().format('YYYY-MM-DD HH:mm:ss') }</span>
+                                (log, index) => (
+                                    <li key={index}>
+                                        <span className="logs-panel-time">{ dayjs(log.time).format('YYYY-MM-DD HH:mm:ss') }</span>
                                         <span>[{ log.type }] { log.payload }</span>
                                     </li>
                                 )

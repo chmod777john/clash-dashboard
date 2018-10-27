@@ -46,7 +46,6 @@ export class ConfigStore {
                 payload: r[1],
                 proxy: r[2]
             }))
-            console.log(rule)
             this.config = {
                 general: {
                     port: config.port || 0,
