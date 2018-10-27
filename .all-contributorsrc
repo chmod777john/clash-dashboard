@@ -1,0 +1,59 @@
+{
+  "projectName": "clash-dashboard",
+  "projectOwner": "Dreamacro",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "jas0ncn",
+      "name": "Jason Chen",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3380894?v=4",
+      "profile": "https://ijason.cc",
+      "contributions": [
+        "design",
+        "code",
+        "bug",
+        "ideas",
+        "review"
+      ]
+    },
+    {
+      "login": "Dreamacro",
+      "name": "Dreamacro",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/8615343?v=4",
+      "profile": "https://github.com/Dreamacro",
+      "contributions": [
+        "code",
+        "bug",
+        "ideas",
+        "review",
+        "platform"
+      ]
+    },
+    {
+      "login": "chs97",
+      "name": "chs97",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/12679581?v=4",
+      "profile": "http://www.hs97.cn",
+      "contributions": [
+        "code",
+        "bug",
+        "review"
+      ]
+    },
+    {
+      "login": "yichengchen",
+      "name": "Yicheng",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11733500?v=4",
+      "profile": "https://github.com/yichengchen",
+      "contributions": [
+        "ideas",
+        "platform"
+      ]
+    }
+  ],
+  "repoType": "github"
+}

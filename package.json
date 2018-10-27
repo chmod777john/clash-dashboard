@@ -23,7 +23,9 @@
         "lint:ts": "tslint './src/**/*.ts*' --format stylish",
         "lint:sass": "stylelint ./src/**/*.scss",
         "start": "npm run start-dev",
-        "start-dev": "webpack-dev-server --config=configs/webpack/dev.js"
+        "start-dev": "webpack-dev-server --config=configs/webpack/dev.js",
+        "contributors:add": "all-contributors add",
+        "contributors:generate": "all-contributors generate"
     },
     "devDependencies": {
         "@babel/cli": "^7.1.2",
