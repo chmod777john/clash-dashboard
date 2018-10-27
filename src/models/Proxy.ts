@@ -59,22 +59,10 @@ export interface Socks5Proxy {
 
 }
 
-export interface ProxyGroup {
-
-    /**
-     * proxy group name
-     */
-    name?: string
-
-    /**
-     * configs of proxy server
-     * now support select and url-test
-     */
-    config?: SelectProxyGroup | UrlTestProxyGroup | FallbackProxyGroup
-
-}
+export type ProxyGroup = SelectProxyGroup | UrlTestProxyGroup | FallbackProxyGroup
 
 export interface SelectProxyGroup {
+    name?: string
 
     type?: 'select'
 
@@ -83,6 +71,7 @@ export interface SelectProxyGroup {
 }
 
 export interface FallbackProxyGroup {
+    name?: string
 
     type?: 'fallback'
 
@@ -95,6 +84,7 @@ export interface FallbackProxyGroup {
 }
 
 export interface UrlTestProxyGroup {
+    name?: string
 
     type?: 'url-test'
 

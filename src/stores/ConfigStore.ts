@@ -29,7 +29,7 @@ export class ConfigStore {
 
             // otherwise parse ini
             const config = yaml.parse(rawConfig)
-
+            console.log(config)
             const externalController = config['external-controller'] as string || ''
             const host = externalController.split(':')
 
@@ -40,13 +40,13 @@ export class ConfigStore {
             const proxyGroups = config['Proxy Group'] as any[] || []
             const proxyGroup: Models.ProxyGroup[] = proxyGroups
                 .filter(p => ['url-test', 'select', 'fallback'].includes(p.type))
-                .map(p => ({ name: p.name, config: p }))
             const rules = config['Rule'] as any[] || []
-            const rule: Models.Rule[] = rules.map(r => r.split(',')).filter(r => r.length !== 3).map(r => ({
+            const rule: Models.Rule[] = rules.map(r => r.split(',')).filter(r => r.length >= 3).map(r => ({
                 type: Models.RuleType[r[0] as string],
                 payload: r[1],
                 proxy: r[2]
             }))
+            console.log(rule)
             this.config = {
                 general: {
                     port: config.port || 0,
@@ -88,10 +88,6 @@ export class ConfigStore {
         const { general, proxy, proxyGroup, rules } = this.config
         const externalController = `${general.externalControllerAddr}:${general.externalControllerPort}`
         const Rule = rules.map(r => [r.type, r.payload, r.proxy].join(','))
-        const proxyGroups = proxyGroup.map(p => ({
-            name: p.name,
-            ...p.config
-        }))
         const config = {
             'external-controller': externalController,
             port: general.port,
@@ -102,11 +98,11 @@ export class ConfigStore {
             'log-level': general.logLevel,
             mode: general.mode,
             Proxy: proxy,
-            'Proxy Group': proxyGroups,
+            'Proxy Group': proxyGroup,
             Rule
         }
         const data = yaml.stringify(config)
-        console.log(data)
-        // jsBridge.writeConfigWithString(data)
+        // console.log(data)
+        jsBridge.writeConfigWithString(data)
     }
 }

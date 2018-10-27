@@ -29,13 +29,13 @@ class Rules extends React.Component<RulesProps, RulesState> {
     async componentDidMount () {
         const { config } = this.props
         await config.fetchAndParseConfig()
-        const rules = config.config.rules
         const proxies = {
-            'REJECT': { type: 'Reject' }
+            'REJECT': { type: 'Reject' },
+            'DIRECT': { type: 'Direct' }
         }
-        config.config.proxy.map(p => {
-            proxies[p.name] = { type: p.type }
-        })
+        config.config.proxy.map(p => proxies[p.name] = { type: p.type })
+        config.config.proxyGroup.map(p => proxies[p.name] = { type: p.type })
+        const rules = config.config.rules.filter(r => proxies[r.proxy])
         this.setState({
             rules,
             proxies
@@ -47,7 +47,6 @@ class Rules extends React.Component<RulesProps, RulesState> {
         const { config } = this.props
         const { rules } = this.state
         config.config.rules = rules
-        console.log(config)
         await config.updateConfig()
     }
 
@@ -69,8 +68,6 @@ class Rules extends React.Component<RulesProps, RulesState> {
             rules: produce(rules, draftState => {
                 draftState[index].payload = payload
             })
-        }, () => {
-            this.saveConfig()
         })
     }
 
@@ -172,7 +169,7 @@ class Rules extends React.Component<RulesProps, RulesState> {
                                     inside={true}
                                     autoFocus={true}
                                     onChange={ value => this.handleModifyPayload(index, value) }
-                                    onBlur={() => this.setState({ modifiedIndex: -1 })}
+                                    onBlur={() => { this.setState({ modifiedIndex: -1 });this.saveConfig() }}
                                     style={{ maxWidth: 230 }}
                                 />
                             )
