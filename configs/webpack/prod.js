@@ -13,7 +13,6 @@ module.exports = merge(commonConfig, {
         path: resolve(__dirname, '../../dist'),
         publicPath: '/',
     },
-    devtool: 'source-map',
     plugins: [
         new ManifestPlugin({
             name: 'Clash',
