@@ -19,7 +19,7 @@ $width: 32px;
         background-color: $color-primary;
 
         &::after {
-            transform: translateX(-$switch-offset);
+            transform: translateX($width - $switch-radius + $switch-offset);
         }
     }
 
@@ -47,13 +47,13 @@ $width: 32px;
         background-color: $color-white;
         box-shadow: 0 0 8px rgba($color-primary-dark, 0.4);
         transition: transform 0.3s ease;
-        transform: translateX($width - $switch-radius + $switch-offset);
+        transform: translateX(-$switch-offset);
     }
 }
 
 .switch-icon {
     position: absolute;
-    transform: translateX(13px) scale(0.4);
+    transform: translateX(-1px) scale(0.4);
     color: $color-white;
     line-height: $height;
 }
