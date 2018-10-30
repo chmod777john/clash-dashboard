@@ -144,6 +144,22 @@ export class JsBridge {
     public writeConfigWithString (data: string) {
         return this.callHandler('writeConfigWithString', data)
     }
+
+    public setSystemProxy (data: boolean) {
+        return this.callHandler('setSystemProxy', data)
+    }
+
+    public getStartAtLogin () {
+        return this.callHandler<Boolean>('getStartAtLogin')
+    }
+
+    public setStartAtLogin (data: boolean) {
+        return this.callHandler<Boolean>('setStartAtLogin', data)
+    }
+
+    public isSystemProxySet () {
+        return this.callHandler<Boolean>('isSystemProxySet')
+    }
 }
 
 export function setupJsBridge (callback) {

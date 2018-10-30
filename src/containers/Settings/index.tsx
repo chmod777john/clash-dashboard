@@ -8,7 +8,7 @@ import { updateConfig } from '@lib/request'
 import { setLocalStorageItem, to } from '@lib/helper'
 import { rootStores } from '@lib/createStore'
 import './style.scss'
-import { isClashX } from '@lib/jsBridge'
+import { isClashX, jsBridge } from '@lib/jsBridge'
 
 class Settings extends React.Component<I18nProps, {}> {
     state = {
@@ -21,7 +21,8 @@ class Settings extends React.Component<I18nProps, {}> {
         externalControllerHost: '127.0.0.1',
         externalControllerPort: '8080',
         externalControllerSecret: '',
-        showEditDrawer: false
+        showEditDrawer: false,
+        isClashX: false
     }
 
     languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh' }, { label: 'English', value: 'en' }]
@@ -66,9 +67,26 @@ class Settings extends React.Component<I18nProps, {}> {
         }
     }
 
+    handleStartAtLoginChange = async (state: boolean) => {
+        await jsBridge.setStartAtLogin(state)
+        this.setState({ startAtLogin: state })
+    }
+
+    handleSetSystemProxy = async (state: boolean) => {
+        await jsBridge.setSystemProxy(state)
+        this.setState({ setAsSystemProxy: state })
+    }
+
     async componentDidMount () {
         if (isClashX()) {
             await rootStores.config.fetchAndParseConfig()
+            const startAtLogin = await jsBridge.getStartAtLogin()
+            const setAsSystemProxy = await jsBridge.isSystemProxySet()
+            this.setState({
+                startAtLogin,
+                setAsSystemProxy,
+                isClashX: true
+            })
         } else {
             await rootStores.config.fetchConfig()
         }
@@ -87,6 +105,7 @@ class Settings extends React.Component<I18nProps, {}> {
     render () {
         const { t, lng } = this.props
         const {
+            isClashX,
             startAtLogin,
             setAsSystemProxy,
             allowConnectFromLan,
@@ -113,7 +132,7 @@ class Settings extends React.Component<I18nProps, {}> {
                             <span className="label">{t('labels.startAtLogin')}</span>
                         </Col>
                         <Col span={4} className="value-column">
-                            <Switch checked={startAtLogin} onChange={startAtLogin => this.setState({ startAtLogin })} />
+                            <Switch disabled={!isClashX} checked={startAtLogin} onChange={this.handleStartAtLoginChange} />
                         </Col>
                         <Col span={4} offset={1}>
                             <span className="label">{t('labels.language')}</span>
@@ -128,8 +147,9 @@ class Settings extends React.Component<I18nProps, {}> {
                         </Col>
                         <Col span={4} className="value-column">
                             <Switch
+                                disabled={!isClashX}
                                 checked={setAsSystemProxy}
-                                onChange={setAsSystemProxy => this.setState({ setAsSystemProxy })}
+                                onChange={this.handleSetSystemProxy}
                             />
                         </Col>
                         <Col span={7} offset={1}>
