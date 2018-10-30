@@ -119,7 +119,7 @@ class Settings extends React.Component<I18nProps, {}> {
                             <span className="label">{t('labels.language')}</span>
                         </Col>
                         <Col span={7} className="value-column">
-                            <ButtonSelect options={this.languageOptions} value={lng} onSelect={this.changeLanguage} />
+                            <ButtonSelect options={this.languageOptions} value={lng.replace(/-.+$/, '')} onSelect={this.changeLanguage} />
                         </Col>
                     </Row>
                     <Row gutter={24} align="middle">
