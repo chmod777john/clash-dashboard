@@ -13,6 +13,7 @@ interface ProxiesProps extends BaseRouterProps, I18nProps {}
 interface ProxiesState {
     showModifyProxyDialog: boolean
     activeConfig?: IProxy
+    activeConfigIndex?: number
 }
 
 @inject(...storeKeys)
@@ -21,11 +22,17 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
 
     state = {
         showModifyProxyDialog: false,
-        activeConfig: null
+        activeConfig: null,
+        activeConfigIndex: -1
     }
 
     componentDidMount () {
         this.props.config.fetchAndParseConfig()
+    }
+
+    handleConfigApply = async (config: IProxy) => {
+        await this.props.config.modifyProxyByIndexAndSave(this.state.activeConfigIndex, config)
+        this.setState({ showModifyProxyDialog: false, activeConfig: null })
     }
 
     render () {
@@ -46,7 +53,8 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
                                         <li key={index}>
                                             <Proxy config={p} onEdit={() => this.setState({
                                                 showModifyProxyDialog: true,
-                                                activeConfig: p
+                                                activeConfig: p,
+                                                activeConfigIndex: index
                                             })} />
                                         </li>
                                     ))
@@ -61,11 +69,8 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
                     {
                         showModifyProxyDialog && <ModifyProxyDialog
                             config={activeConfig}
-                            onOk={config => {
-                                console.log(config)
-                                this.setState({ showModifyProxyDialog: false, activeConfig: null })
-                            }}
-                            onCancel={() => this.setState({ showModifyProxyDialog: false, activeConfig: null })}
+                            onOk={this.handleConfigApply}
+                            onCancel={() => this.setState({ showModifyProxyDialog: false, activeConfig: null, activeConfigIndex: -1 })}
                         />
                     }
                 </div>

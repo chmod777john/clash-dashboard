@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: "clash-iconfont";
-    src: url('//at.alicdn.com/t/font_841708_7ge2gqse7qv.ttf') format('truetype');
+    src: url('//at.alicdn.com/t/font_841708_e9dax11p22i.ttf') format('truetype');
 }
 
 .clash-iconfont {
@@ -39,3 +39,7 @@
 .icon-info-o::before { content: "\e60c"; }
 
 .icon-setting::before { content: "\e60d"; }
+
+.icon-show::before { content: "\e60e"; }
+
+.icon-hide::before { content: "\e60f"; }

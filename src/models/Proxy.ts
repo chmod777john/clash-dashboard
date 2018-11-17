@@ -2,14 +2,17 @@
  * proxy config interface
  */
 
-export enum ProxyType {
-    Shadowsocks = 'Shadowsocks',
-    Vmess = 'Vmess',
-    Socks5 = 'Socks5'
+export const ProxyType = {
+    Shadowsocks: 'ss',
+    Vmess: 'vmess',
+    Socks5: 'socks5'
 }
 
-export type Proxy = ShadowsocksProxy | VmessProxy | Socks5Proxy
+export type Proxy = ShadowsocksProxy & VmessProxy & Socks5Proxy
 
+export const SsProxyConfigList = [
+    'name', 'type', 'server', 'port', 'cipher', 'password', 'obfs', 'obfs-host'
+]
 export interface ShadowsocksProxy {
     name?: string
 
@@ -29,6 +32,9 @@ export interface ShadowsocksProxy {
 
 }
 
+export const VmessProxyConfigList = [
+    'name', 'type', 'server', 'port', 'uuid', 'alterid', 'cipher', 'tls'
+]
 export interface VmessProxy {
     name?: string
 
@@ -48,6 +54,7 @@ export interface VmessProxy {
 
 }
 
+export const Socks5ProxyConfigList = ['name', 'type', 'server', 'port']
 export interface Socks5Proxy {
     name?: string
 
@@ -59,7 +66,7 @@ export interface Socks5Proxy {
 
 }
 
-export type ProxyGroup = SelectProxyGroup | UrlTestProxyGroup | FallbackProxyGroup
+export type ProxyGroup = SelectProxyGroup & UrlTestProxyGroup & FallbackProxyGroup
 
 export interface SelectProxyGroup {
     name?: string

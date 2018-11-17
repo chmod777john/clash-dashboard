@@ -44,12 +44,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
         super(props)
     }
 
-    componentDidUpdate () {
-        console.log('update')
-    }
-
     componentDidMount () {
-
         document.addEventListener('click', this.handleGlobalClick, true)
         this.setState({ dropdownListStyles: this.calculateAttachmentPosition() })
     }
@@ -60,6 +55,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
         }
         document.removeEventListener('click', this.handleGlobalClick, true)
     }
+
     shouldComponentUpdate (nextProps, nextState) {
         if (nextProps.value === this.props.value && nextState.showDropDownList === this.state.showDropDownList) {
             return false
@@ -96,7 +92,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
         return {
             top: Math.floor(targetRectInfo.top) - 10,
             left: Math.floor(targetRectInfo.left) - 10,
-            width: Math.floor(targetRectInfo.width)
+            width: Math.floor(targetRectInfo.width) + 10
         }
     }
 
@@ -163,7 +159,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
                 ref={this.$target}
                 onClick={this.handleShowDropList}
             >
-                {matchChild.props.children}
+                {matchChild && matchChild.props && matchChild.props.children}
                 <Icon type="triangle-down" />
             </div>
             {hasCreateDropList && createPortal(dropDownList, this.$container)}

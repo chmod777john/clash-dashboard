@@ -49,6 +49,8 @@ export class Modal extends React.Component<ModalProps, {}> {
 
     $modal = React.createRef<HTMLDivElement>()
 
+    $mask = React.createRef<HTMLDivElement>()
+
     constructor (props) {
         super(props)
 
@@ -64,9 +66,8 @@ export class Modal extends React.Component<ModalProps, {}> {
 
     private handleMaskClick = (e) => {
         const { onClose } = this.props
-        const el = this.$modal.current
 
-        if (el && !el.contains(e.target)) {
+        if (e.target === this.$mask) {
             onClose()
         }
     }
@@ -76,6 +77,7 @@ export class Modal extends React.Component<ModalProps, {}> {
         const modal = (
             <div
                 className={classnames('modal-mask', { 'modal-show': show })}
+                ref={this.$mask}
                 onClick={this.handleMaskClick}
             >
                 <div

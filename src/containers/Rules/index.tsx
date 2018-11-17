@@ -144,7 +144,12 @@ class Rules extends React.Component<RulesProps, RulesState> {
                             isFinal
                                 ? rule.type
                                 : (
-                                    <Select key={index} value={rule.type} onSelect={type => this.handleModifyType(index, type)}>
+                                    <Select
+                                        key={index}
+                                        value={rule.type}
+                                        onSelect={type => this.handleModifyType(index, type)}
+                                        style={{ flex: 1 }}
+                                    >
                                         {
                                             Object.keys(RuleType)
                                                 .filter(type => type !== 'FINAL')

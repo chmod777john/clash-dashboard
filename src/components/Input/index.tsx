@@ -9,6 +9,7 @@ interface InputProps extends BaseComponentProps {
     align?: 'left' | 'center' | 'right'
     inside?: boolean
     autoFocus?: boolean
+    type?: string
     onChange?: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void
     onBlur?: (event?: React.FocusEvent<HTMLInputElement>) => void
 }
@@ -20,6 +21,7 @@ export class Input extends React.Component<InputProps, {}> {
         align: 'center',
         inside: false,
         autoFocus: false,
+        type: 'text',
         onChange: () => {},
         onBlur: () => {}
     }
@@ -32,6 +34,7 @@ export class Input extends React.Component<InputProps, {}> {
             align,
             inside,
             autoFocus,
+            type,
             onChange,
             onBlur
         } = this.props
@@ -42,6 +45,7 @@ export class Input extends React.Component<InputProps, {}> {
                 style={style}
                 value={value}
                 autoFocus={autoFocus}
+                type={type}
                 onChange={event => onChange(event.target.value, event)}
                 onBlur={onBlur}
             />

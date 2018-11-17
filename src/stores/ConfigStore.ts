@@ -81,6 +81,7 @@ export class ConfigStore {
             }
         }
     }
+
     @action
     async updateConfig () {
         const { general, proxy, proxyGroup, rules } = this.config
@@ -102,5 +103,33 @@ export class ConfigStore {
         const data = yaml.stringify(config)
         // console.log(data)
         jsBridge.writeConfigWithString(data)
+    }
+
+    @action
+    async modifyProxyByIndexAndSave (index: number, config: Models.Proxy) {
+        const { proxy } = this.config
+        const fomatedConfig: Models.Proxy = {}
+        const { type } = config
+        let configList: string[] = []
+
+        switch (type) {
+        case 'ss':
+            configList = Models.SsProxyConfigList
+            break
+        case 'vmess':
+            configList = Models.VmessProxyConfigList
+            break
+        case 'socks5':
+            configList = Models.Socks5ProxyConfigList
+            break
+        }
+
+        for (const configKey of configList) {
+            fomatedConfig[configKey] = config[configKey]
+        }
+
+        proxy[index] = fomatedConfig
+        await this.updateConfig()
+        await this.fetchAndParseConfig()
     }
 }

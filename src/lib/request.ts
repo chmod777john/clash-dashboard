@@ -66,7 +66,7 @@ export async function getProxyDelay (name: string) {
     const req = await getInstance()
     return req.get<{ delay: number }>(`proxies/${name}/delay`, {
         params: {
-            timeout: 2000,
+            timeout: 20000,
             url: 'http://www.gstatic.com/generate_204'
         }
     })

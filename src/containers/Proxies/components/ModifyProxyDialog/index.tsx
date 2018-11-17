@@ -1,10 +1,26 @@
 import * as React from 'react'
 import { translate } from 'react-i18next'
-import classnames from 'classnames'
-import { BaseComponentProps, Proxy as IProxy, I18nProps, TagColors } from '@models'
-import { Modal, Row, Col } from '@components'
+import { Modal } from '@components'
 import { getLocalStorageItem, setLocalStorageItem } from '@lib/helper'
 import './style.scss'
+
+import {
+    BaseComponentProps,
+    Proxy as IProxy,
+    SsProxyConfigList, VmessProxyConfigList, Socks5ProxyConfigList,
+    I18nProps,
+    TagColors,
+    ProxyType,
+    SsCipher, VmessCipher, pickCipherWithAlias
+} from '@models'
+
+import {
+    ProxyInputForm,
+    ProxyColorSelector,
+    ProxyTypeSelector,
+    ProxyPasswordForm,
+    ProxyCipherSelector
+} from './FormItems'
 
 interface ModifyProxyDialogProps extends BaseComponentProps, I18nProps {
     config: IProxy
@@ -40,9 +56,151 @@ class RawDialog extends React.Component<ModifyProxyDialogProps, ModifyProxyDialo
         onOk(config)
     }
 
+    handleConfigChange = (key: string, value: any) => {
+        console.log(key, value)
+        const { config } = this.state
+        this.setState({ config: { ...config, [key]: value } })
+    }
+
+    getCipherFromType (type) {
+        switch (type) {
+        case 'ss':
+            return SsCipher
+        case 'vmess':
+            return VmessCipher
+        default:
+            return []
+        }
+    }
+
+    getConfigListFromType (type) {
+        switch (type) {
+        case 'ss':
+            return SsProxyConfigList
+        case 'vmess':
+            return VmessProxyConfigList
+        case 'socks5':
+            return Socks5ProxyConfigList
+        default:
+            return []
+        }
+    }
+
+    renderFormItem (key) {
+        const { t } = this.props
+        const { config } = this.state
+
+        switch (key) {
+        case 'type':
+            return (
+                <ProxyTypeSelector
+                    key={key}
+                    types={ProxyType}
+                    label={t('editDialog.type')}
+                    value={config.type}
+                    onSelect={value => this.handleConfigChange('type', value)}
+                />
+            )
+        case 'name':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.name')}
+                    value={config.name}
+                    onChange={value => this.handleConfigChange('name', value)}
+                />
+            )
+        case 'server':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.server')}
+                    value={config.server}
+                    onChange={value => this.handleConfigChange('server', value)}
+                />
+            )
+        case 'port':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.port')}
+                    value={config.port ? config.port.toString() : ''}
+                    onChange={value => this.handleConfigChange('port', +value)}
+                />
+            )
+        case 'password':
+            return (
+                <ProxyPasswordForm
+                    key={key}
+                    label={t('editDialog.password')}
+                    value={config.password}
+                    onChange={value => this.handleConfigChange('password', value)}
+                />
+            )
+        case 'cipher':
+            return (
+                <ProxyCipherSelector
+                    key={key}
+                    ciphers={this.getCipherFromType(config.type)}
+                    label={t('editDialog.cipher')}
+                    value={pickCipherWithAlias(config.cipher)}
+                    onSelect={value => this.handleConfigChange('cipher', value)}
+                />
+            )
+        case 'obfs':
+            return (
+                <ProxyInputForm
+                    label={t('editDialog.obfs')}
+                    value={config.obfs}
+                    onChange={value => this.handleConfigChange('obfs', value)}
+                />
+            )
+        case 'obfs-host':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.obfs-host')}
+                    value={config['obfs-host']}
+                    onChange={value => this.handleConfigChange('obfs-host', value)}
+                />
+            )
+        case 'uuid':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.uuid')}
+                    value={config.uuid}
+                    onChange={value => this.handleConfigChange('uuid', value)}
+                />
+            )
+        case 'alterid':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.alterid')}
+                    value={config.alterid ? config.alterid.toString() : ''}
+                    onChange={value => this.handleConfigChange('alterid', +value)}
+                />
+            )
+        case 'tls':
+            return (
+                <ProxyInputForm
+                    key={key}
+                    label={t('editDialog.tls')}
+                    value={config.tls ? config.tls.toString() : ''}
+                    onChange={value => this.handleConfigChange('tls', !!value)}
+                />
+            )
+        default:
+            return null
+        }
+    }
+
     render () {
         const { onCancel, t } = this.props
-        const { currentColor } = this.state
+        const { currentColor, config } = this.state
+        const { type } = config
+        const configList = this.getConfigListFromType(type)
 
         return <Modal
             className="proxy-editor"
@@ -50,25 +208,14 @@ class RawDialog extends React.Component<ModifyProxyDialogProps, ModifyProxyDialo
             onOk={this.handleOk}
             onClose={onCancel}
         >
-            <Row gutter={24} style={{ padding: '12px 0' }}>
-                <Col span={6} style={{ paddingLeft: 0 }}>{t('editDialog.color')}</Col>
-                <Col span={18}>
-                    <div className="proxy-editor-color-selector">
-                        {
-                            TagColors.map(color => (
-                                <span
-                                    className={classnames('color-item', {
-                                        'color-item-active': currentColor === color
-                                    })}
-                                    key={color}
-                                    style={{ background: color }}
-                                    onClick={() => this.setState({ currentColor: color })}
-                                />
-                            ))
-                        }
-                    </div>
-                </Col>
-            </Row>
+            <ProxyColorSelector
+                colors={TagColors}
+                value={currentColor}
+                onSelect={color => this.setState({ currentColor: color })}
+            />
+            {
+                configList.map(c => this.renderFormItem(c))
+            }
         </Modal>
     }
 }
