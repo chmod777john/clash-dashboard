@@ -16,6 +16,7 @@ import {
 
 import {
     ProxyInputForm,
+    ProxySwitch,
     ProxyColorSelector,
     ProxyTypeSelector,
     ProxyPasswordForm,
@@ -150,6 +151,7 @@ class RawDialog extends React.Component<ModifyProxyDialogProps, ModifyProxyDialo
         case 'obfs':
             return (
                 <ProxyInputForm
+                    key={key}
                     label={t('editDialog.obfs')}
                     value={config.obfs}
                     onChange={value => this.handleConfigChange('obfs', value)}
@@ -166,28 +168,28 @@ class RawDialog extends React.Component<ModifyProxyDialogProps, ModifyProxyDialo
             )
         case 'uuid':
             return (
-                <ProxyInputForm
+                <ProxyPasswordForm
                     key={key}
                     label={t('editDialog.uuid')}
                     value={config.uuid}
                     onChange={value => this.handleConfigChange('uuid', value)}
                 />
             )
-        case 'alterid':
+        case 'alterId':
             return (
                 <ProxyInputForm
                     key={key}
-                    label={t('editDialog.alterid')}
-                    value={config.alterid ? config.alterid.toString() : ''}
-                    onChange={value => this.handleConfigChange('alterid', +value)}
+                    label={t('editDialog.alterId')}
+                    value={config.alterId ? config.alterId.toString() : ''}
+                    onChange={value => this.handleConfigChange('alterId', +value)}
                 />
             )
         case 'tls':
             return (
-                <ProxyInputForm
+                <ProxySwitch
                     key={key}
                     label={t('editDialog.tls')}
-                    value={config.tls ? config.tls.toString() : ''}
+                    value={!!config.tls}
                     onChange={value => this.handleConfigChange('tls', !!value)}
                 />
             )

@@ -11,8 +11,8 @@ $height: 30px;
     color: $color-primary-darken;
     border-radius: 3px;
     border: 1px solid $color-primary-lightly;
-    line-height: $height;
     transition: all 0.3s;
+    transition-property: border-color, color, box-shadow;
 
     &:focus {
         outline: 0;

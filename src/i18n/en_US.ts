@@ -54,8 +54,8 @@ export default {
             cipher: 'Cipher',
             obfs: 'Obfs',
             'obfs-host': 'Obfs-host',
-            uuid: 'Uuid',
-            alterid: 'Alterid',
+            uuid: 'UUID',
+            alterId: 'AlterId',
             tls: 'TLS'
         },
         groupTitle: 'Policy Group'

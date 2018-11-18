@@ -18,6 +18,7 @@ interface ProxyState {
 }
 
 export class Proxy extends React.Component<ProxyProps , ProxyState> {
+    private mount = true
 
     constructor (props) {
         super(props)
@@ -48,9 +49,17 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
         }
     }
 
+    componentWillUnmount () {
+        this.mount = false
+    }
+
     async componentDidMount () {
         const { config } = this.props
         const [res, err] = await to(getProxyDelay(config.name))
+
+        if (!this.mount) {
+            return
+        }
 
         if (err) {
             return this.setState({ hasError: true })

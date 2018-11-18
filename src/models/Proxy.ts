@@ -46,7 +46,7 @@ export interface VmessProxy {
 
     uuid?: string
 
-    alterid?: number
+    alterId?: number
 
     cipher?: string
 

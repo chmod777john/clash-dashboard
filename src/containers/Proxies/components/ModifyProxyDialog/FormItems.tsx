@@ -1,6 +1,6 @@
 import * as React from 'react'
 import classnames from 'classnames'
-import { Row, Col, Input, Icon, Select, Option } from '@components'
+import { Row, Col, Input, Icon, Select, Option, Switch } from '@components'
 import { noop } from '@lib/helper'
 
 // type selector
@@ -72,6 +72,22 @@ export function ProxyInputForm ({ label, value, onChange = noop }: {
     )
 }
 
+// switch form
+export function ProxySwitch ({ label, value, onChange = noop }: {
+    label: string,
+    value: boolean,
+    onChange?: (value: boolean) => void
+}) {
+    return (
+        <Row gutter={24} align="middle" className="proxy-editor-row">
+            <Col span={6} className="proxy-editor-label">{label}</Col>
+            <Col span={18}>
+                <Switch checked={value} onChange={onChange} />
+            </Col>
+        </Row>
+    )
+}
+
 // password form
 export class ProxyPasswordForm extends React.Component<{
     label: string,
@@ -87,12 +103,11 @@ export class ProxyPasswordForm extends React.Component<{
         const { label, value, onChange } = this.props
         const { showPassword } = this.state
         const type = showPassword ? 'text' : 'password'
-
         return (
             <Row gutter={24} className="proxy-editor-row">
                 <Col span={6} className="proxy-editor-label">{label}</Col>
                 <Col span={18} className="proxy-editor-value">
-                    <Input type={type} value={value} onChange={onChange} align="left"/>
+                    <Input style={{ paddingRight: '32px' }} type={type} value={value} onChange={onChange} align="left" />
                     <Icon
                         className="proxy-editor-passsword-icon"
                         type={showPassword ? 'hide' : 'show'}

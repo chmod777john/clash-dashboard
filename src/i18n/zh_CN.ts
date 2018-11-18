@@ -54,8 +54,8 @@ export default {
             cipher: '加密方式',
             obfs: 'Obfs',
             'obfs-host': 'Obfs-host',
-            uuid: 'Uuid',
-            alterid: 'Alterid',
+            uuid: 'UUID',
+            alterId: 'AlterId',
             tls: 'TLS'
         },
         groupTitle: '策略组'
