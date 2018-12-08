@@ -39,7 +39,7 @@ export async function getConfig () {
 
 export async function updateConfig (config: Partial<Config>) {
     const req = await getInstance()
-    return req.put<void>('configs', config)
+    return req.patch<void>('configs', config)
 }
 
 export async function getRules () {

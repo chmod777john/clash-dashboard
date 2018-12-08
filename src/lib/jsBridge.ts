@@ -119,7 +119,7 @@ export class JsBridge {
         return new Promise<T>((resolve) => {
             this.instance.callHandler(
                 handleName,
-                data || undefined,
+                data,
                 resolve
             )
         })

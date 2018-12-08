@@ -13,8 +13,8 @@ import { isClashX, jsBridge } from '@lib/jsBridge'
 class Settings extends React.Component<I18nProps, {}> {
     state = {
         startAtLogin: false,
-        setAsSystemProxy: true,
-        allowConnectFromLan: true,
+        setAsSystemProxy: false,
+        allowConnectFromLan: false,
         proxyMode: 'Rule',
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
@@ -51,7 +51,7 @@ class Settings extends React.Component<I18nProps, {}> {
     }
 
     handleHttpPortSave = async () => {
-        const [, err] = await to(updateConfig({ 'redir-port': this.state.httpProxyPort }))
+        const [, err] = await to(updateConfig({ 'port': this.state.httpProxyPort }))
         if (err === null) {}
     }
 
@@ -182,7 +182,7 @@ class Settings extends React.Component<I18nProps, {}> {
                         <Col span={3} offset={3}>
                             <Input
                                 value={socks5ProxyPort}
-                                onChange={socks5ProxyPort => this.setState({ socks5ProxyPort })}
+                                onChange={socks5ProxyPort => this.setState({ socks5ProxyPort: parseInt(socks5ProxyPort, 10) })}
                                 onBlur={this.handleSocksPortSave}
                             />
                         </Col>
@@ -194,7 +194,7 @@ class Settings extends React.Component<I18nProps, {}> {
                         <Col span={3} offset={2}>
                             <Input
                                 value={httpProxyPort}
-                                onChange={httpProxyPort => this.setState({ httpProxyPort })}
+                                onChange={httpProxyPort => this.setState({ httpProxyPort: parseInt(httpProxyPort, 10) })}
                                 onBlur={this.handleHttpPortSave}
                             />
                         </Col>
