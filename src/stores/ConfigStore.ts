@@ -8,7 +8,11 @@ import { getLocalStorageItem } from '@lib/helper'
 export class ConfigStore {
 
     @observable
-    config: Models.Config = {}
+    config: Models.Config = {
+        proxy: [],
+        proxyGroup: [],
+        rules: []
+    }
 
     @observable
     public state: 'pending' | 'ok' | 'error' = 'pending'

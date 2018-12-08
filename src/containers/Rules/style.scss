@@ -7,19 +7,20 @@
     margin-top: 10px;
     padding: 0;
 
+    &:focus {
+        outline: none;
+    }
+
     .rules {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        flex-basis: 0;
-        overflow-y: auto;
-        overflow-x: hidden;
+        flex: 1 0 auto;
     }
 }
 
 .rule-item {
     line-height: 30px;
     padding: 5px 0;
+    height: 50px;
+    overflow: hidden;
     list-style: none;
     user-select: none;
     border-bottom: 1px solid rgba($color: $color-primary-lightly, $alpha: 0.5);
