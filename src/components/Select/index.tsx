@@ -40,10 +40,6 @@ export class Select extends React.Component<SelectProps, SelectState> {
         hasCreateDropList: false
     }
 
-    constructor (props) {
-        super(props)
-    }
-
     componentDidMount () {
         document.addEventListener('click', this.handleGlobalClick, true)
         this.setState({ dropdownListStyles: this.calculateAttachmentPosition() })
@@ -91,8 +87,7 @@ export class Select extends React.Component<SelectProps, SelectState> {
 
         return {
             top: Math.floor(targetRectInfo.top) - 10,
-            left: Math.floor(targetRectInfo.left) - 10,
-            width: Math.floor(targetRectInfo.width) + 10
+            left: Math.floor(targetRectInfo.left) - 10
         }
     }
 

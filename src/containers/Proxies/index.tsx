@@ -47,10 +47,10 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
                             <Icon type="plus" size={20} style={{ fontWeight: 'bold' }} />
                         </Header>
                         {
-                            config.state === 'ok' && <ul className="proxies-list">
+                            config.config.proxy.length !== 0 && <ul className="proxies-list">
                                 {
                                     config.config.proxy.map((p, index) => (
-                                        <li key={index}>
+                                        <li key={p.name}>
                                             <Proxy config={p} onEdit={() => this.setState({
                                                 showModifyProxyDialog: true,
                                                 activeConfig: p,
@@ -65,15 +65,15 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
                     <div className="proxies-container">
                         <Header title={t('groupTitle')} />
                     </div>
-
-                    {
-                        showModifyProxyDialog && <ModifyProxyDialog
-                            config={activeConfig}
-                            onOk={this.handleConfigApply}
-                            onCancel={() => this.setState({ showModifyProxyDialog: false, activeConfig: null, activeConfigIndex: -1 })}
-                        />
-                    }
                 </div>
+
+                {
+                    showModifyProxyDialog && <ModifyProxyDialog
+                        config={activeConfig}
+                        onOk={this.handleConfigApply}
+                        onCancel={() => this.setState({ showModifyProxyDialog: false, activeConfig: null, activeConfigIndex: -1 })}
+                    />
+                }
             </>
         )
     }
