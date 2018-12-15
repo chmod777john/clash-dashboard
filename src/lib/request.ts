@@ -17,19 +17,31 @@ export interface Config {
 }
 
 export interface Rules {
-    rules: { name: string, payload: string }[]
+    rules: Rule[]
+}
+
+export interface Rule {
+    type: string
+    payload: string
+    proxy: string
 }
 
 export interface Proxies {
     proxies: {
-        [key: string]: Proxy
+        [key: string]: Proxy | Group
     }
 }
 
 export interface Proxy {
-    type: 'Direct' | 'Selector' | 'Reject' | 'URLTest' | 'Shadowsocks' | 'Vmess' | 'Socks' | 'Fallback'
-    now?: string
-    all?: string[]
+    name: string
+    type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Socks' | 'Http'
+}
+
+export interface Group {
+    name: string
+    type: 'Selector' | 'URLTest' | 'Fallback'
+    now: string
+    all: string[]
 }
 
 export async function getConfig () {
@@ -66,7 +78,7 @@ export async function getProxyDelay (name: string) {
     const req = await getInstance()
     return req.get<{ delay: number }>(`proxies/${name}/delay`, {
         params: {
-            timeout: 20000,
+            timeout: 5000,
             url: 'http://www.gstatic.com/generate_204'
         }
     })
@@ -74,7 +86,7 @@ export async function getProxyDelay (name: string) {
 
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
-    return req.get<void>(`proxies/${name}`, { data: { name: select } })
+    return req.put<void>(`proxies/${name}`, { name: select })
 }
 
 export async function getInstance () {
@@ -98,8 +110,8 @@ export async function getInstance () {
 
 export async function getExternalControllerConfig () {
     if (isClashX()) {
-        await rootStores.config.fetchAndParseConfig()
-        const general = rootStores.config.config.general
+        await rootStores.store.fetchAndParseConfig()
+        const general = rootStores.store.config.general
 
         return {
             hostname: general.externalControllerAddr,

@@ -32,8 +32,9 @@ export class ButtonSelect extends React.Component<ButtonSelectProps, {}> {
                             value={option.value}
                             key={option.value}
                             className={classnames('button-select-options', { actived: value === option.value })}
-                            onClick={() => onSelect(option.value)}
-                        >{option.label}</button>
+                            onClick={() => onSelect(option.value)}>
+                            { option.label }
+                        </button>
                     ))
                 }
             </div>

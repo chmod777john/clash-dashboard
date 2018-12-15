@@ -1,5 +1,6 @@
 import { Proxy, ProxyGroup } from './Proxy'
 import { Rule } from './Rule'
+import * as API from '@lib/request'
 
 /**
  * clash config
@@ -61,4 +62,46 @@ export interface Config {
 
     rules?: Rule[]
 
+}
+
+export interface Data {
+
+    general?: {
+
+        /**
+         * http proxy port
+         */
+        port?: number
+
+        /**
+         * socks proxy port
+         */
+        socksPort?: number
+
+        /**
+         * redir proxy port
+         */
+        redirPort?: number
+
+        /**
+         * proxy is allow lan
+         */
+        allowLan?: boolean
+
+        /**
+         * clash proxy mode
+         */
+        mode?: string
+
+        /**
+         * clash tty log level
+         */
+        logLevel?: string
+    }
+
+    proxy?: API.Proxy[]
+
+    proxyGroup?: API.Group[]
+
+    rules?: API.Rule[]
 }

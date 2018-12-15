@@ -16,46 +16,18 @@ $delete-height: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid $color-primary-darken;
+        border: 1px solid $color-primary-dark;
         color: $color-primary-darken;
         height: $height;
         border-radius: $height / 2;
         padding: 0 6px;
         margin: 3px 4px;
         font-size: 10px;
-        cursor: default;
-
-        .tags-delete {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            right: -$delete-height / 2;
-            top: -$delete-height / 2;
-            height: $delete-height;
-            width: $delete-height;
-            border-radius: 50%;
-            background-color: $color-red;
-            transform: rotate(45deg) scale(0.7);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            cursor: pointer;
-        }
-
-        &:hover .tags-delete {
-            opacity: 1;
-        }
+        cursor: pointer;
     }
 
-    li.tags-add {
-        height: $add-height;
-        width: $add-height;
-        border: none;
-        text-align: center;
-        padding: 0;
-        border-radius: 50%;
-        background-color: $color-primary-darken;
-        transform: translateX(-2px) scale(0.7);
-        cursor: pointer;
+    .tags-selected {
+        background-color: $color-primary-dark;
+        color: #fff;
     }
 }

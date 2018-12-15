@@ -13,12 +13,12 @@ interface RulesProps extends BaseRouterProps, I18nProps {}
 class Rules extends React.Component<RulesProps, {}> {
 
     async componentDidMount () {
-        const { config } = this.props
-        await config.fetchAndParseConfig()
+        const { store } = this.props
+        await store.fetchData()
     }
 
     renderRuleItem = ({ index, key, style }) => {
-        const { rules } = this.props.config.config
+        const { rules } = this.props.store.data
         const rule = rules[index]
         return (
             <li className="rule-item" key={key} style={style}>
@@ -39,7 +39,7 @@ class Rules extends React.Component<RulesProps, {}> {
 
     render () {
         const { t } = this.props
-        const { rules } = this.props.config.config
+        const { rules } = this.props.store.config
         return (
             <div className="page">
                 <Header title={t('title')} />

@@ -79,7 +79,7 @@ class Settings extends React.Component<I18nProps, {}> {
 
     async componentDidMount () {
         if (isClashX()) {
-            await rootStores.config.fetchAndParseConfig()
+            await rootStores.store.fetchAndParseConfig()
             const startAtLogin = await jsBridge.getStartAtLogin()
             const setAsSystemProxy = await jsBridge.isSystemProxySet()
             this.setState({
@@ -88,9 +88,9 @@ class Settings extends React.Component<I18nProps, {}> {
                 isClashX: true
             })
         } else {
-            await rootStores.config.fetchConfig()
+            await rootStores.store.fetchConfig()
         }
-        const general = rootStores.config.config.general
+        const general = rootStores.store.config.general
         this.setState({
             allowConnectFromLan: general.allowLan,
             proxyMode: general.mode,

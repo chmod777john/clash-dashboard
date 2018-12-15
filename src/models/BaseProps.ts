@@ -14,7 +14,7 @@ export interface BaseRouterProps extends RouteComponentProps<any>, BaseProps {}
 export interface BaseProps extends BaseComponentProps {
     styles?: any
     router?: RouterStore
-    config?: ConfigStore
+    store?: ConfigStore
 }
 
 export interface BaseComponentProps {

@@ -8,7 +8,7 @@ const history = createHashHistory()
 
 export const rootStores = {
     router: new RouterStore(history),
-    config: new ConfigStore()
+    store: new ConfigStore()
 }
 
 export const storeKeys = Object.keys(rootStores)
