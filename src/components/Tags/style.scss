@@ -4,12 +4,19 @@ $height: 22px;
 $add-height: 25px;
 $delete-height: 22px;
 
+.tags-container {
+    display: flex;
+    align-items: flex-start;
+    overflow-y: hidden;
+}
+
 .tags {
     display: flex;
+    flex: 1;
     align-items: center;
     list-style: none;
     flex-wrap: wrap;
-    padding: 3px 4px;
+    box-sizing: content-box;
 
     li {
         position: relative;
@@ -30,4 +37,12 @@ $delete-height: 22px;
         background-color: $color-primary-dark;
         color: #fff;
     }
+}
+
+.tags-entend {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    user-select: none;
+    cursor: pointer;
 }

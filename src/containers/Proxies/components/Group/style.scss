@@ -2,10 +2,15 @@
 
 .proxy-group {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     font-size: 14px;
-    padding: 12px 0;
     color: $color-black-light;
+}
+
+.proxy-group-part {
+    display: flex;
+    align-items: center;
+    height: 60px;
 }
 
 .proxy-group-name {
@@ -15,6 +20,7 @@
 }
 
 .proxy-group-type {
+    display: block;
     height: 24px;
     line-height: 24px;
     width: 80px;
@@ -34,6 +40,10 @@
     &:last-child {
         border-bottom: none;
     }
+}
+
+.proxy-group-tags-container {
+    padding: 15px 0;
 }
 
 .proxy-group-tags {

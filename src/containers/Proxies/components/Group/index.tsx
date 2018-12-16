@@ -24,9 +24,18 @@ export class Group extends React.Component<GroupProps, {}> {
         const proxies = new Set(config.all)
         return (
             <div className="proxy-group">
-                <span className="proxy-group-name">{ config.name }</span>
-                <span className="proxy-group-type">{ config.type }</span>
-                <Tags className="proxy-group-tags" data={proxies} onClick={this.handleChangeProxySelected} selected={config.now} />
+                <div className="proxy-group-part">
+                    <span className="proxy-group-name">{ config.name }</span>
+                    <span className="proxy-group-type">{ config.type }</span>
+                </div>
+                <div className="proxy-group-tags-container">
+                    <Tags
+                        className="proxy-group-tags"
+                        data={proxies}
+                        onClick={this.handleChangeProxySelected}
+                        select={config.now}
+                        rowHeight={30} />
+                </div>
             </div>
         )
     }

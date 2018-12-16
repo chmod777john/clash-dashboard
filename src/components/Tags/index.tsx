@@ -6,28 +6,57 @@ import './style.scss'
 interface TagsProps extends BaseComponentProps {
     data: Set<string>
     onClick: (name: string) => void
-    selected: string
+    select: string
+    rowHeight: number
 }
 
-export class Tags extends React.Component<TagsProps, {}> {
+interface TagsState {
+    extend: boolean
+    showExtend: boolean
+    ulRef: React.RefObject<HTMLUListElement>
+}
+
+export class Tags extends React.Component<TagsProps, TagsState> {
+    state: TagsState = {
+        extend: false,
+        showExtend: true,
+        ulRef: React.createRef<HTMLUListElement>()
+    }
+
+    toggleExtend = () => {
+        this.setState({ extend: !this.state.extend })
+    }
+
+    componentDidMount () {
+        this.setState({ showExtend: this.state.ulRef.current.offsetHeight > 30 })
+    }
+
     render () {
-        const { className, data, onClick, selected } = this.props
+        const { className, data, onClick, select } = this.props
+        const { extend } = this.state
+        const rowHeight = this.state.extend ? 'auto' : this.props.rowHeight
 
         const tags = [...data]
-        .sort()
-        .map(t => {
-            const tagClass = classnames({ 'tags-selected': selected === t })
-            return (
-                <li className={tagClass} key={t} onClick={() => onClick(t)}>
-                    { t }
-                </li>
-            )
-        })
+            .sort()
+            .map(t => {
+                const tagClass = classnames({ 'tags-selected': select === t })
+                return (
+                    <li className={tagClass} key={t} onClick={() => onClick(t)}>
+                        { t }
+                    </li>
+                )
+            })
 
         return (
-            <ul className={classnames('tags', className)}>
-                { tags }
-            </ul>
+            <div className={classnames('tags-container', className)} style={{ height: rowHeight }}>
+                <ul ref={this.state.ulRef} className={classnames('tags', { extend })}>
+                    { tags }
+                </ul>
+                {
+                    this.state.showExtend &&
+                    <span className="tags-entend" onClick={this.toggleExtend}>{ this.state.extend ? '收起' : '展开' }</span>
+                }
+            </div>
         )
     }
 }
