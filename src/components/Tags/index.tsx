@@ -1,30 +1,33 @@
 import * as React from 'react'
-import { BaseComponentProps } from '@models/BaseProps'
+import { translate } from 'react-i18next'
+import { BaseComponentProps, I18nProps } from '@models'
+import { noop } from '@lib/helper'
 import classnames from 'classnames'
 import './style.scss'
 
-interface TagsProps extends BaseComponentProps {
+interface TagsProps extends BaseComponentProps, I18nProps {
     data: Set<string>
     onClick: (name: string) => void
     select: string
     rowHeight: number
+    canClick: boolean
 }
 
 interface TagsState {
-    extend: boolean
+    expand: boolean
     showExtend: boolean
     ulRef: React.RefObject<HTMLUListElement>
 }
 
-export class Tags extends React.Component<TagsProps, TagsState> {
+class TagsClass extends React.Component<TagsProps, TagsState> {
     state: TagsState = {
-        extend: false,
+        expand: false,
         showExtend: true,
         ulRef: React.createRef<HTMLUListElement>()
     }
 
     toggleExtend = () => {
-        this.setState({ extend: !this.state.extend })
+        this.setState({ expand: !this.state.expand })
     }
 
     componentDidMount () {
@@ -32,16 +35,17 @@ export class Tags extends React.Component<TagsProps, TagsState> {
     }
 
     render () {
-        const { className, data, onClick, select } = this.props
-        const { extend } = this.state
-        const rowHeight = this.state.extend ? 'auto' : this.props.rowHeight
+        const { t, className, data, onClick, select, canClick } = this.props
+        const { expand } = this.state
+        const rowHeight = this.state.expand ? 'auto' : this.props.rowHeight
+        const handleClick = canClick ? onClick : noop
 
         const tags = [...data]
             .sort()
             .map(t => {
-                const tagClass = classnames({ 'tags-selected': select === t })
+                const tagClass = classnames({ 'tags-selected': select === t, 'can-click': canClick })
                 return (
-                    <li className={tagClass} key={t} onClick={() => onClick(t)}>
+                    <li className={tagClass} key={t} onClick={() => handleClick(t)}>
                         { t }
                     </li>
                 )
@@ -49,14 +53,16 @@ export class Tags extends React.Component<TagsProps, TagsState> {
 
         return (
             <div className={classnames('tags-container', className)} style={{ height: rowHeight }}>
-                <ul ref={this.state.ulRef} className={classnames('tags', { extend })}>
+                <ul ref={this.state.ulRef} className={classnames('tags', { expand })}>
                     { tags }
                 </ul>
                 {
                     this.state.showExtend &&
-                    <span className="tags-entend" onClick={this.toggleExtend}>{ this.state.extend ? '收起' : '展开' }</span>
+                    <span className="tags-expand" onClick={this.toggleExtend}>{ this.state.expand ? t('collapseText') : t('expandText') }</span>
                 }
             </div>
         )
     }
 }
+
+export const Tags = translate(['Proxies'])(TagsClass)

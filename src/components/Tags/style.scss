@@ -30,6 +30,10 @@ $delete-height: 22px;
         padding: 0 6px;
         margin: 3px 4px;
         font-size: 10px;
+        cursor: default;
+    }
+
+    li.can-click {
         cursor: pointer;
     }
 
@@ -39,7 +43,7 @@ $delete-height: 22px;
     }
 }
 
-.tags-entend {
+.tags-expand {
     height: 30px;
     line-height: 30px;
     padding: 0 10px;

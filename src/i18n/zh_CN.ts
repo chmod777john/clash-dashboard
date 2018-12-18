@@ -58,6 +58,8 @@ export default {
             alterId: 'AlterId',
             tls: 'TLS'
         },
-        groupTitle: '策略组'
+        groupTitle: '策略组',
+        expandText: '展开',
+        collapseText: '收起'
     }
 }
