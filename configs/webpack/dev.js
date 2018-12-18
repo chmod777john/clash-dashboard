@@ -1,8 +1,8 @@
 // development config
 const merge = require('webpack-merge')
 const webpack = require('webpack')
-const { resolve } = require('path')
-const ManifestPlugin = require('webpack-pwa-manifest')
+// const { resolve } = require('path')
+// const ManifestPlugin = require('webpack-pwa-manifest')
 const commonConfig = require('./common')
 
 module.exports = merge(commonConfig, {
@@ -21,19 +21,19 @@ module.exports = merge(commonConfig, {
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally
         new webpack.NamedModulesPlugin(), // prints more readable module names in the browser console on HMR updates
-        new ManifestPlugin({
-            name: 'Clash Development',
-            background_color: '#FFFFFF',
-            crossorigin: 'anonymous',
-            inject: true,
-            fingerprints: false,
-            icons: [
-                {
-                    src: resolve('src/assets/Icon.png'),
-                    sizes: [96, 128, 192, 256],
-                    destination: 'img/icons',
-                },
-            ],
-        }),
+        // new ManifestPlugin({
+        //     name: 'Clash Development',
+        //     background_color: '#FFFFFF',
+        //     crossorigin: 'anonymous',
+        //     inject: true,
+        //     fingerprints: false,
+        //     icons: [
+        //         {
+        //             src: resolve('src/assets/Icon.png'),
+        //             sizes: [96, 128, 192, 256],
+        //             destination: 'img/icons',
+        //         },
+        //     ],
+        // }),
     ],
 })
