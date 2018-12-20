@@ -150,15 +150,19 @@ export class JsBridge {
     }
 
     public getStartAtLogin () {
-        return this.callHandler<Boolean>('getStartAtLogin')
+        return this.callHandler<boolean>('getStartAtLogin')
+    }
+
+    public getProxyDelay (name: string) {
+        return this.callHandler<number>('speedTest', name)
     }
 
     public setStartAtLogin (data: boolean) {
-        return this.callHandler<Boolean>('setStartAtLogin', data)
+        return this.callHandler<boolean>('setStartAtLogin', data)
     }
 
     public isSystemProxySet () {
-        return this.callHandler<Boolean>('isSystemProxySet')
+        return this.callHandler<boolean>('isSystemProxySet')
     }
 }
 

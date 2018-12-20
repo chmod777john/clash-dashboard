@@ -3,6 +3,7 @@ import classnames from 'classnames'
 // import { Icon } from '@components'
 import { BaseComponentProps, TagColors } from '@models'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
+import { isClashX, jsBridge } from '@lib/jsBridge'
 import { to, getLocalStorageItem, setLocalStorageItem, sample } from '@lib/helper'
 import './style.scss'
 
@@ -49,6 +50,14 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
 
     async componentDidMount () {
         const { config } = this.props
+        if (isClashX()) {
+            const delay = await jsBridge.getProxyDelay(config.name)
+            if (delay === 0) {
+                return this.setState({ hasError: true })
+            }
+            return this.setState({ delay })
+        }
+
         const [res, err] = await to(getProxyDelay(config.name))
 
         if (err) {
