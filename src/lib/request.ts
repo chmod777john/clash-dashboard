@@ -9,7 +9,7 @@ let logsStreamReader = null
 
 export interface Config {
     port: number
-    'socket-port': number
+    'socks-port': number
     'redir-port': number
     'allow-lan': boolean
     mode: string

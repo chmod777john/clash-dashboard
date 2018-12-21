@@ -29,10 +29,11 @@ export class ConfigStore {
         runInAction(() => {
             this.data.general = {
                 port: general.port,
-                socksPort: general['socket-port'],
+                socksPort: general['socks-port'],
                 redirPort: general['redir-port'],
                 mode: general.mode,
-                logLevel: general['log-level']
+                logLevel: general['log-level'],
+                allowLan: general['allow-lan']
             }
 
             const policyGroup = new Set(['Selector', 'URLTest', 'Fallback'])
@@ -102,7 +103,7 @@ export class ConfigStore {
         this.config = {
             general: {
                 port: config.port,
-                socksPort: config['socket-port'],
+                socksPort: config['socks-port'],
                 redirPort: config['redir-port'],
                 allowLan: config['allow-lan'],
                 mode: config.mode,

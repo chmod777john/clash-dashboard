@@ -56,7 +56,7 @@ class Settings extends React.Component<I18nProps, {}> {
     }
 
     handleSocksPortSave = async () => {
-        const [, err] = await to(updateConfig({ 'socket-port': this.state.socks5ProxyPort }))
+        const [, err] = await to(updateConfig({ 'socks-port': this.state.socks5ProxyPort }))
         if (err === null) {}
     }
 
@@ -87,18 +87,19 @@ class Settings extends React.Component<I18nProps, {}> {
                 setAsSystemProxy,
                 isClashX: true
             })
-        } else {
-            await rootStores.store.fetchConfig()
         }
-        const general = rootStores.store.config.general
+        await rootStores.store.fetchData()
+
+        const config = rootStores.store.config.general
+        const general = rootStores.store.data.general
         this.setState({
             allowConnectFromLan: general.allowLan,
             proxyMode: general.mode,
             socks5ProxyPort: general.socksPort,
             httpProxyPort: general.port,
-            externalControllerHost: general.externalControllerAddr,
-            externalControllerPort: general.externalControllerPort,
-            externalControllerSecret: general.secret
+            externalControllerHost: config.externalControllerAddr,
+            externalControllerPort: config.externalControllerPort,
+            externalControllerSecret: config.secret
         })
     }
 
