@@ -137,6 +137,10 @@ export class JsBridge {
         return this.callHandler<string>('getPasteboard')
     }
 
+    public getAPIInfo () {
+        return this.callHandler<{ host: string, port: string, secret: string }>('apiInfo')
+    }
+
     public setPasteboard (data: string) {
         return this.callHandler('setPasteboard', data)
     }

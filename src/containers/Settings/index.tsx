@@ -82,24 +82,24 @@ class Settings extends React.Component<I18nProps, {}> {
             await rootStores.store.fetchAndParseConfig()
             const startAtLogin = await jsBridge.getStartAtLogin()
             const setAsSystemProxy = await jsBridge.isSystemProxySet()
+            const apiInfo = await jsBridge.getAPIInfo()
             this.setState({
                 startAtLogin,
                 setAsSystemProxy,
-                isClashX: true
+                isClashX: true,
+                externalControllerHost: apiInfo.host,
+                externalControllerPort: apiInfo.port,
+                externalControllerSecret: apiInfo.secret
             })
         }
         await rootStores.store.fetchData()
 
-        const config = rootStores.store.config.general
         const general = rootStores.store.data.general
         this.setState({
             allowConnectFromLan: general.allowLan,
             proxyMode: general.mode,
             socks5ProxyPort: general.socksPort,
-            httpProxyPort: general.port,
-            externalControllerHost: config.externalControllerAddr,
-            externalControllerPort: config.externalControllerPort,
-            externalControllerSecret: config.secret
+            httpProxyPort: general.port
         })
     }
 
