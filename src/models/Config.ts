@@ -64,6 +64,11 @@ export interface Config {
 
 }
 
+export interface ClashXData {
+    startAtLogin: boolean
+    systemProxy: boolean
+}
+
 export interface Data {
 
     general?: {

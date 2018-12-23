@@ -1,21 +1,22 @@
 import * as React from 'react'
 import { translate } from 'react-i18next'
 import { changeLanguage } from 'i18next'
+import { inject, observer } from 'mobx-react'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { ExternalControllerModal } from './components'
-import { I18nProps } from '@models'
+import { I18nProps, BaseRouterProps } from '@models'
 import { updateConfig } from '@lib/request'
 import { setLocalStorageItem, to } from '@lib/helper'
-import { rootStores } from '@lib/createStore'
+import { rootStores, storeKeys } from '@lib/createStore'
 import './style.scss'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 
-class Settings extends React.Component<I18nProps, {}> {
+interface SettingProps extends BaseRouterProps, I18nProps {}
+
+@inject(...storeKeys)
+@observer
+class Settings extends React.Component<SettingProps, {}> {
     state = {
-        startAtLogin: false,
-        setAsSystemProxy: false,
-        allowConnectFromLan: false,
-        proxyMode: 'Rule',
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
         externalControllerHost: '127.0.0.1',
@@ -45,25 +46,31 @@ class Settings extends React.Component<I18nProps, {}> {
 
     handleProxyModeChange = async (mode: string) => {
         const [, err] = await to(updateConfig({ mode }))
-        if (err === null) {
-            this.setState({ proxyMode: mode })
+        if (!err) {
+            rootStores.store.fetchData()
         }
     }
 
     handleHttpPortSave = async () => {
         const [, err] = await to(updateConfig({ 'port': this.state.httpProxyPort }))
-        if (err === null) {}
+        if (!err) {
+            await this.props.store.fetchData()
+            this.setState({ httpProxyPort: this.props.store.data.general.port })
+        }
     }
 
     handleSocksPortSave = async () => {
         const [, err] = await to(updateConfig({ 'socks-port': this.state.socks5ProxyPort }))
-        if (err === null) {}
+        if (!err) {
+            await this.props.store.fetchData()
+            this.setState({ socks5ProxyPort: this.props.store.data.general.socksPort })
+        }
     }
 
     handleAllowLanChange = async (state: boolean) => {
         const [, err] = await to(updateConfig({ 'allow-lan': state }))
-        if (err === null) {
-            this.setState({ allowConnectFromLan: state })
+        if (!err) {
+            await this.props.store.fetchData()
         }
     }
 
@@ -77,47 +84,43 @@ class Settings extends React.Component<I18nProps, {}> {
         this.setState({ setAsSystemProxy: state })
     }
 
-    async componentDidMount () {
+    async componentWillMount () {
+        await rootStores.store.fetchData()
         if (isClashX()) {
-            await rootStores.store.fetchAndParseConfig()
-            const startAtLogin = await jsBridge.getStartAtLogin()
-            const setAsSystemProxy = await jsBridge.isSystemProxySet()
+            await rootStores.store.fetchClashXData()
             const apiInfo = await jsBridge.getAPIInfo()
             this.setState({
-                startAtLogin,
-                setAsSystemProxy,
                 isClashX: true,
                 externalControllerHost: apiInfo.host,
                 externalControllerPort: apiInfo.port,
                 externalControllerSecret: apiInfo.secret
             })
         }
-        await rootStores.store.fetchData()
 
-        const general = rootStores.store.data.general
+        const general = this.props.store.data.general
         this.setState({
-            allowConnectFromLan: general.allowLan,
-            proxyMode: general.mode,
             socks5ProxyPort: general.socksPort,
             httpProxyPort: general.port
         })
     }
 
     render () {
-        const { t, lng } = this.props
+        const { t, lng, store } = this.props
         const {
             isClashX,
-            startAtLogin,
-            setAsSystemProxy,
-            allowConnectFromLan,
-            proxyMode,
-            socks5ProxyPort,
-            httpProxyPort,
             externalControllerHost,
             externalControllerPort,
             externalControllerSecret,
-            showEditDrawer
+            showEditDrawer,
+            socks5ProxyPort,
+            httpProxyPort
         } = this.state
+
+        const { allowLan, mode } = store.data.general
+        const {
+            startAtLogin,
+            systemProxy
+        } = store.clashxData
         const proxyModeOptions: ButtonSelectOptions[] = [
             { label: t('values.global'), value: 'Global' },
             { label: t('values.rules'), value: 'Rule' },
@@ -149,7 +152,7 @@ class Settings extends React.Component<I18nProps, {}> {
                         <Col span={4} className="value-column">
                             <Switch
                                 disabled={!isClashX}
-                                checked={setAsSystemProxy}
+                                checked={systemProxy}
                                 onChange={this.handleSetSystemProxy}
                             />
                         </Col>
@@ -158,7 +161,7 @@ class Settings extends React.Component<I18nProps, {}> {
                         </Col>
                         <Col span={4} className="value-column">
                             <Switch
-                                checked={allowConnectFromLan}
+                                checked={allowLan}
                                 onChange={this.handleAllowLanChange}
                             />
                         </Col>
@@ -173,7 +176,7 @@ class Settings extends React.Component<I18nProps, {}> {
                         <Col span={7} className="value-column">
                             <ButtonSelect
                                 options={proxyModeOptions}
-                                value={proxyMode}
+                                value={mode}
                                 onSelect={this.handleProxyModeChange}
                             />
                         </Col>
@@ -194,6 +197,7 @@ class Settings extends React.Component<I18nProps, {}> {
                         </Col>
                         <Col span={3} offset={2}>
                             <Input
+                                type="number"
                                 value={httpProxyPort}
                                 onChange={httpProxyPort => this.setState({ httpProxyPort: parseInt(httpProxyPort, 10) })}
                                 onBlur={this.handleHttpPortSave}

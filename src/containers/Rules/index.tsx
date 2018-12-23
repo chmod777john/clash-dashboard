@@ -4,17 +4,17 @@ import { Header, Card, Row, Col } from '@components'
 import { I18nProps, BaseRouterProps } from '@models'
 import './style.scss'
 import { storeKeys } from '@lib/createStore'
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import { List, AutoSizer } from 'react-virtualized'
 
 interface RulesProps extends BaseRouterProps, I18nProps {}
 
 @inject(...storeKeys)
+@observer
 class Rules extends React.Component<RulesProps, {}> {
 
-    async componentDidMount () {
-        const { store } = this.props
-        await store.fetchData()
+    async componentWillMount () {
+        await this.props.store.fetchData()
     }
 
     renderRuleItem = ({ index, key, style }) => {

@@ -22,6 +22,12 @@ export class ConfigStore {
         rules: []
     }
 
+    @observable
+    clashxData: Models.ClashXData = {
+        startAtLogin: false,
+        systemProxy: false
+    }
+
     @action
     async fetchData () {
         const [{ data: general }, rawProxies, rules] = await Promise.all([API.getConfig(), API.getProxies(), API.getRules()])
@@ -46,6 +52,19 @@ export class ConfigStore {
             this.data.proxyGroup = groups as API.Group[]
 
             this.data.rules = rules.data.rules
+        })
+    }
+
+    @action
+    async fetchClashXData () {
+        const startAtLogin = await jsBridge.getStartAtLogin()
+        const systemProxy = await jsBridge.isSystemProxySet()
+
+        runInAction(() => {
+            this.clashxData = {
+                startAtLogin,
+                systemProxy
+            }
         })
     }
 
