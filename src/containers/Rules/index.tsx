@@ -13,8 +13,8 @@ interface RulesProps extends BaseRouterProps, I18nProps {}
 @observer
 class Rules extends React.Component<RulesProps, {}> {
 
-    async componentWillMount () {
-        await this.props.store.fetchData()
+    componentWillMount () {
+        this.props.store.fetchData()
     }
 
     renderRuleItem = ({ index, key, style }) => {
@@ -39,7 +39,7 @@ class Rules extends React.Component<RulesProps, {}> {
 
     render () {
         const { t } = this.props
-        const { rules } = this.props.store.config
+        const { rules } = this.props.store.data
         return (
             <div className="page">
                 <Header title={t('title')} />
