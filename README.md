@@ -25,10 +25,6 @@
 
 See [Projects](https://github.com/Dreamacro/clash-dashboard/projects)
 
-## Discussion
-
-[Telegram Group](https://t.me/clash_discuss)
-
 ## Developing
 
 **NOTE: Dashboard now only support ClashX environment**
@@ -41,6 +37,9 @@ defaults write com.west2online.ClashX kEnableDashboard -bool YES
 
 # Set dashboard entry
 defaults write com.west2online.ClashX webviewUrl "http://localhost:8080/"
+
+# Reset dashboard entry
+defaults delete com.west2online.ClashX webviewUrl
 ```
 
 ### Development Env
