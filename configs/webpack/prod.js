@@ -1,6 +1,7 @@
 // production config
 const merge = require('webpack-merge')
 const { resolve } = require('path')
+const TerserPlugin = require('terser-webpack-plugin')
 // const ManifestPlugin = require('webpack-pwa-manifest')
 
 const commonConfig = require('./common')
@@ -31,6 +32,14 @@ module.exports = merge(commonConfig, {
     optimization: {
         splitChunks: {
             chunks: 'all'
-        }
+        },
+        minimizer: [
+            new TerserPlugin({
+                parallel: true,
+                terserOptions: {
+                    safari10: true
+                }
+            })
+        ]
     }
 })
