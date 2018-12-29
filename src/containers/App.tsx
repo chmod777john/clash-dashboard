@@ -12,6 +12,7 @@ import Logs from '@containers/Logs'
 import Rules from '@containers/Rules'
 import Settings from '@containers/Settings'
 import SlideBar from '@containers/Sidebar'
+import ExternalControllerModal from '@containers/ExternalControllerDrawer'
 import { getLogsStreamReader } from '@lib/request'
 
 export interface AppProps extends I18nProps {
@@ -42,6 +43,7 @@ export default class App extends React.Component<AppProps, {}> {
                         )
                     }
                 </div>
+                <ExternalControllerModal />
             </div>
         )
     }

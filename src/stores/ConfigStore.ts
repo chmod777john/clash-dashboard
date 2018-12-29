@@ -1,9 +1,9 @@
 import { observable, action, runInAction } from 'mobx'
 import * as yaml from 'yaml'
 import * as Models from '@models'
-import { jsBridge } from '@lib/jsBridge'
+import { jsBridge, isClashX } from '@lib/jsBridge'
 import * as API from '@lib/request'
-import { getLocalStorageItem, partition } from '@lib/helper'
+import { getLocalStorageItem, setLocalStorageItem, partition } from '@lib/helper'
 
 export class ConfigStore {
 
@@ -23,9 +23,35 @@ export class ConfigStore {
     }
 
     @observable
+    apiInfo: Models.APIInfo = {
+        hostname: '127.0.0.1',
+        port: '8080',
+        secret: ''
+    }
+
+    @observable
+    showAPIModal = false
+
+    @observable
     clashxData: Models.ClashXData = {
         startAtLogin: false,
         systemProxy: false
+    }
+
+    @action
+    async fetchAPIInfo () {
+        if (isClashX()) {
+            const apiInfo = await jsBridge.getAPIInfo()
+            runInAction(() => {
+                this.apiInfo = { hostname: apiInfo.host, port: apiInfo.port, secret: apiInfo.secret }
+            })
+            return
+        }
+        const info = await API.getExternalControllerConfig()
+
+        runInAction(() => {
+            this.apiInfo = { ...info }
+        })
     }
 
     @action
@@ -154,6 +180,22 @@ export class ConfigStore {
         const data = yaml.stringify(config)
         // console.log(data)
         jsBridge.writeConfigWithString(data)
+    }
+
+    @action
+    async updateAPIInfo (info: Models.APIInfo) {
+        const { hostname, port, secret } = info
+        setLocalStorageItem('externalControllerAddr', hostname)
+        setLocalStorageItem('externalControllerPort', port)
+        setLocalStorageItem('secret', secret)
+        window.location.reload()
+    }
+
+    @action
+    setShowAPIModal (visible: boolean) {
+        runInAction(() => {
+            this.showAPIModal = visible
+        })
     }
 
     @action

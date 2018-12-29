@@ -3,10 +3,9 @@ import { translate } from 'react-i18next'
 import { changeLanguage } from 'i18next'
 import { inject, observer } from 'mobx-react'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
-import { ExternalControllerModal } from './components'
 import { I18nProps, BaseRouterProps } from '@models'
 import { updateConfig } from '@lib/request'
-import { setLocalStorageItem, to } from '@lib/helper'
+import { to } from '@lib/helper'
 import { rootStores, storeKeys } from '@lib/createStore'
 import './style.scss'
 import { isClashX, jsBridge } from '@lib/jsBridge'
@@ -19,10 +18,6 @@ class Settings extends React.Component<SettingProps, {}> {
     state = {
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
-        externalControllerHost: '127.0.0.1',
-        externalControllerPort: '8080',
-        externalControllerSecret: '',
-        showEditDrawer: false,
         isClashX: false
     }
 
@@ -30,18 +25,6 @@ class Settings extends React.Component<SettingProps, {}> {
 
     changeLanguage = (language: string) => {
         changeLanguage(language)
-    }
-
-    handleExternalControllerChange = (host: string, port: string, secret: string) => {
-        setLocalStorageItem('externalControllerAddr', host)
-        setLocalStorageItem('externalControllerPort', port)
-        setLocalStorageItem('secret', secret)
-        this.setState({
-            showEditDrawer: false,
-            externalControllerHost: host,
-            externalControllerPort: port,
-            externalControllerSecret: secret
-        })
     }
 
     handleProxyModeChange = async (mode: string) => {
@@ -84,16 +67,12 @@ class Settings extends React.Component<SettingProps, {}> {
         this.setState({ setAsSystemProxy: state })
     }
 
-    async componentWillMount () {
+    async componentDidMount () {
         await rootStores.store.fetchData()
         if (isClashX()) {
             await rootStores.store.fetchClashXData()
-            const apiInfo = await jsBridge.getAPIInfo()
             this.setState({
-                isClashX: true,
-                externalControllerHost: apiInfo.host,
-                externalControllerPort: apiInfo.port,
-                externalControllerSecret: apiInfo.secret
+                isClashX: true
             })
         }
 
@@ -108,13 +87,14 @@ class Settings extends React.Component<SettingProps, {}> {
         const { t, lng, store } = this.props
         const {
             isClashX,
-            externalControllerHost,
-            externalControllerPort,
-            externalControllerSecret,
-            showEditDrawer,
             socks5ProxyPort,
             httpProxyPort
         } = this.state
+
+        const {
+            hostname: externalControllerHost,
+            port: externalControllerPort
+        } = store.apiInfo
 
         const { allowLan, mode } = store.data.general
         const {
@@ -208,7 +188,7 @@ class Settings extends React.Component<SettingProps, {}> {
                         </Col>
                         <Col className="external-controller" span={6} offset={1}>
                             <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
-                            <span className="modify-btn" onClick={() => this.setState({ showEditDrawer: true })}>
+                            <span className="modify-btn" onClick={() => this.props.store.setShowAPIModal(true)}>
                                 修改
                             </span>
                         </Col>
@@ -222,15 +202,6 @@ class Settings extends React.Component<SettingProps, {}> {
                     <p className="version-info">{t('versionString', { version: 'unknown' })}</p>
                     <span className="check-update-btn">{t('checkUpdate')}</span>
                 </Card>
-
-                <ExternalControllerModal
-                    show={showEditDrawer}
-                    host={externalControllerHost}
-                    port={externalControllerPort}
-                    secret={externalControllerSecret}
-                    onConfirm={this.handleExternalControllerChange}
-                    onCancel={() => this.setState({ showEditDrawer: false })}
-                />
             </div>
         )
     }

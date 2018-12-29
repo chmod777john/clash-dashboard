@@ -69,6 +69,12 @@ export interface ClashXData {
     systemProxy: boolean
 }
 
+export interface APIInfo {
+    hostname: string
+    port: string
+    secret?: string
+}
+
 export interface Data {
 
     general?: {

@@ -1,48 +1,55 @@
 import * as React from 'react'
 import { translate } from 'react-i18next'
+import { inject, observer } from 'mobx-react'
+import { storeKeys } from '@lib/createStore'
 import { Modal, Input, Row, Col, Alert } from '@components'
-import { I18nProps } from '@models'
+import { BaseProps, I18nProps } from '@models'
 import './style.scss'
 
-interface ExternalControllerModalProps extends I18nProps {
-    show: boolean
-    host: string
-    port: string
-    secret?: string
-    onConfirm: (host: string, port: string, secret: string) => void
-    onCancel: () => void
-}
+interface ExternalControllerModalProps extends I18nProps, BaseProps {}
 
 interface ExternalControllerModalState {
-    host: string
+    hostname: string
     port: string
     secret: string
 }
 
+@inject(...storeKeys)
+@observer
 class ExternalController extends React.Component<ExternalControllerModalProps, ExternalControllerModalState> {
 
     state = {
-        host: this.props.host,
-        port: this.props.port,
-        secret: this.props.secret || ''
+        hostname: '',
+        port: '',
+        secret: ''
     }
 
     private handleOk = () => {
-        const { onConfirm } = this.props
-        const { host, port, secret } = this.state
-        onConfirm(host, port, secret)
+        const { hostname, port, secret } = this.state
+        this.props.store.updateAPIInfo({ hostname, port, secret })
+    }
+
+    private handleCancel = () => {
+        this.props.store.setShowAPIModal(false)
+    }
+
+    async componentWillMount () {
+        await this.props.store.fetchAPIInfo()
+        const info = this.props.store.apiInfo
+        this.setState({ hostname: info.hostname, port: info.port, secret: info.secret })
     }
 
     render () {
-        const { show, onCancel, t } = this.props
-        const { host, port, secret } = this.state
+        const { t } = this.props
+        const { hostname, port, secret } = this.state
+        const show = this.props.store.showAPIModal
 
         return (
             <Modal
                 show={show}
                 title={t('externalControllerSetting.title')}
                 bodyClassName="external-controller"
-                onClose={onCancel}
+                onClose={this.handleCancel}
                 onOk={this.handleOk}
             >
                 <Alert type="info" inside={true}>
@@ -54,8 +61,8 @@ class ExternalController extends React.Component<ExternalControllerModalProps, E
                         <Input
                             align="left"
                             inside={true}
-                            value={host}
-                            onChange={host => this.setState({ host })}
+                            value={hostname}
+                            onChange={hostname => this.setState({ hostname })}
                         />
                     </Col>
                 </Row>
@@ -86,4 +93,4 @@ class ExternalController extends React.Component<ExternalControllerModalProps, E
     }
 }
 
-export const ExternalControllerModal = translate(['Settings'])(ExternalController)
+export default translate(['Settings'])(ExternalController)

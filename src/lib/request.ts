@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 import { Partial, getLocalStorageItem } from '@lib/helper'
-import { isClashX } from '@lib/jsBridge'
+import { isClashX, jsBridge } from '@lib/jsBridge'
 import { rootStores } from '@lib/createStore'
 import { StreamReader } from './streamer'
 
@@ -105,18 +105,27 @@ export async function getInstance () {
         headers: secret ? { Authorization: `Bearer ${secret}` } : {}
     })
 
+    instance.interceptors.response.use(
+        resp => resp,
+        err => {
+            if (!err.response || err.response.status === 401) {
+                rootStores.store.setShowAPIModal(true)
+            }
+            throw err
+        }
+    )
+
     return instance
 }
 
 export async function getExternalControllerConfig () {
     if (isClashX()) {
-        await rootStores.store.fetchAndParseConfig()
-        const general = rootStores.store.config.general
+        const info = await jsBridge.getAPIInfo()
 
         return {
-            hostname: general.externalControllerAddr,
-            port: general.externalControllerPort,
-            secret: general.secret
+            hostname: info.host,
+            port: info.port,
+            secret: info.secret
         }
     }
 
@@ -138,6 +147,7 @@ export async function getLogsStreamReader () {
     const externalController = await getExternalControllerConfig()
     const { data: config } = await getConfig()
     const logUrl = `http://${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
-    logsStreamReader = new StreamReader({ url: logUrl, bufferLength: 200 })
+    const auth = externalController.secret ? { Authorization: `Bearer ${externalController.secret}` } : {}
+    logsStreamReader = new StreamReader({ url: logUrl, bufferLength: 200, headers: auth })
     return logsStreamReader
 }
