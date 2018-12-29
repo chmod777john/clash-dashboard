@@ -10,7 +10,6 @@
     flex-wrap: wrap;
     align-content: flex-start;
     list-style: none;
-    height: 2000px;
 
     @include response(xxl) {
         --columns: 12;
