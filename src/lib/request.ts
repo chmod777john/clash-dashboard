@@ -101,7 +101,7 @@ export async function getInstance () {
     } = await getExternalControllerConfig()
 
     instance = axios.create({
-        baseURL: `http://${hostname}:${port}`,
+        baseURL: `//${hostname}:${port}`,
         headers: secret ? { Authorization: `Bearer ${secret}` } : {}
     })
 
@@ -146,7 +146,7 @@ export async function getLogsStreamReader () {
     }
     const externalController = await getExternalControllerConfig()
     const { data: config } = await getConfig()
-    const logUrl = `http://${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
+    const logUrl = `//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
     const auth = externalController.secret ? { Authorization: `Bearer ${externalController.secret}` } : {}
     logsStreamReader = new StreamReader({ url: logUrl, bufferLength: 200, headers: auth })
     return logsStreamReader
