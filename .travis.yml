@@ -16,6 +16,7 @@ deploy:
     skip-cleanup: true
     local-dir: dist
     github-token: $GITHUB_TOKEN
+    fqdn: clash.razord.top
     on:
         repo: Dreamacro/clash-dashboard
         branch: master
