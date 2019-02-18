@@ -29,7 +29,6 @@ export interface ShadowsocksProxy {
     obfs?: string
 
     'obfs-host'?: string
-
 }
 
 export const VmessProxyConfigList = [
@@ -51,7 +50,6 @@ export interface VmessProxy {
     cipher?: string
 
     tls?: boolean
-
 }
 
 export const Socks5ProxyConfigList = ['name', 'type', 'server', 'port']
@@ -63,10 +61,9 @@ export interface Socks5Proxy {
     server?: string
 
     port?: number
-
 }
 
-export type ProxyGroup = SelectProxyGroup & UrlTestProxyGroup & FallbackProxyGroup
+export type ProxyGroup = SelectProxyGroup & UrlTestProxyGroup & FallbackProxyGroup & LoadBalanceGroup
 
 export interface SelectProxyGroup {
     name?: string
@@ -74,7 +71,14 @@ export interface SelectProxyGroup {
     type?: 'select'
 
     proxies?: string[] // proxy names
+}
 
+export interface LoadBalanceGroup {
+    name?: string
+
+    type?: 'load-balance'
+
+    proxies?: string[] // proxy names
 }
 
 export interface FallbackProxyGroup {
@@ -87,7 +91,6 @@ export interface FallbackProxyGroup {
     url?: string
 
     interval?: number  // second
-
 }
 
 export interface UrlTestProxyGroup {
@@ -100,5 +103,4 @@ export interface UrlTestProxyGroup {
     url?: string
 
     interval?: number  // second
-
 }

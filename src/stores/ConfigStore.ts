@@ -68,7 +68,7 @@ export class ConfigStore {
                 allowLan: general['allow-lan']
             }
 
-            const policyGroup = new Set(['Selector', 'URLTest', 'Fallback'])
+            const policyGroup = new Set(['Selector', 'URLTest', 'Fallback', 'LoadBalance'])
             const unUsedProxy = new Set(['DIRECT', 'REJECT', 'GLOBAL'])
             const proxies = Object.keys(rawProxies.data.proxies)
                 .filter(key => !unUsedProxy.has(key))
