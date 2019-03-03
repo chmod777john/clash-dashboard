@@ -60,6 +60,7 @@ export default {
         },
         groupTitle: '策略组',
         expandText: '展开',
-        collapseText: '收起'
+        collapseText: '收起',
+        speedTestText: '测速'
     }
 }

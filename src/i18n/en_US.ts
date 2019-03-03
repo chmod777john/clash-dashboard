@@ -60,6 +60,7 @@ export default {
         },
         groupTitle: 'Policy Group',
         expandText: 'Expand',
-        collapseText: 'Collapse'
+        collapseText: 'Collapse',
+        speedTestText: 'Speed Test'
     }
 }

@@ -47,7 +47,7 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
                 <div className="proxies-container">
                     <Header title={t('title')}>
                         <Icon type="speed" size={20} />
-                        <span className="proxies-speed-test" onClick={this.handleNotitySpeedTest}>测速</span>
+                        <span className="proxies-speed-test" onClick={this.handleNotitySpeedTest}>{t('speedTestText')}</span>
                     </Header>
                     <ul className="proxies-list">
                         {
