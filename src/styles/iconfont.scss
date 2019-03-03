@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: "clash-iconfont";
-    src: url('//at.alicdn.com/t/font_841708_e9dax11p22i.ttf') format('truetype');
+    src: url('//at.alicdn.com/t/font_841708_6gtmjlak9k2.ttf?t=1551607902712') format('truetype');
 }
 
 .clash-iconfont {
@@ -17,6 +17,8 @@
     -moz-osx-font-smoothing: grayscale;
     color: $color-primary-dark;
 }
+
+.icon-speed::before { content: "\e61b"; }
 
 .icon-close::before { content: "\e602"; }
 

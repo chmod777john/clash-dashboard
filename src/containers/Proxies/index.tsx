@@ -2,7 +2,8 @@ import * as React from 'react'
 import { translate } from 'react-i18next'
 import { inject, observer } from 'mobx-react'
 import { storeKeys } from '@lib/createStore'
-import { Card, Header } from '@components'
+import EE from '@lib/event'
+import { Card, Header, Icon } from '@components'
 import { I18nProps, BaseRouterProps } from '@models'
 
 import { Proxy, Group } from './components'
@@ -18,6 +19,10 @@ interface ProxiesState {
 class Proxies extends React.Component<ProxiesProps, ProxiesState> {
     componentDidMount () {
         this.props.store.fetchData()
+    }
+
+    handleNotitySpeedTest = () => {
+        EE.notifySpeedTest()
     }
 
     render () {
@@ -40,7 +45,10 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
                     </Card>
                 </div>
                 <div className="proxies-container">
-                    <Header title={t('title')} />
+                    <Header title={t('title')}>
+                        <Icon type="speed" size={20} />
+                        <span className="proxies-speed-test" onClick={this.handleNotitySpeedTest}>测速</span>
+                    </Header>
                     <ul className="proxies-list">
                         {
                             store.data.proxy.map(p => (

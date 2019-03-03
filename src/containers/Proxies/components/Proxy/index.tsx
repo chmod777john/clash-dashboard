@@ -1,8 +1,8 @@
 import * as React from 'react'
 import classnames from 'classnames'
-// import { Icon } from '@components'
 import { BaseComponentProps, TagColors } from '@models'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
+import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { to, getLocalStorageItem, setLocalStorageItem, sample } from '@lib/helper'
 import './style.scss'
@@ -48,7 +48,15 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
         }
     }
 
-    async componentDidMount () {
+    componentDidMount () {
+        EE.subscribe(Action.SPEED_NOTIFY, this.speedTest)
+    }
+
+    componentWillUnmount () {
+        EE.unsubscribe(Action.SPEED_NOTIFY, this.speedTest)
+    }
+
+    speedTest = async () => {
         const { config } = this.props
         if (isClashX()) {
             const delay = await jsBridge.getProxyDelay(config.name)

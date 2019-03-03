@@ -6,6 +6,7 @@
 
     display: flex;
     margin-right: calc(-1 * var(--gap));
+    margin-top: 20px;
     padding-bottom: 100px;
     flex-wrap: wrap;
     align-content: flex-start;
@@ -57,5 +58,13 @@
 }
 
 .proxies-group-card {
-    margin: 15px 0 20px;
+    margin: 20px 0;
+}
+
+.proxies-speed-test {
+    line-height: 32px;
+    margin: 0 2px 0 6px;
+    color: $color-primary-dark;
+    text-shadow: 0 2px 6px rgba($color: $color-primary-dark, $alpha: 0.4);
+    cursor: pointer;
 }

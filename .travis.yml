@@ -20,4 +20,3 @@ deploy:
     on:
         repo: Dreamacro/clash-dashboard
         branch: master
-        tags: true
