@@ -14,7 +14,8 @@
 }
 
 .proxy-group-name {
-    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 0 20px;
     width: 120px;
 }
