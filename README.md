@@ -5,7 +5,7 @@
     <br>
 </h1>
 
-<h4 align="center">Web Dashboard for Clash, now host on ClashX(Dev Mode)</h4>
+<h4 align="center">Web Dashboard for Clash, now host on ClashX</h4>
 
 <p align="center">
     <a href="https://travis-ci.org/Dreamacro/clash-dashboard">
@@ -16,18 +16,13 @@
 ## Features
 
 - All ClashX configurations
-- Add, modify or remove Proxies
-- Add, modify or remove Proxy Groups
-- Add, modify or remove Rules
-- Real time Log
+- Manage Proxies
+- Manage Proxy Groups
+- Realtime Log
 
 ## Progress
 
 See [Projects](https://github.com/Dreamacro/clash-dashboard/projects)
-
-## Developing
-
-**NOTE: Dashboard now only support ClashX environment**
 
 ### Start develop with ClashX(Dev Mode)
 
