@@ -21,7 +21,6 @@ export class Group extends React.Component<GroupProps, {}> {
 
     render () {
         const { config } = this.props
-        const proxies = new Set(config.all)
         const canClick = config.type === 'Selector'
         return (
             <div className="proxy-group">
@@ -32,7 +31,7 @@ export class Group extends React.Component<GroupProps, {}> {
                 <div className="proxy-group-tags-container">
                     <Tags
                         className="proxy-group-tags"
-                        data={proxies}
+                        data={config.all}
                         onClick={this.handleChangeProxySelected}
                         select={config.now}
                         canClick={canClick}

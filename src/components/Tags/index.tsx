@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import './style.scss'
 
 interface TagsProps extends BaseComponentProps, I18nProps {
-    data: Set<string>
+    data: string[]
     onClick: (name: string) => void
     select: string
     rowHeight: number
@@ -40,8 +40,7 @@ class TagsClass extends React.Component<TagsProps, TagsState> {
         const rowHeight = this.state.expand ? 'auto' : this.props.rowHeight
         const handleClick = canClick ? onClick : noop
 
-        const tags = [...data]
-            .sort()
+        const tags = data
             .map(t => {
                 const tagClass = classnames({ 'tags-selected': select === t, 'can-click': canClick })
                 return (

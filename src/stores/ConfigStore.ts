@@ -70,13 +70,13 @@ export class ConfigStore {
 
             const policyGroup = new Set(['Selector', 'URLTest', 'Fallback', 'LoadBalance'])
             const unUsedProxy = new Set(['DIRECT', 'REJECT', 'GLOBAL'])
-            const proxies = Object.keys(rawProxies.data.proxies)
+            const proxyList = rawProxies.data.proxies['GLOBAL'] as API.Group
+            const proxies = proxyList.all
                 .filter(key => !unUsedProxy.has(key))
                 .map(key => ({ ...rawProxies.data.proxies[key], name: key }))
             const [proxy, groups] = partition(proxies, proxy => !policyGroup.has(proxy.type))
             this.data.proxy = proxy as API.Proxy[]
             this.data.proxyGroup = groups as API.Group[]
-
             this.data.rules = rules.data.rules
         })
     }
