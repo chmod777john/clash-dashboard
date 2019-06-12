@@ -143,10 +143,10 @@ class Settings extends React.Component<SettingProps, {}> {
                             </Col>
                         </Col>
                         <Col span={12}>
-                            <Col span={8} offset={1}>
+                            <Col span={14} offset={1}>
                                 <span className="label">{t('labels.allowConnectFromLan')}</span>
                             </Col>
-                            <Col span={14} className="value-column">
+                            <Col span={8} className="value-column">
                                 <Switch
                                     checked={allowLan}
                                     onChange={this.handleAllowLanChange}
@@ -198,13 +198,13 @@ class Settings extends React.Component<SettingProps, {}> {
                             </Col>
                         </Col>
                         <Col span={12}>
-                            <Col span={8} offset={1}>
+                            <Col span={12} offset={1}>
                                 <span className="label">{t('labels.externalController')}</span>
                             </Col>
-                            <Col className="external-controller" span={14}>
+                            <Col className="external-controller" span={10}>
                                 <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
                                 <span className="modify-btn" onClick={() => this.props.store.setShowAPIModal(true)}>
-                                    修改
+                                    { t('labels.modifyControllerText') }
                                 </span>
                             </Col>
                         </Col>
