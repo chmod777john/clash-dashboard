@@ -16,8 +16,7 @@ export default {
             proxyMode: 'Mode',
             socks5ProxyPort: 'Socks5 proxy port',
             httpProxyPort: 'HTTP proxy port',
-            externalController: 'External controller',
-            modifyControllerText: 'Modify'
+            externalController: 'External controller'
         },
         values: {
             cn: '中文',

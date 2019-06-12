@@ -202,9 +202,8 @@ class Settings extends React.Component<SettingProps, {}> {
                                 <span className="label">{t('labels.externalController')}</span>
                             </Col>
                             <Col className="external-controller" span={10}>
-                                <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
                                 <span className="modify-btn" onClick={() => this.props.store.setShowAPIModal(true)}>
-                                    { t('labels.modifyControllerText') }
+                                    {`${externalControllerHost}:${externalControllerPort}`}
                                 </span>
                             </Col>
                         </Col>
