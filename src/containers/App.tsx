@@ -28,12 +28,12 @@ export default class App extends React.Component<AppProps, {}> {
             // { path: '/', name: 'Overview', component: Overview, exact: true },
             { path: '/proxies', name: 'Proxies', component: Proxies },
             { path: '/logs', name: 'Logs', component: Logs },
-            { path: '/rules', name: 'Rules', component: Rules },
+            { path: '/rules', name: 'Rules', component: Rules, noMobile: true },
             { path: '/settings', name: 'Settings', component: Settings }
         ]
 
         return (
-            <div className={classnames('app', { 'clash-x': !isClashX() })}>
+            <div className={classnames('app', { 'not-clashx': !isClashX() })}>
                 <SlideBar routes={routes} />
                 <div className="page-container">
                     <Route exact path="/" component={() => <Redirect to="/proxies"/>}/>

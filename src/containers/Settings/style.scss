@@ -78,3 +78,19 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .settings-card {
+        // hack <Row />
+        .row {
+            flex-direction: column;
+            padding-top: 0;
+            padding-bottom: 0;
+
+            > .column {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    }
+}

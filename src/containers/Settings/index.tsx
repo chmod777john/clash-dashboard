@@ -112,85 +112,101 @@ class Settings extends React.Component<SettingProps, {}> {
                 <Header title={t('title')} />
                 <Card className="settings-card">
                     <Row gutter={24} align="middle">
-                        <Col span={6} offset={1}>
-                            <span className="label">{t('labels.startAtLogin')}</span>
+                        <Col span={12}>
+                            <Col span={14} offset={1}>
+                                <span className="label">{t('labels.startAtLogin')}</span>
+                            </Col>
+                            <Col span={8} className="value-column">
+                                <Switch disabled={!isClashX} checked={startAtLogin} onChange={this.handleStartAtLoginChange} />
+                            </Col>
                         </Col>
-                        <Col span={4} className="value-column">
-                            <Switch disabled={!isClashX} checked={startAtLogin} onChange={this.handleStartAtLoginChange} />
-                        </Col>
-                        <Col span={4} offset={1}>
-                            <span className="label">{t('labels.language')}</span>
-                        </Col>
-                        <Col span={7} className="value-column">
-                            <ButtonSelect options={this.languageOptions} value={lng.replace(/-.+$/, '')} onSelect={this.changeLanguage} />
+                        <Col span={12}>
+                            <Col span={8} offset={1}>
+                                <span className="label">{t('labels.language')}</span>
+                            </Col>
+                            <Col span={14} className="value-column">
+                                <ButtonSelect options={this.languageOptions} value={lng.replace(/-.+$/, '')} onSelect={this.changeLanguage} />
+                            </Col>
                         </Col>
                     </Row>
                     <Row gutter={24} align="middle">
-                        <Col span={6} offset={1}>
-                            <span className="label">{t('labels.setAsSystemProxy')}</span>
+                        <Col span={12}>
+                            <Col span={14} offset={1}>
+                                <span className="label">{t('labels.setAsSystemProxy')}</span>
+                            </Col>
+                            <Col span={8} className="value-column">
+                                <Switch
+                                    disabled={!isClashX}
+                                    checked={systemProxy}
+                                    onChange={this.handleSetSystemProxy}
+                                />
+                            </Col>
                         </Col>
-                        <Col span={4} className="value-column">
-                            <Switch
-                                disabled={!isClashX}
-                                checked={systemProxy}
-                                onChange={this.handleSetSystemProxy}
-                            />
-                        </Col>
-                        <Col span={7} offset={1}>
-                            <span className="label">{t('labels.allowConnectFromLan')}</span>
-                        </Col>
-                        <Col span={4} className="value-column">
-                            <Switch
-                                checked={allowLan}
-                                onChange={this.handleAllowLanChange}
-                            />
+                        <Col span={12}>
+                            <Col span={8} offset={1}>
+                                <span className="label">{t('labels.allowConnectFromLan')}</span>
+                            </Col>
+                            <Col span={14} className="value-column">
+                                <Switch
+                                    checked={allowLan}
+                                    onChange={this.handleAllowLanChange}
+                                />
+                            </Col>
                         </Col>
                     </Row>
                 </Card>
 
                 <Card className="settings-card">
                     <Row gutter={24} align="middle">
-                        <Col span={3} offset={1}>
-                            <span className="label">{t('labels.proxyMode')}</span>
+                        <Col span={12}>
+                            <Col span={8} offset={1}>
+                                <span className="label">{t('labels.proxyMode')}</span>
+                            </Col>
+                            <Col span={14} className="value-column">
+                                <ButtonSelect
+                                    options={proxyModeOptions}
+                                    value={mode}
+                                    onSelect={this.handleProxyModeChange}
+                                />
+                            </Col>
                         </Col>
-                        <Col span={7} className="value-column">
-                            <ButtonSelect
-                                options={proxyModeOptions}
-                                value={mode}
-                                onSelect={this.handleProxyModeChange}
-                            />
-                        </Col>
-                        <Col span={5} offset={1}>
-                            <span className="label">{t('labels.socks5ProxyPort')}</span>
-                        </Col>
-                        <Col span={3} offset={3}>
-                            <Input
-                                value={socks5ProxyPort}
-                                onChange={socks5ProxyPort => this.setState({ socks5ProxyPort: parseInt(socks5ProxyPort, 10) })}
-                                onBlur={this.handleSocksPortSave}
-                            />
+                        <Col span={12}>
+                            <Col span={14} offset={1}>
+                                <span className="label">{t('labels.socks5ProxyPort')}</span>
+                            </Col>
+                            <Col span={8}>
+                                <Input
+                                    value={socks5ProxyPort}
+                                    onChange={socks5ProxyPort => this.setState({ socks5ProxyPort: parseInt(socks5ProxyPort, 10) })}
+                                    onBlur={this.handleSocksPortSave}
+                                />
+                            </Col>
                         </Col>
                     </Row>
                     <Row gutter={24} align="middle">
-                        <Col span={5} offset={1}>
-                            <span className="label">{t('labels.httpProxyPort')}</span>
+                        <Col span={12}>
+                            <Col span={14} offset={1}>
+                                <span className="label">{t('labels.httpProxyPort')}</span>
+                            </Col>
+                            <Col span={8}>
+                                <Input
+                                    type="number"
+                                    value={httpProxyPort}
+                                    onChange={httpProxyPort => this.setState({ httpProxyPort: parseInt(httpProxyPort, 10) })}
+                                    onBlur={this.handleHttpPortSave}
+                                />
+                            </Col>
                         </Col>
-                        <Col span={3} offset={2}>
-                            <Input
-                                type="number"
-                                value={httpProxyPort}
-                                onChange={httpProxyPort => this.setState({ httpProxyPort: parseInt(httpProxyPort, 10) })}
-                                onBlur={this.handleHttpPortSave}
-                            />
-                        </Col>
-                        <Col span={4} offset={1}>
-                            <span className="label">{t('labels.externalController')}</span>
-                        </Col>
-                        <Col className="external-controller" span={6} offset={1}>
-                            <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
-                            <span className="modify-btn" onClick={() => this.props.store.setShowAPIModal(true)}>
-                                修改
-                            </span>
+                        <Col span={12}>
+                            <Col span={8} offset={1}>
+                                <span className="label">{t('labels.externalController')}</span>
+                            </Col>
+                            <Col className="external-controller" span={14}>
+                                <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
+                                <span className="modify-btn" onClick={() => this.props.store.setShowAPIModal(true)}>
+                                    修改
+                                </span>
+                            </Col>
                         </Col>
                     </Row>
                 </Card>

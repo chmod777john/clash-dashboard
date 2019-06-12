@@ -37,10 +37,6 @@
     }
 
     @include response(xxs) {
-        --columns: 4;
-    }
-
-    @include response(tiny) {
         --columns: 3;
     }
 
@@ -67,4 +63,23 @@
     color: $color-primary-dark;
     text-shadow: 0 2px 6px rgba($color: $color-primary-dark, $alpha: 0.4);
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .proxies-group-card {
+        margin: 12px 0;
+    }
+
+    .proxies-list {
+        margin-right: 0;
+        padding-bottom: 20px;
+        flex-wrap: unset;
+        flex-direction: column;
+
+        > li {
+            width: 100%;
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+    }
 }

@@ -3,6 +3,8 @@
  * Style Common Variables
  */
 
+$background: #f4f5f6;
+
 // primary colors
 $color-primary: #57befc;
 $color-primary-dark: #2c8af8;
@@ -31,9 +33,6 @@ $color-black: #000;
 }
 
 $breakpoints: (
-    'tiny': (
-        max-width: 680px
-    ),
     'xxs': (
         max-width: 760px
     ),

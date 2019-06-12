@@ -64,3 +64,20 @@
         background-color: $color-gray-darken;
     }
 }
+
+@media (max-width: 768px) {
+    .proxy-item {
+        $height: 70px;
+
+        height: $height;
+
+        .proxy-delay {
+            left: unset;
+            bottom: unset;
+            top: 0;
+            right: 20px;
+            height: $height;
+            line-height: $height;
+        }
+    }
+}

@@ -20,3 +20,31 @@
         font-weight: bold;
     }
 }
+
+@media (max-width: 768px) {
+    .external-controller {
+        // hack <Row />
+        .row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .title {
+            margin: 5px 0;
+        }
+
+        .form {
+            margin: 5px 0;
+        }
+
+        // hack <Col />
+        .column {
+            width: 100%;
+        }
+
+        // hack <Alert />
+        .alert {
+            display: none;
+        }
+    }
+}
