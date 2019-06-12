@@ -25,7 +25,7 @@ export class ConfigStore {
     @observable
     apiInfo: Models.APIInfo = {
         hostname: '127.0.0.1',
-        port: '8080',
+        port: '9090',
         secret: ''
     }
 
@@ -153,7 +153,7 @@ export class ConfigStore {
                 allowLan: config['allow-lan'],
                 mode: config.mode,
                 externalControllerAddr: getLocalStorageItem('externalControllerAddr', '127.0.0.1'),
-                externalControllerPort: getLocalStorageItem('externalControllerPort', '8080'),
+                externalControllerPort: getLocalStorageItem('externalControllerPort', '9090'),
                 secret: getLocalStorageItem('secret', '')
             }
         }

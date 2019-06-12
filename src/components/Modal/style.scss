@@ -19,6 +19,7 @@ $mobileBigWidth: 480px;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 11;
 
     .modal {
         margin-top: -50px;
@@ -82,6 +83,11 @@ $mobileBigWidth: 480px;
 
 @media (max-width: 768px) {
     .modal-mask {
+        .modal {
+            margin-top: 0;
+            padding: 18px 20px;
+        }
+
         .modal-small {
             width: $mobileWidth;
         }

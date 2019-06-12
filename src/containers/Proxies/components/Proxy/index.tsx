@@ -19,7 +19,7 @@ interface ProxyState {
 }
 
 export class Proxy extends React.Component<ProxyProps , ProxyState> {
-    constructor (props) {
+    constructor (props: ProxyProps) {
         super(props)
 
         const { config } = props
@@ -31,9 +31,10 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
             setLocalStorageItem(name, color)
         }
 
+        const delay = config.history.length ? config.history.slice(-1)[0].delay : 0
         this.state = {
-            delay: -1,
-            hasError: false,
+            delay,
+            hasError: delay === 0,
             color
         }
     }
@@ -85,7 +86,7 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
             <div className={classnames('proxy-item', { 'proxy-error': hasError }, className)}>
                 <span className="proxy-type" style={{ backgroundColor }}>{config.type}</span>
                 <p className="proxy-name">{config.name}</p>
-                <p className="proxy-delay">{delay === -1 ? '-' : `${delay}ms`}</p>
+                <p className="proxy-delay">{delay === 0 ? '-' : `${delay}ms`}</p>
                 {/* <Icon className="proxy-editor" type="setting" onClick={onEdit} /> */}
             </div>
         )

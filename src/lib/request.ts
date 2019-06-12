@@ -32,9 +32,15 @@ export interface Proxies {
     }
 }
 
+interface History {
+    time: string
+    delay: number
+}
+
 export interface Proxy {
     name: string
     type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Socks' | 'Http'
+    history: History[]
 }
 
 export interface Group {
@@ -42,6 +48,7 @@ export interface Group {
     type: 'Selector' | 'URLTest' | 'Fallback'
     now: string
     all: string[]
+    history: History[]
 }
 
 export async function getConfig () {
@@ -130,7 +137,7 @@ export async function getExternalControllerConfig () {
     }
 
     const hostname = getLocalStorageItem('externalControllerAddr', '127.0.0.1')
-    const port = getLocalStorageItem('externalControllerPort', '8080')
+    const port = getLocalStorageItem('externalControllerPort', '9090')
     const secret = getLocalStorageItem('secret', '')
 
     if (!hostname || !port) {
