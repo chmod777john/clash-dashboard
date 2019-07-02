@@ -1,10 +1,10 @@
-import * as React from 'react'
-import { Icon } from '@components'
+import React, { useState, useLayoutEffect } from 'react'
 import classnames from 'classnames'
 import { unmountComponentAtNode, render } from 'react-dom'
+import { Icon } from '@components'
+import { noop } from '@lib/helper'
 import './style.scss'
 
-const noop = () => {}
 const TYPE_ICON_MAP = {
     info: 'info',
     success: 'check',
@@ -30,73 +30,62 @@ interface MessageProps {
     removeComponent: typeof noop
 }
 
-export class Message extends React.Component <MessageProps, {}> {
+export function Message (props: MessageProps) {
+    const {
+        removeComponent = noop,
+        onClose = noop,
+        icon = <Icon type="info" size={16} />,
+        content = '',
+        type = 'info',
+        duration = 1500
+    } = props
 
-    /**
-     * static function to call Message directly
-     */
-    static info = (
-        content: string,
-        duration?: number,
-        onClose?: typeof noop
-    ) => showMessage({ type: 'info', content, duration, onClose })
+    const [visible, setVisible] = useState(false)
 
-    static success = (
-        content: string,
-        duration?: number,
-        onClose?: typeof noop
-    ) => showMessage({ type: 'success', content, duration, onClose })
+    useLayoutEffect(() => {
+        window.setTimeout(() => setVisible(true), 0)
 
-    static warning = (
-        content: string,
-        duration?: number,
-        onClose?: typeof noop
-    ) => showMessage({ type: 'warning', content, duration, onClose })
+        const id = window.setTimeout(() => {
+            setVisible(false)
+            onClose()
+        }, duration)
+        return () => window.clearTimeout(id)
+    }, [])
 
-    static error = (
-        content: string,
-        duration?: number,
-        onClose?: typeof noop
-    ) => showMessage({ type: 'error', content, duration, onClose })
-
-    static defaultProps: MessageProps = {
-        content: '',
-        type: 'info',
-        icon: <Icon type="info" size={16} />,
-        duration: 1500,
-        onClose: noop,
-        removeComponent: noop
-    }
-
-    state = {
-        visible: false
-    }
-
-    componentDidMount () {
-        // TODO: optimize animation
-        // fix do not show animation when element mounted
-        setTimeout(() => this.setState({ visible: true }), 0)
-
-        setTimeout(() => {
-            this.setState({ visible: false })
-            this.props.onClose()
-        }, this.props.duration)
-    }
-
-    render () {
-        const { removeComponent, icon, content, type } = this.props
-
-        return (
-            <div
-                className={classnames('message', `message-${type}`, { 'message-show': this.state.visible })}
-                onTransitionEnd={() => !this.state.visible && removeComponent()}
-            >
-                <span className="message-icon">{icon}</span>
-                <span className="message-content">{content}</span>
-            </div>
-        )
-    }
+    return (
+        <div
+            className={classnames('message', `message-${type}`, { 'message-show': visible })}
+            onTransitionEnd={() => !visible && removeComponent()}
+        >
+            <span className="message-icon">{icon}</span>
+            <span className="message-content">{content}</span>
+        </div>
+    )
 }
+
+export const info = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'info', content, duration, onClose })
+
+export const success = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'success', content, duration, onClose })
+
+export const warning = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'warning', content, duration, onClose })
+
+export const error = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'error', content, duration, onClose })
 
 export function showMessage (args: ArgsProps) {
     // create container element

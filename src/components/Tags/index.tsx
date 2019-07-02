@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BaseComponentProps, I18nProps } from '@models'
 import { noop } from '@lib/helper'
@@ -21,7 +21,7 @@ export function Tags (props: TagsProps) {
     const [showExtend, setShowExtend] = useState(false)
 
     const ulRef = useRef<HTMLUListElement>()
-    useEffect(() => {
+    useLayoutEffect(() => {
         setShowExtend(ulRef.current.offsetHeight > 30)
     }, [])
 
