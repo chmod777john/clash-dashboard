@@ -25,7 +25,9 @@
         color: $color-primary-darken;
         font-size: 10px;
         overflow: hidden;
-        word-break: break-all;
+        word-break: keep-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     .proxy-delay {

@@ -57,24 +57,20 @@ export class Proxy extends React.Component<ProxyProps , ProxyState> {
         EE.unsubscribe(Action.SPEED_NOTIFY, this.speedTest)
     }
 
+    getDelay = async (name: string) => {
+        if (isClashX()) {
+            const delay = await jsBridge.getProxyDelay(name)
+            return delay
+        }
+
+        const { data: { delay } } = await getProxyDelay(name)
+        return delay
+    }
+
     speedTest = async () => {
         const { config } = this.props
-        if (isClashX()) {
-            const delay = await jsBridge.getProxyDelay(config.name)
-            if (delay === 0) {
-                return this.setState({ hasError: true })
-            }
-            return this.setState({ delay })
-        }
-
-        const [res, err] = await to(getProxyDelay(config.name))
-
-        if (err) {
-            return this.setState({ hasError: true })
-        }
-
-        const { data: { delay } } = res
-        this.setState({ delay })
+        const [delay, err] = await to(this.getDelay(config.name))
+        this.setState({ delay: err ? -1 : delay, hasError: !!err })
     }
 
     render () {
