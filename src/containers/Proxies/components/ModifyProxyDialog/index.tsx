@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { translate } from 'react-i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import { Modal } from '@components'
 import { getLocalStorageItem, setLocalStorageItem } from '@lib/helper'
 import './style.scss'
@@ -8,7 +8,6 @@ import {
     BaseComponentProps,
     Proxy as IProxy,
     SsProxyConfigList, VmessProxyConfigList, Socks5ProxyConfigList,
-    I18nProps,
     TagColors,
     ProxyType,
     SsCipher, VmessCipher, pickCipherWithAlias
@@ -23,7 +22,7 @@ import {
     ProxyCipherSelector
 } from './FormItems'
 
-interface ModifyProxyDialogProps extends BaseComponentProps, I18nProps {
+interface ModifyProxyDialogProps extends BaseComponentProps, WithTranslation {
     config: IProxy
     onOk?: (config: IProxy) => void
     onCancel?: () => void
@@ -222,4 +221,4 @@ class RawDialog extends React.Component<ModifyProxyDialogProps, ModifyProxyDialo
     }
 }
 
-export const ModifyProxyDialog = translate(['Proxies'])(RawDialog)
+export const ModifyProxyDialog = withTranslation(['Proxies'])(RawDialog)

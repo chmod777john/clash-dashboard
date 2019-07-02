@@ -1,13 +1,13 @@
 import * as React from 'react'
-import { translate } from 'react-i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import { Header, Card, Row, Col } from '@components'
-import { I18nProps, BaseRouterProps } from '@models'
+import { BaseRouterProps } from '@models'
 import './style.scss'
 import { storeKeys } from '@lib/createStore'
 import { inject, observer } from 'mobx-react'
 import { List, AutoSizer } from 'react-virtualized'
 
-interface RulesProps extends BaseRouterProps, I18nProps {}
+interface RulesProps extends BaseRouterProps, WithTranslation {}
 
 @inject(...storeKeys)
 @observer
@@ -64,4 +64,4 @@ class Rules extends React.Component<RulesProps, {}> {
     }
 }
 
-export default translate(['Rules'])(Rules)
+export default withTranslation(['Rules'])(Rules)

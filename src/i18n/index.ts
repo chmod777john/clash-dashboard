@@ -1,5 +1,5 @@
-import * as i18n from 'i18next'
-import * as LanguageDetector from 'i18next-browser-languagedetector'
+import i18n from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
 // locales
 import en_US from './en_US'
@@ -24,4 +24,6 @@ const options = {
     }
 }
 
-export default i18n.use(LanguageDetector).init(options)
+i18n.use(LanguageDetector).init(options)
+
+export default i18n

@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { withTranslation } from 'react-i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import { inject, observer } from 'mobx-react'
 import { storeKeys } from '@lib/createStore'
 import { Modal, Input, Row, Col, Alert } from '@components'
-import { BaseProps, I18nProps } from '@models'
+import { BaseProps } from '@models'
 import './style.scss'
 
-interface ExternalControllerModalProps extends I18nProps, BaseProps {}
+interface ExternalControllerModalProps extends BaseProps, WithTranslation {}
 
 interface ExternalControllerModalState {
     hostname: string

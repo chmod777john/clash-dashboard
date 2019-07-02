@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { translate } from 'react-i18next'
-import { changeLanguage } from 'i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
+import i18next from 'i18next'
 import { inject, observer } from 'mobx-react'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
-import { I18nProps, BaseRouterProps } from '@models'
+import { BaseRouterProps } from '@models'
 import { updateConfig } from '@lib/request'
 import { to } from '@lib/helper'
 import { rootStores, storeKeys } from '@lib/createStore'
 import './style.scss'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 
-interface SettingProps extends BaseRouterProps, I18nProps {}
+interface SettingProps extends BaseRouterProps, WithTranslation {}
 
 @inject(...storeKeys)
 @observer
@@ -24,7 +24,7 @@ class Settings extends React.Component<SettingProps, {}> {
     languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh' }, { label: 'English', value: 'en' }]
 
     changeLanguage = (language: string) => {
-        changeLanguage(language)
+        i18next.changeLanguage(language)
     }
 
     handleProxyModeChange = async (mode: string) => {
@@ -84,7 +84,7 @@ class Settings extends React.Component<SettingProps, {}> {
     }
 
     render () {
-        const { t, lng, store } = this.props
+        const { t, i18n, store } = this.props
         const {
             isClashX,
             socks5ProxyPort,
@@ -125,7 +125,7 @@ class Settings extends React.Component<SettingProps, {}> {
                                 <span className="label">{t('labels.language')}</span>
                             </Col>
                             <Col span={14} className="value-column">
-                                <ButtonSelect options={this.languageOptions} value={lng.replace(/-.+$/, '')} onSelect={this.changeLanguage} />
+                                <ButtonSelect options={this.languageOptions} value={i18n.language.replace(/-.+$/, '')} onSelect={this.changeLanguage} />
                             </Col>
                         </Col>
                     </Row>
@@ -222,4 +222,4 @@ class Settings extends React.Component<SettingProps, {}> {
     }
 }
 
-export default translate(['Settings'])(Settings)
+export default withTranslation(['Settings'])(Settings)

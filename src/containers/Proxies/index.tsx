@@ -1,15 +1,15 @@
 import * as React from 'react'
-import { translate } from 'react-i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import { inject, observer } from 'mobx-react'
 import { storeKeys } from '@lib/createStore'
 import EE from '@lib/event'
 import { Card, Header, Icon } from '@components'
-import { I18nProps, BaseRouterProps } from '@models'
+import { BaseRouterProps } from '@models'
 
 import { Proxy, Group } from './components'
 import './style.scss'
 
-interface ProxiesProps extends BaseRouterProps, I18nProps {}
+interface ProxiesProps extends BaseRouterProps, WithTranslation {}
 
 interface ProxiesState {
 }
@@ -64,4 +64,4 @@ class Proxies extends React.Component<ProxiesProps, ProxiesState> {
     }
 }
 
-export default translate(['Proxies'])(Proxies)
+export default withTranslation(['Proxies'])(Proxies)

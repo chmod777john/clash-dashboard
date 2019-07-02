@@ -14,15 +14,15 @@ interface TagsProps extends BaseComponentProps, I18nProps {
 }
 
 export function Tags (props: TagsProps) {
-    const { className, data, onClick, select, canClick } = props
+    const { className, data, onClick, select, canClick, rowHeight: rawHeight } = props
 
     const { t } = useTranslation()
     const [expand, setExpand] = useState(false)
 
     const ulRef = useRef<HTMLUListElement>()
-    const showExtend = useMemo(() => ulRef.current.offsetHeight > 30, [ulRef])
+    const showExtend = useMemo(() => ulRef.current && ulRef.current.offsetHeight > 30, [ulRef.current])
 
-    const rowHeight = this.state.expand ? 'auto' : this.props.rowHeight
+    const rowHeight = expand ? 'auto' : rawHeight
     const handleClick = canClick ? onClick : noop
 
     function toggleExtend () {

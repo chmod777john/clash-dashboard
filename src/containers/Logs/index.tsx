@@ -1,7 +1,6 @@
 import * as React from 'react'
-import * as dayjs from 'dayjs'
-import { translate } from 'react-i18next'
-import { I18nProps } from '@models'
+import dayjs from 'dayjs'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import { Card, Header } from '@components'
 import './style.scss'
 import { getLogsStreamReader } from '@lib/request'
@@ -12,7 +11,7 @@ interface Log {
     time: Date
 }
 
-interface LogsProps extends I18nProps {}
+interface LogsProps extends WithTranslation {}
 
 interface LogsState {
     logs: Log[]
@@ -64,4 +63,4 @@ class Logs extends React.Component<LogsProps, LogsState> {
     }
 }
 
-export default translate(['Logs'])(Logs)
+export default withTranslation(['Logs'])(Logs)

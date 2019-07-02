@@ -1,13 +1,12 @@
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
-import { translate } from 'react-i18next'
+import { withTranslation, WithTranslation } from 'react-i18next'
 import classnames from 'classnames'
-import { I18nProps } from '@models'
 
 import './style.scss'
 const logo = require('@assets/logo.png')
 
-interface SidebarProps extends I18nProps {
+interface SidebarProps extends WithTranslation {
     routes: {
         path: string
         name: string
@@ -38,4 +37,4 @@ class Sidebar extends React.Component<SidebarProps, {}> {
     }
 }
 
-export default translate(['SideBar'])(Sidebar)
+export default withTranslation(['SideBar'])(Sidebar)
