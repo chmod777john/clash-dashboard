@@ -1,6 +1,7 @@
 import * as React from 'react'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models'
+import { noop } from '@lib/helper'
 import './style.scss'
 
 interface ButtonProps extends BaseComponentProps {
@@ -8,23 +9,15 @@ interface ButtonProps extends BaseComponentProps {
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export class Button extends React.Component<ButtonProps, {}> {
+export function Button (props: ButtonProps) {
+    const { type = 'normal', onClick = noop, children, className, style } = props
+    const classname = classnames('button', `button-${type}`, className)
 
-    static defaultProps: ButtonProps = {
-        type: 'normal',
-        onClick: () => {}
-    }
-
-    render () {
-        const { type, onClick, children, className, style } = this.props
-
-        return (
-            <button
-                className={classnames('button', `button-${type}`, className)}
-                style={style}
-                onClick={onClick}
-            >{children}</button>
-        )
-    }
-
+    return (
+        <button
+            className={classname}
+            style={style}
+            onClick={onClick}
+        >{children}</button>
+    )
 }

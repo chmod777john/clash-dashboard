@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import { inject, observer } from 'mobx-react'
 import { storeKeys } from '@lib/createStore'
 import { Modal, Input, Row, Col, Alert } from '@components'
@@ -93,4 +93,4 @@ class ExternalController extends React.Component<ExternalControllerModalProps, E
     }
 }
 
-export default translate(['Settings'])(ExternalController)
+export default withTranslation(['Settings'])(ExternalController)

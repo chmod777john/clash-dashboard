@@ -19,26 +19,22 @@ export interface ButtonSelectProps extends BaseComponentProps {
     onSelect?: (value: any) => void
 }
 
-export class ButtonSelect extends React.Component<ButtonSelectProps, {}> {
+export function ButtonSelect (props: ButtonSelectProps) {
+    const { options, value, onSelect } = props
 
-    render () {
-        const { options, value, onSelect } = this.props
-
-        return (
-            <div className="button-select">
-                {
-                    options.map(option => (
-                        <button
-                            value={option.value}
-                            key={option.value}
-                            className={classnames('button-select-options', { actived: value === option.value })}
-                            onClick={() => onSelect(option.value)}>
-                            { option.label }
-                        </button>
-                    ))
-                }
-            </div>
-        )
-    }
-
+    return (
+        <div className="button-select">
+            {
+                options.map(option => (
+                    <button
+                        value={option.value}
+                        key={option.value}
+                        className={classnames('button-select-options', { actived: value === option.value })}
+                        onClick={() => onSelect(option.value)}>
+                        { option.label }
+                    </button>
+                ))
+            }
+        </div>
+    )
 }

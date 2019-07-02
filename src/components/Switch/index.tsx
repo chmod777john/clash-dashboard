@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { BaseComponentProps } from '@models/BaseProps'
 import { Icon } from '@components'
+import { noop } from '@lib/helper'
 import classnames from 'classnames'
 import './style.scss'
 
@@ -10,26 +11,19 @@ interface SwitchProps extends BaseComponentProps {
     onChange?: (checked: boolean) => void
 }
 
-export class Switch extends React.Component<SwitchProps, {}> {
-    static defaultProps: SwitchProps = {
-        checked: false,
-        disabled: false,
-        onChange: () => {}
-    }
+export function Switch (props: SwitchProps) {
+    const { className, checked = false, disabled = false, onChange = noop } = props
+    const classname = classnames('switch', { checked, disabled }, className)
 
-    handleClick = () => {
-        if (!this.props.disabled) {
-            this.props.onChange(!this.props.checked)
+    function handleClick () {
+        if (!disabled) {
+            onChange(!checked)
         }
     }
 
-    render () {
-        const { className, checked, disabled } = this.props
-
-        return (
-            <div className={classnames('switch', { checked, disabled }, className)} onClick={this.handleClick}>
-                <Icon className="switch-icon" type="check" size={20} style={{ fontWeight: 'bold' }} />
-            </div>
-        )
-    }
+    return (
+        <div className={classname} onClick={handleClick}>
+            <Icon className="switch-icon" type="check" size={20} style={{ fontWeight: 'bold' }} />
+        </div>
+    )
 }

@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { RouterStore, ConfigStore } from '@stores'
 
@@ -19,5 +19,6 @@ export interface BaseProps extends BaseComponentProps {
 
 export interface BaseComponentProps {
     className?: string
+    children?: ReactNode
     style?: CSSProperties
 }

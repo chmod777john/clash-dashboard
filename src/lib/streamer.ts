@@ -1,5 +1,5 @@
 import { to } from '@lib/helper'
-import * as EventEmitter from 'eventemitter3'
+import EventEmitter from 'eventemitter3'
 
 export interface Config {
     url: string

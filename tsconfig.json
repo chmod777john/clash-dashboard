@@ -2,6 +2,7 @@
     "compilerOptions": {
         "outDir": "./dist/",
         "sourceMap": true,
+        "esModuleInterop": true,
         "noImplicitAny": false,
         "noUnusedLocals": true,
         "module": "commonjs",

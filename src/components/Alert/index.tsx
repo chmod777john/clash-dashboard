@@ -10,36 +10,26 @@ interface AlertProps extends BaseComponentProps {
     inside?: boolean
 }
 
-export class Alert extends React.Component<AlertProps, {}> {
+const iconMap = {
+    success: 'check',
+    info: 'info',
+    warning: 'info',
+    error: 'close'
+}
 
-    static defaultProps: AlertProps = {
-        message: '',
-        type: 'info',
-        inside: false
-    }
-
-    iconMap = {
-        success: 'check',
-        info: 'info',
-        warning: 'info',
-        error: 'close'
-    }
-
-    render () {
-        const { message, type, inside, children, className, style } = this.props
-
-        return (
-            <div className={classnames('alert', `alert-${inside ? 'note' : 'box'}-${type}`, className)} style={style}>
-                <span className="alert-icon">
-                    <Icon type={this.iconMap[type]} size={26} />
-                </span>
-                {
-                    message
-                        ? <p className="alert-message">{message}</p>
-                        : <div className="alert-message">{children}</div>
-                }
-            </div>
-        )
-    }
-
+export function Alert (props: AlertProps) {
+    const { message = '', type = 'info', inside = false, children, className, style } = props
+    const classname = classnames('alert', `alert-${inside ? 'note' : 'box'}-${type}`, className)
+    return (
+        <div className={classname} style={style}>
+            <span className="alert-icon">
+                <Icon type={iconMap[type]} size={26} />
+            </span>
+            {
+                message
+                    ? <p className="alert-message">{message}</p>
+                    : <div className="alert-message">{children}</div>
+            }
+        </div>
+    )
 }
