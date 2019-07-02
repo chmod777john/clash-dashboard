@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
-import { withTranslation, WithTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 
 import './style.scss'
 const logo = require('@assets/logo.png')
 
-interface SidebarProps extends WithTranslation {
+interface SidebarProps {
     routes: {
         path: string
         name: string
@@ -15,26 +15,24 @@ interface SidebarProps extends WithTranslation {
     }[]
 }
 
-class Sidebar extends React.Component<SidebarProps, {}> {
-    render () {
-        const { routes, t } = this.props
-        return (
-            <div className="sidebar">
-                <img src={logo} className="sidebar-logo" />
-                <ul className="sidebar-menu">
-                    {
-                        routes.map(
-                            ({ path, name, exact, noMobile }) => (
-                                <li className={classnames('item', { 'no-mobile': noMobile })} key={name}>
-                                    <NavLink to={path} activeClassName="active" exact={!!exact}>{ t(name) }</NavLink>
-                                </li>
-                            )
-                        )
-                    }
-                </ul>
-            </div>
-        )
-    }
-}
+export default function Sidebar (props: SidebarProps) {
+    const { routes } = props
+    const { t } = useTranslation(['SideBar'])
 
-export default withTranslation(['SideBar'])(Sidebar)
+    const navlinks = routes.map(
+        ({ path, name, exact, noMobile }) => (
+            <li className={classnames('item', { 'no-mobile': noMobile })} key={name}>
+                <NavLink to={path} activeClassName="active" exact={!!exact}>{ t(name) }</NavLink>
+            </li>
+        )
+    )
+
+    return (
+        <div className="sidebar">
+            <img src={logo} className="sidebar-logo" />
+            <ul className="sidebar-menu">
+                { navlinks }
+            </ul>
+        </div>
+    )
+}

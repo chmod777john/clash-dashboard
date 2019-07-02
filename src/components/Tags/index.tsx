@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BaseComponentProps, I18nProps } from '@models'
 import { noop } from '@lib/helper'
@@ -16,11 +16,14 @@ interface TagsProps extends BaseComponentProps, I18nProps {
 export function Tags (props: TagsProps) {
     const { className, data, onClick, select, canClick, rowHeight: rawHeight } = props
 
-    const { t } = useTranslation()
+    const { t } = useTranslation(['Proxies'])
     const [expand, setExpand] = useState(false)
+    const [showExtend, setShowExtend] = useState(false)
 
     const ulRef = useRef<HTMLUListElement>()
-    const showExtend = useMemo(() => ulRef.current && ulRef.current.offsetHeight > 30, [ulRef.current])
+    useEffect(() => {
+        setShowExtend(ulRef.current.offsetHeight > 30)
+    }, [])
 
     const rowHeight = expand ? 'auto' : rawHeight
     const handleClick = canClick ? onClick : noop
