@@ -17,6 +17,11 @@ module.exports = merge(commonConfig, {
         hot: true, // enable HMR on the server
         noInfo: true,
     },
+    resolve: {
+        alias: {
+          'react-dom': '@hot-loader/react-dom'
+        }
+    },
     devtool: 'cheap-module-eval-source-map',
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally

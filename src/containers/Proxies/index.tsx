@@ -1,67 +1,55 @@
-import * as React from 'react'
-import { withTranslation, WithTranslation } from 'react-i18next'
-import { inject, observer } from 'mobx-react'
-import { storeKeys } from '@lib/createStore'
+import React, { useLayoutEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import EE from '@lib/event'
 import { Card, Header, Icon } from '@components'
-import { BaseRouterProps } from '@models'
+import { Data } from '@stores'
 
 import { Proxy, Group } from './components'
 import './style.scss'
 
-interface ProxiesProps extends BaseRouterProps, WithTranslation {}
+export default function Proxies () {
+    const { data, fetch } = Data.useContainer()
+    const { t } = useTranslation(['Proxies'])
 
-interface ProxiesState {
-}
+    useLayoutEffect(() => {
+        fetch()
+    }, [])
 
-@inject(...storeKeys)
-@observer
-class Proxies extends React.Component<ProxiesProps, ProxiesState> {
-    componentDidMount () {
-        this.props.store.fetchData()
-    }
-
-    handleNotitySpeedTest = () => {
+    function handleNotitySpeedTest () {
         EE.notifySpeedTest()
     }
 
-    render () {
-        const { t, store } = this.props
-
-        return (
-            <div className="page">
-                <div className="proxies-container">
-                    <Header title={t('groupTitle')} />
-                    <Card className="proxies-group-card">
-                        <ul className="proxies-group-list">
-                            {
-                                store.data.proxyGroup.map(p => (
-                                    <li className="proxies-group-item" key={p.name}>
-                                        <Group config={p} />
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    </Card>
-                </div>
-                <div className="proxies-container">
-                    <Header title={t('title')}>
-                        <Icon type="speed" size={20} />
-                        <span className="proxies-speed-test" onClick={this.handleNotitySpeedTest}>{t('speedTestText')}</span>
-                    </Header>
-                    <ul className="proxies-list">
+    return (
+        <div className="page">
+            <div className="proxies-container">
+                <Header title={t('groupTitle')} />
+                <Card className="proxies-group-card">
+                    <ul className="proxies-group-list">
                         {
-                            store.data.proxy.map(p => (
-                                <li key={p.name}>
-                                    <Proxy config={p} />
+                            data.proxyGroup.map(p => (
+                                <li className="proxies-group-item" key={p.name}>
+                                    <Group config={p} />
                                 </li>
                             ))
                         }
                     </ul>
-                </div>
+                </Card>
             </div>
-        )
-    }
+            <div className="proxies-container">
+                <Header title={t('title')}>
+                    <Icon type="speed" size={20} />
+                    <span className="proxies-speed-test" onClick={handleNotitySpeedTest}>{t('speedTestText')}</span>
+                </Header>
+                <ul className="proxies-list">
+                    {
+                        data.proxy.map(p => (
+                            <li key={p.name}>
+                                <Proxy config={p} />
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    )
 }
-
-export default withTranslation(['Proxies'])(Proxies)

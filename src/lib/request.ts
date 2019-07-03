@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 import { Partial, getLocalStorageItem } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { rootStores } from '@lib/createStore'
+import { ExternalControllerModal } from '@stores'
 import { Log } from '@models/Log'
 import { StreamReader } from './streamer'
 
@@ -117,7 +117,8 @@ export async function getInstance () {
         resp => resp,
         err => {
             if (!err.response || err.response.status === 401) {
-                rootStores.store.setShowAPIModal(true)
+                const { show } = ExternalControllerModal.useContainer()
+                show()
             }
             throw err
         }

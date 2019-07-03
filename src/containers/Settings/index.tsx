@@ -1,225 +1,208 @@
-import * as React from 'react'
-import { withTranslation, WithTranslation } from 'react-i18next'
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import i18next from 'i18next'
-import { inject, observer } from 'mobx-react'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
-import { BaseRouterProps } from '@models'
+import { APIInfo, Data, ClashXData, ExternalControllerModal } from '@stores'
 import { updateConfig } from '@lib/request'
+import { useObject } from '@lib/hook'
 import { to } from '@lib/helper'
-import { rootStores, storeKeys } from '@lib/createStore'
-import './style.scss'
 import { isClashX, jsBridge } from '@lib/jsBridge'
+import './style.scss'
 
-interface SettingProps extends BaseRouterProps, WithTranslation {}
+const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh' }, { label: 'English', value: 'en' }]
 
-@inject(...storeKeys)
-@observer
-class Settings extends React.Component<SettingProps, {}> {
-    state = {
+function changeLanguage (language: string) {
+    i18next.changeLanguage(language)
+}
+
+async function handleStartAtLoginChange (state: boolean) {
+    await jsBridge.setStartAtLogin(state)
+}
+
+async function handleSetSystemProxy (state: boolean) {
+    await jsBridge.setSystemProxy(state)
+}
+
+export default function Settings () {
+    const { data: clashXData, fetch: fetchClashXData } = ClashXData.useContainer()
+    const { data, fetch } = Data.useContainer()
+    const { data: apiInfo } = APIInfo.useContainer()
+    const { show } = ExternalControllerModal.useContainer()
+    const { t, i18n } = useTranslation(['Settings'])
+    const { value: info, change } = useObject({
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
         isClashX: false
-    }
+    })
 
-    languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh' }, { label: 'English', value: 'en' }]
+    useEffect(() => {
+        fetch()
+        if (isClashX()) {
+            fetchClashXData().then(() => change('isClashX', true))
+        }
+    }, [])
 
-    changeLanguage = (language: string) => {
-        i18next.changeLanguage(language)
-    }
+    useEffect(() => {
+        change('socks5ProxyPort', data.general.socksPort)
+        change('httpProxyPort', data.general.port)
+    }, [data])
 
-    handleProxyModeChange = async (mode: string) => {
+    async function handleProxyModeChange (mode: string) {
         const [, err] = await to(updateConfig({ mode }))
         if (!err) {
-            rootStores.store.fetchData()
+            fetch()
         }
     }
 
-    handleHttpPortSave = async () => {
-        const [, err] = await to(updateConfig({ 'port': this.state.httpProxyPort }))
+    async function handleHttpPortSave () {
+        const [, err] = await to(updateConfig({ 'port': info.httpProxyPort }))
         if (!err) {
-            await this.props.store.fetchData()
-            this.setState({ httpProxyPort: this.props.store.data.general.port })
+            await fetch()
+            change('httpProxyPort', data.general.port)
         }
     }
 
-    handleSocksPortSave = async () => {
-        const [, err] = await to(updateConfig({ 'socks-port': this.state.socks5ProxyPort }))
+    async function handleSocksPortSave () {
+        const [, err] = await to(updateConfig({ 'socks-port': info.socks5ProxyPort }))
         if (!err) {
-            await this.props.store.fetchData()
-            this.setState({ socks5ProxyPort: this.props.store.data.general.socksPort })
+            await fetch()
+            change('socks5ProxyPort', data.general.socksPort)
         }
     }
 
-    handleAllowLanChange = async (state: boolean) => {
+    async function handleAllowLanChange (state: boolean) {
         const [, err] = await to(updateConfig({ 'allow-lan': state }))
         if (!err) {
-            await this.props.store.fetchData()
+            await fetch()
         }
     }
 
-    handleStartAtLoginChange = async (state: boolean) => {
-        await jsBridge.setStartAtLogin(state)
-        this.setState({ startAtLogin: state })
-    }
+    const {
+        hostname: externalControllerHost,
+        port: externalControllerPort
+    } = apiInfo
 
-    handleSetSystemProxy = async (state: boolean) => {
-        await jsBridge.setSystemProxy(state)
-        this.setState({ setAsSystemProxy: state })
-    }
+    const { allowLan, mode } = data.general
+    const {
+        startAtLogin,
+        systemProxy
+    } = clashXData
 
-    async componentDidMount () {
-        await rootStores.store.fetchData()
-        if (isClashX()) {
-            await rootStores.store.fetchClashXData()
-            this.setState({
-                isClashX: true
-            })
-        }
+    const proxyModeOptions: ButtonSelectOptions[] = [
+        { label: t('values.global'), value: 'Global' },
+        { label: t('values.rules'), value: 'Rule' },
+        { label: t('values.direct'), value: 'Direct' }
+    ]
 
-        const general = this.props.store.data.general
-        this.setState({
-            socks5ProxyPort: general.socksPort,
-            httpProxyPort: general.port
-        })
-    }
-
-    render () {
-        const { t, i18n, store } = this.props
-        const {
-            isClashX,
-            socks5ProxyPort,
-            httpProxyPort
-        } = this.state
-
-        const {
-            hostname: externalControllerHost,
-            port: externalControllerPort
-        } = store.apiInfo
-
-        const { allowLan, mode } = store.data.general
-        const {
-            startAtLogin,
-            systemProxy
-        } = store.clashxData
-        const proxyModeOptions: ButtonSelectOptions[] = [
-            { label: t('values.global'), value: 'Global' },
-            { label: t('values.rules'), value: 'Rule' },
-            { label: t('values.direct'), value: 'Direct' }
-        ]
-
-        return (
-            <div className="page">
-                <Header title={t('title')} />
-                <Card className="settings-card">
-                    <Row gutter={24} align="middle">
-                        <Col span={12}>
-                            <Col span={14} offset={1}>
-                                <span className="label">{t('labels.startAtLogin')}</span>
-                            </Col>
-                            <Col span={8} className="value-column">
-                                <Switch disabled={!isClashX} checked={startAtLogin} onChange={this.handleStartAtLoginChange} />
-                            </Col>
+    return (
+        <div className="page">
+            <Header title={t('title')} />
+            <Card className="settings-card">
+                <Row gutter={24} align="middle">
+                    <Col span={12}>
+                        <Col span={14} offset={1}>
+                            <span className="label">{t('labels.startAtLogin')}</span>
                         </Col>
-                        <Col span={12}>
-                            <Col span={8} offset={1}>
-                                <span className="label">{t('labels.language')}</span>
-                            </Col>
-                            <Col span={14} className="value-column">
-                                <ButtonSelect options={this.languageOptions} value={i18n.language.replace(/-.+$/, '')} onSelect={this.changeLanguage} />
-                            </Col>
+                        <Col span={8} className="value-column">
+                            <Switch disabled={!isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
                         </Col>
-                    </Row>
-                    <Row gutter={24} align="middle">
-                        <Col span={12}>
-                            <Col span={14} offset={1}>
-                                <span className="label">{t('labels.setAsSystemProxy')}</span>
-                            </Col>
-                            <Col span={8} className="value-column">
-                                <Switch
-                                    disabled={!isClashX}
-                                    checked={systemProxy}
-                                    onChange={this.handleSetSystemProxy}
-                                />
-                            </Col>
+                    </Col>
+                    <Col span={12}>
+                        <Col span={8} offset={1}>
+                            <span className="label">{t('labels.language')}</span>
                         </Col>
-                        <Col span={12}>
-                            <Col span={14} offset={1}>
-                                <span className="label">{t('labels.allowConnectFromLan')}</span>
-                            </Col>
-                            <Col span={8} className="value-column">
-                                <Switch
-                                    checked={allowLan}
-                                    onChange={this.handleAllowLanChange}
-                                />
-                            </Col>
+                        <Col span={14} className="value-column">
+                            <ButtonSelect options={languageOptions} value={i18n.language.replace(/-.+$/, '')} onSelect={changeLanguage} />
                         </Col>
-                    </Row>
-                </Card>
+                    </Col>
+                </Row>
+                <Row gutter={24} align="middle">
+                    <Col span={12}>
+                        <Col span={14} offset={1}>
+                            <span className="label">{t('labels.setAsSystemProxy')}</span>
+                        </Col>
+                        <Col span={8} className="value-column">
+                            <Switch
+                                disabled={!isClashX}
+                                checked={systemProxy}
+                                onChange={handleSetSystemProxy}
+                            />
+                        </Col>
+                    </Col>
+                    <Col span={12}>
+                        <Col span={14} offset={1}>
+                            <span className="label">{t('labels.allowConnectFromLan')}</span>
+                        </Col>
+                        <Col span={8} className="value-column">
+                            <Switch
+                                checked={allowLan}
+                                onChange={handleAllowLanChange}
+                            />
+                        </Col>
+                    </Col>
+                </Row>
+            </Card>
 
-                <Card className="settings-card">
-                    <Row gutter={24} align="middle">
-                        <Col span={12}>
-                            <Col span={8} offset={1}>
-                                <span className="label">{t('labels.proxyMode')}</span>
-                            </Col>
-                            <Col span={14} className="value-column">
-                                <ButtonSelect
-                                    options={proxyModeOptions}
-                                    value={mode}
-                                    onSelect={this.handleProxyModeChange}
-                                />
-                            </Col>
+            <Card className="settings-card">
+                <Row gutter={24} align="middle">
+                    <Col span={12}>
+                        <Col span={8} offset={1}>
+                            <span className="label">{t('labels.proxyMode')}</span>
                         </Col>
-                        <Col span={12}>
-                            <Col span={14} offset={1}>
-                                <span className="label">{t('labels.socks5ProxyPort')}</span>
-                            </Col>
-                            <Col span={8}>
-                                <Input
-                                    value={socks5ProxyPort}
-                                    onChange={socks5ProxyPort => this.setState({ socks5ProxyPort: parseInt(socks5ProxyPort, 10) })}
-                                    onBlur={this.handleSocksPortSave}
-                                />
-                            </Col>
+                        <Col span={14} className="value-column">
+                            <ButtonSelect
+                                options={proxyModeOptions}
+                                value={mode}
+                                onSelect={handleProxyModeChange}
+                            />
                         </Col>
-                    </Row>
-                    <Row gutter={24} align="middle">
-                        <Col span={12}>
-                            <Col span={14} offset={1}>
-                                <span className="label">{t('labels.httpProxyPort')}</span>
-                            </Col>
-                            <Col span={8}>
-                                <Input
-                                    type="number"
-                                    value={httpProxyPort}
-                                    onChange={httpProxyPort => this.setState({ httpProxyPort: parseInt(httpProxyPort, 10) })}
-                                    onBlur={this.handleHttpPortSave}
-                                />
-                            </Col>
+                    </Col>
+                    <Col span={12}>
+                        <Col span={14} offset={1}>
+                            <span className="label">{t('labels.socks5ProxyPort')}</span>
                         </Col>
-                        <Col span={12}>
-                            <Col span={12} offset={1}>
-                                <span className="label">{t('labels.externalController')}</span>
-                            </Col>
-                            <Col className="external-controller" span={10}>
-                                <span className="modify-btn" onClick={() => this.props.store.setShowAPIModal(true)}>
-                                    {`${externalControllerHost}:${externalControllerPort}`}
-                                </span>
-                            </Col>
+                        <Col span={8}>
+                            <Input
+                                value={info.socks5ProxyPort}
+                                onChange={socks5ProxyPort => change('socks5ProxyPort', parseInt(socks5ProxyPort, 10))}
+                                onBlur={handleSocksPortSave}
+                            />
                         </Col>
-                    </Row>
-                </Card>
+                    </Col>
+                </Row>
+                <Row gutter={24} align="middle">
+                    <Col span={12}>
+                        <Col span={14} offset={1}>
+                            <span className="label">{t('labels.httpProxyPort')}</span>
+                        </Col>
+                        <Col span={8}>
+                            <Input
+                                value={info.httpProxyPort}
+                                onChange={httpProxyPort => change('httpProxyPort', parseInt(httpProxyPort, 10))}
+                                onBlur={handleHttpPortSave}
+                            />
+                        </Col>
+                    </Col>
+                    <Col span={12}>
+                        <Col span={12} offset={1}>
+                            <span className="label">{t('labels.externalController')}</span>
+                        </Col>
+                        <Col className="external-controller" span={10}>
+                            <span className="modify-btn" onClick={show}>
+                                {`${externalControllerHost}:${externalControllerPort}`}
+                            </span>
+                        </Col>
+                    </Col>
+                </Row>
+            </Card>
 
-                <Card className="clash-version" style={{ display: 'none' }}>
-                    <span className="check-icon">
-                        <Icon type="check" size={20} />
-                    </span>
-                    <p className="version-info">{t('versionString', { version: 'unknown' })}</p>
-                    <span className="check-update-btn">{t('checkUpdate')}</span>
-                </Card>
-            </div>
-        )
-    }
+            <Card className="clash-version" style={{ display: 'none' }}>
+                <span className="check-icon">
+                    <Icon type="check" size={20} />
+                </span>
+                <p className="version-info">{t('versionString', { version: 'unknown' })}</p>
+                <span className="check-update-btn">{t('checkUpdate')}</span>
+            </Card>
+        </div>
+    )
 }
-
-export default withTranslation(['Settings'])(Settings)

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useMemo, useLayoutEffect, useEffect } from 'react'
 import classnames from 'classnames'
 import { BaseComponentProps, TagColors } from '@models'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
@@ -9,82 +9,54 @@ import './style.scss'
 
 interface ProxyProps extends BaseComponentProps {
     config: IProxy
-    // onEdit?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
-interface ProxyState {
-    delay: number
-    hasError: boolean
-    color: string
+async function getDelay (name: string) {
+    if (isClashX()) {
+        const delay = await jsBridge.getProxyDelay(name)
+        return delay
+    }
+
+    const { data: { delay } } = await getProxyDelay(name)
+    return delay
 }
 
-export class Proxy extends React.Component<ProxyProps , ProxyState> {
-    constructor (props: ProxyProps) {
-        super(props)
+export function Proxy (props: ProxyProps) {
+    const { config, className } = props
+    const [delay, setDelay] = useState(0)
 
-        const { config } = props
-        const { name } = config
-        let color = getLocalStorageItem(name)
+    async function speedTest () {
+        const [delay, err] = await to(getDelay(config.name))
+        setDelay(err ? 0 : delay)
+    }
+
+    useEffect(() => {
+        setDelay(config.history.length ? config.history.slice(-1)[0].delay : 0)
+    }, [config])
+
+    useLayoutEffect(() => {
+        EE.subscribe(Action.SPEED_NOTIFY, speedTest)
+        return () => EE.unsubscribe(Action.SPEED_NOTIFY, speedTest)
+    }, [])
+
+    const hasError = useMemo(() => delay === 0, [delay])
+    const color = useMemo(() => {
+        let color = getLocalStorageItem(config.name)
 
         if (!color) {
             color = sample(TagColors)
             setLocalStorageItem(name, color)
         }
 
-        const delay = config.history.length ? config.history.slice(-1)[0].delay : 0
-        this.state = {
-            delay,
-            hasError: delay === 0,
-            color
-        }
-    }
+        return color
+    }, [config])
 
-    componentWillUpdate () {
-        const { config: { name } } = this.props
-        const { color: rawColor } = this.state
-        const color = getLocalStorageItem(name)
-
-        if (rawColor !== color) {
-            this.setState({ color })
-        }
-    }
-
-    componentDidMount () {
-        EE.subscribe(Action.SPEED_NOTIFY, this.speedTest)
-    }
-
-    componentWillUnmount () {
-        EE.unsubscribe(Action.SPEED_NOTIFY, this.speedTest)
-    }
-
-    getDelay = async (name: string) => {
-        if (isClashX()) {
-            const delay = await jsBridge.getProxyDelay(name)
-            return delay
-        }
-
-        const { data: { delay } } = await getProxyDelay(name)
-        return delay
-    }
-
-    speedTest = async () => {
-        const { config } = this.props
-        const [delay, err] = await to(this.getDelay(config.name))
-        this.setState({ delay: err ? -1 : delay, hasError: !!err })
-    }
-
-    render () {
-        const { config, className } = this.props
-        const { delay, color, hasError } = this.state
-        const backgroundColor = hasError ? undefined : color
-
-        return (
-            <div className={classnames('proxy-item', { 'proxy-error': hasError }, className)}>
-                <span className="proxy-type" style={{ backgroundColor }}>{config.type}</span>
-                <p className="proxy-name">{config.name}</p>
-                <p className="proxy-delay">{delay === 0 ? '-' : `${delay}ms`}</p>
-                {/* <Icon className="proxy-editor" type="setting" onClick={onEdit} /> */}
-            </div>
-        )
-    }
+    const backgroundColor = hasError ? undefined : color
+    return (
+        <div className={classnames('proxy-item', { 'proxy-error': hasError }, className)}>
+            <span className="proxy-type" style={{ backgroundColor }}>{config.type}</span>
+            <p className="proxy-name">{config.name}</p>
+            <p className="proxy-delay">{delay === 0 ? '-' : `${delay}ms`}</p>
+        </div>
+    )
 }

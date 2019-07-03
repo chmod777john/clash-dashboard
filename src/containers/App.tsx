@@ -1,6 +1,6 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { hot } from 'react-hot-loader'
+import { hot } from 'react-hot-loader/root'
 import classnames from 'classnames'
 import { I18nProps } from '@models'
 import { isClashX } from '@lib/jsBridge'
@@ -18,33 +18,33 @@ import { getLogsStreamReader } from '@lib/request'
 export interface AppProps extends I18nProps {
 }
 
-@hot(module)
-export default class App extends React.Component<AppProps, {}> {
-    componentDidMount () {
+function App () {
+    useEffect(() => {
         getLogsStreamReader()
-    }
-    render () {
-        const routes = [
-            // { path: '/', name: 'Overview', component: Overview, exact: true },
-            { path: '/proxies', name: 'Proxies', component: Proxies },
-            { path: '/logs', name: 'Logs', component: Logs },
-            { path: '/rules', name: 'Rules', component: Rules, noMobile: true },
-            { path: '/settings', name: 'Settings', component: Settings }
-        ]
+    }, [])
 
-        return (
-            <div className={classnames('app', { 'not-clashx': !isClashX() })}>
-                <SlideBar routes={routes} />
-                <div className="page-container">
-                    <Route exact path="/" component={() => <Redirect to="/proxies"/>}/>
-                    {
-                        routes.map(
-                            route => <Route exact={false} path={route.path} key={route.path} component={route.component}/>
-                        )
-                    }
-                </div>
-                <ExternalControllerModal />
+    const routes = [
+        // { path: '/', name: 'Overview', component: Overview, exact: true },
+        { path: '/proxies', name: 'Proxies', component: Proxies },
+        { path: '/logs', name: 'Logs', component: Logs },
+        { path: '/rules', name: 'Rules', component: Rules, noMobile: true },
+        { path: '/settings', name: 'Settings', component: Settings }
+    ]
+
+    return (
+        <div className={classnames('app', { 'not-clashx': !isClashX() })}>
+            <SlideBar routes={routes} />
+            <div className="page-container">
+                <Route exact path="/" component={() => <Redirect to="/proxies"/>}/>
+                {
+                    routes.map(
+                        route => <Route exact={false} path={route.path} key={route.path} component={route.component}/>
+                    )
+                }
             </div>
-        )
-    }
+            <ExternalControllerModal />
+        </div>
+    )
 }
+
+export default hot(App)

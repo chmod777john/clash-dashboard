@@ -1,24 +1,20 @@
-import * as React from 'react'
-import { withTranslation, WithTranslation } from 'react-i18next'
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header, Card, Row, Col } from '@components'
-import { BaseRouterProps } from '@models'
 import './style.scss'
-import { storeKeys } from '@lib/createStore'
-import { inject, observer } from 'mobx-react'
+import { Data } from '@stores'
 import { List, AutoSizer } from 'react-virtualized'
 
-interface RulesProps extends BaseRouterProps, WithTranslation {}
+export default function Rules () {
+    const { data, fetch } = Data.useContainer()
+    const { t } = useTranslation(['Rules'])
+    const { rules } = data
 
-@inject(...storeKeys)
-@observer
-class Rules extends React.Component<RulesProps, {}> {
+    useEffect(() => {
+        fetch()
+    }, [])
 
-    componentWillMount () {
-        this.props.store.fetchData()
-    }
-
-    renderRuleItem = ({ index, key, style }) => {
-        const { rules } = this.props.store.data
+    function renderRuleItem ({ index, key, style }) {
         const rule = rules[index]
         return (
             <li className="rule-item" key={key} style={style}>
@@ -37,31 +33,25 @@ class Rules extends React.Component<RulesProps, {}> {
         )
     }
 
-    render () {
-        const { t } = this.props
-        const { rules } = this.props.store.data
-        return (
-            <div className="page">
-                <Header title={t('title')} />
-                <Card className="rules-card">
-                    <AutoSizer className="rules">
-                        {
-                            ({ height, width }) => (
-                                <List
-                                    height={height}
-                                    width={width}
-                                    rowCount={rules.length}
-                                    rowRenderer={this.renderRuleItem}
-                                    rowHeight={50}
-                                    overscanRowCount={10}
-                                />
-                            )
-                        }
-                    </AutoSizer>
-                </Card>
-            </div>
-        )
-    }
+    return (
+        <div className="page">
+            <Header title={t('title')} />
+            <Card className="rules-card">
+                <AutoSizer className="rules">
+                    {
+                        ({ height, width }) => (
+                            <List
+                                height={height}
+                                width={width}
+                                rowCount={rules.length}
+                                rowRenderer={renderRuleItem}
+                                rowHeight={50}
+                                overscanRowCount={10}
+                            />
+                        )
+                    }
+                </AutoSizer>
+            </Card>
+        </div>
+    )
 }
-
-export default withTranslation(['Rules'])(Rules)
