@@ -24,7 +24,6 @@ export function Select (props: SelectProps) {
     const attachmentRef = useRef<HTMLDivElement>()
     const targetRef = useRef<HTMLDivElement>()
 
-
     useLayoutEffect(() => {
         document.addEventListener('click', handleGlobalClick, true)
         return () => {

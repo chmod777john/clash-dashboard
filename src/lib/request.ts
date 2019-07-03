@@ -2,10 +2,11 @@ import axios, { AxiosInstance } from 'axios'
 import { Partial, getLocalStorageItem } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { rootStores } from '@lib/createStore'
+import { Log } from '@models/Log'
 import { StreamReader } from './streamer'
 
 let instance: AxiosInstance
-let logsStreamReader = null
+let logsStreamReader: StreamReader<Log> = null
 
 export interface Config {
     port: number
