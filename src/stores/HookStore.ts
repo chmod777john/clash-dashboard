@@ -4,7 +4,7 @@ import { createContainer } from 'unstated-next'
 import * as API from '@lib/request'
 import { useObject } from '@lib/hook'
 import { jsBridge, isClashX } from '@lib/jsBridge'
-import { setLocalStorageItem, partition } from '@lib/helper'
+import { setLocalStorageItem, partition, to } from '@lib/helper'
 
 function useData () {
     const { value: data, change } = useObject<Models.Data>({
@@ -14,8 +14,23 @@ function useData () {
         rules: []
     })
 
+    const [visible, setVisible] = useState(false)
+
+    function show () {
+        setVisible(true)
+    }
+
+    function hidden () {
+        setVisible(false)
+    }
+
     async function fetch () {
-        const [{ data: general }, rawProxies, rules] = await Promise.all([API.getConfig(), API.getProxies(), API.getRules()])
+        const [resp, err] = await to(Promise.all([API.getConfig(), API.getProxies(), API.getRules()]))
+        if (err && (!err.response || err.response.status === 401)) {
+            show()
+        }
+
+        const [{ data: general }, rawProxies, rules] = resp
 
         change('general', {
             port: general.port,
@@ -39,7 +54,7 @@ function useData () {
         change('rules', rules.data.rules)
     }
 
-    return { data, fetch }
+    return { data, fetch, unauthorized: { visible, show, hidden } }
 }
 
 function useAPIInfo () {
@@ -86,21 +101,6 @@ function useClashXData () {
     return { data, fetch }
 }
 
-function useExternalControllerModal () {
-    const [visible, setVisible] = useState(false)
-
-    function show () {
-        setVisible(true)
-    }
-
-    function hidden () {
-        setVisible(false)
-    }
-
-    return { visible, show, hidden }
-}
-
 export const Data = createContainer(useData)
 export const APIInfo = createContainer(useAPIInfo)
 export const ClashXData = createContainer(useClashXData)
-export const ExternalControllerModal = createContainer(useExternalControllerModal)

@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import { BaseComponentProps } from '@models/BaseProps'
-import { APIInfo, Data, ClashXData, ExternalControllerModal } from '@stores'
+import { APIInfo, Data, ClashXData } from '@stores'
 import App from '@containers/App'
 import i18n from '@i18n'
 
@@ -12,9 +12,7 @@ function Store (props: BaseComponentProps) {
         <APIInfo.Provider>
             <Data.Provider>
                 <ClashXData.Provider>
-                    <ExternalControllerModal.Provider>
-                        { props.children }
-                    </ExternalControllerModal.Provider>
+                    { props.children }
                 </ClashXData.Provider>
             </Data.Provider>
         </APIInfo.Provider>

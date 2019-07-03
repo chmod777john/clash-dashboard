@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useObject } from '@lib/hook'
 import { Modal, Input, Row, Col, Alert } from '@components'
-import { APIInfo, ExternalControllerModal } from '@stores'
+import { APIInfo, Data } from '@stores'
 import './style.scss'
 
 export default function ExternalController () {
     const { t } = useTranslation(['Settings'])
     const { data: info, update, fetch } = APIInfo.useContainer()
-    const { hidden, visible } = ExternalControllerModal.useContainer()
+    const { unauthorized: { hidden, visible } } = Data.useContainer()
     const { value, set, change } = useObject({
         hostname: '',
         port: '',

@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 import { Partial, getLocalStorageItem } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { ExternalControllerModal } from '@stores'
 import { Log } from '@models/Log'
 import { StreamReader } from './streamer'
 
@@ -112,17 +111,6 @@ export async function getInstance () {
         baseURL: `//${hostname}:${port}`,
         headers: secret ? { Authorization: `Bearer ${secret}` } : {}
     })
-
-    instance.interceptors.response.use(
-        resp => resp,
-        err => {
-            if (!err.response || err.response.status === 401) {
-                const { show } = ExternalControllerModal.useContainer()
-                show()
-            }
-            throw err
-        }
-    )
 
     return instance
 }

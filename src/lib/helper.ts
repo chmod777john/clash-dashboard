@@ -10,14 +10,6 @@ export function removeLocalStorageItem (key: string) {
     return window.localStorage.removeItem(key)
 }
 
-export function randomNumber (min: number, max: number) {
-    return (min + Math.random() * (max - min)) >> 0
-}
-
-export function sample<T> (arr: T[]) {
-    return arr[randomNumber(0, arr.length)]
-}
-
 export function noop () {}
 
 /**

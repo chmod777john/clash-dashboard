@@ -1,14 +1,21 @@
 import React, { useState, useMemo, useLayoutEffect, useEffect } from 'react'
 import classnames from 'classnames'
-import { BaseComponentProps, TagColors } from '@models'
+import { BaseComponentProps } from '@models'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { to, getLocalStorageItem, setLocalStorageItem, sample } from '@lib/helper'
+import { to } from '@lib/helper'
 import './style.scss'
 
 interface ProxyProps extends BaseComponentProps {
     config: IProxy
+}
+
+const TagColors = {
+    '#909399': 0,
+    '#00c520': 150,
+    '#ff9a28': 500,
+    '#ff3e5e': Infinity
 }
 
 async function getDelay (name: string) {
@@ -40,16 +47,7 @@ export function Proxy (props: ProxyProps) {
     }, [])
 
     const hasError = useMemo(() => delay === 0, [delay])
-    const color = useMemo(() => {
-        let color = getLocalStorageItem(config.name)
-
-        if (!color) {
-            color = sample(TagColors)
-            setLocalStorageItem(name, color)
-        }
-
-        return color
-    }, [config])
+    const color = useMemo(() => Object.keys(TagColors).find(threshold => delay <= TagColors[threshold]), [delay])
 
     const backgroundColor = hasError ? undefined : color
     return (
