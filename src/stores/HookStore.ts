@@ -3,7 +3,7 @@ import * as Models from '@models'
 import { createContainer } from 'unstated-next'
 import * as API from '@lib/request'
 import { useObject } from '@lib/hook'
-import { jsBridge, isClashX } from '@lib/jsBridge'
+import { jsBridge } from '@lib/jsBridge'
 import { setLocalStorageItem, partition, to } from '@lib/helper'
 
 function useData () {
@@ -65,11 +65,6 @@ function useAPIInfo () {
     })
 
     async function fetch () {
-        if (isClashX()) {
-            const apiInfo = await jsBridge.getAPIInfo()
-            set({ hostname: apiInfo.host, port: apiInfo.port, secret: apiInfo.secret })
-            return
-        }
         const info = await API.getExternalControllerConfig()
         set({ ...info })
     }
