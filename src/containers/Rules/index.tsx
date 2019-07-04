@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Header, Card, Row, Col } from '@components'
 import { containers } from '@stores'
-import { List, AutoSizer } from 'react-virtualized'
+import { FixedSizeList as List } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
 import './style.scss'
 
 export default function Rules () {
@@ -14,10 +15,10 @@ export default function Rules () {
         fetch()
     }, [])
 
-    function renderRuleItem ({ index, key, style }) {
+    function renderRuleItem ({ index, style }) {
         const rule = rules[index]
         return (
-            <li className="rule-item" key={key} style={style}>
+            <li className="rule-item" style={style}>
                 <Row className="rule-item-row" gutter={24} align="middle">
                     <Col className="rule-type" span={6} offset={1}>
                         { rule.type }
@@ -43,11 +44,11 @@ export default function Rules () {
                             <List
                                 height={height}
                                 width={width}
-                                rowCount={rules.length}
-                                rowRenderer={renderRuleItem}
-                                rowHeight={50}
-                                overscanRowCount={10}
-                            />
+                                itemCount={rules.length}
+                                itemSize={50}
+                            >
+                                { renderRuleItem }
+                            </List>
                         )
                     }
                 </AutoSizer>
