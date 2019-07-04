@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Data } from '@stores'
+import { containers } from '@stores'
 import { changeProxySelected, Group as IGroup } from '@lib/request'
 import { Tags } from '@components'
 import './style.scss'
@@ -9,7 +9,7 @@ interface GroupProps {
 }
 
 export function Group (props: GroupProps) {
-    const { fetch } = Data.useContainer()
+    const { fetch } = containers.useData()
     const { config } = props
 
     async function handleChangeProxySelected (name: string) {

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
-import { APIInfo, Data, ClashXData } from '@stores'
+import { containers } from '@stores'
 import { updateConfig } from '@lib/request'
 import { useObject } from '@lib/hook'
 import { to } from '@lib/helper'
@@ -24,9 +24,9 @@ async function handleSetSystemProxy (state: boolean) {
 }
 
 export default function Settings () {
-    const { data: clashXData, fetch: fetchClashXData } = ClashXData.useContainer()
-    const { data, fetch, unauthorized: { show } } = Data.useContainer()
-    const { data: apiInfo } = APIInfo.useContainer()
+    const { data: clashXData, fetch: fetchClashXData } = containers.useClashXData()
+    const { data, fetch, unauthorized: { show } } = containers.useData()
+    const { data: apiInfo } = containers.useAPIInfo()
     const { t, i18n } = useTranslation(['Settings'])
     const { value: info, change } = useObject({
         socks5ProxyPort: 7891,

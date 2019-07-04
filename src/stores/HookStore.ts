@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import * as Models from '@models'
-import { createContainer } from 'unstated-next'
 import * as API from '@lib/request'
-import { useObject } from '@lib/hook'
+import { useObject, composeContainer } from '@lib/hook'
 import { jsBridge } from '@lib/jsBridge'
 import { setLocalStorageItem, partition, to } from '@lib/helper'
 
@@ -96,6 +95,10 @@ function useClashXData () {
     return { data, fetch }
 }
 
-export const Data = createContainer(useData)
-export const APIInfo = createContainer(useAPIInfo)
-export const ClashXData = createContainer(useClashXData)
+const { Provider, containers } = composeContainer({
+    useData,
+    useAPIInfo,
+    useClashXData
+})
+
+export { Provider, containers }
