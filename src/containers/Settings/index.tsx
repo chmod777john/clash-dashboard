@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import i18next from 'i18next'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { containers } from '@stores'
 import { updateConfig } from '@lib/request'
@@ -9,11 +7,7 @@ import { to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import './style.scss'
 
-const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh' }, { label: 'English', value: 'en' }]
-
-function changeLanguage (language: string) {
-    i18next.changeLanguage(language)
-}
+const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]
 
 async function handleStartAtLoginChange (state: boolean) {
     await jsBridge.setStartAtLogin(state)
@@ -27,7 +21,8 @@ export default function Settings () {
     const { data: clashXData, fetch: fetchClashXData } = containers.useClashXData()
     const { data, fetch, unauthorized: { show } } = containers.useData()
     const { data: apiInfo } = containers.useAPIInfo()
-    const { t, i18n } = useTranslation(['Settings'])
+    const { useTranslation, setLang, lang } = containers.useI18n()
+    const { t } = useTranslation('Settings')
     const { value: info, change } = useObject({
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
@@ -51,6 +46,10 @@ export default function Settings () {
         if (!err) {
             fetch()
         }
+    }
+
+    function changeLanguage (language: string) {
+        setLang(language)
     }
 
     async function handleHttpPortSave () {
@@ -111,7 +110,7 @@ export default function Settings () {
                             <span className="label">{t('labels.language')}</span>
                         </Col>
                         <Col span={14} className="value-column">
-                            <ButtonSelect options={languageOptions} value={i18n.language.replace(/-.+$/, '')} onSelect={changeLanguage} />
+                            <ButtonSelect options={languageOptions} value={lang} onSelect={changeLanguage} />
                         </Col>
                     </Col>
                 </Row>
@@ -199,7 +198,7 @@ export default function Settings () {
                 <span className="check-icon">
                     <Icon type="check" size={20} />
                 </span>
-                <p className="version-info">{t('versionString', { version: 'unknown' })}</p>
+                <p className="version-info">{t('versionString')}</p>
                 <span className="check-update-btn">{t('checkUpdate')}</span>
             </Card>
         </div>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
+import { containers } from '@stores'
 
 import './style.scss'
 const logo = require('@assets/logo.png')
@@ -17,7 +17,8 @@ interface SidebarProps {
 
 export default function Sidebar (props: SidebarProps) {
     const { routes } = props
-    const { t } = useTranslation(['SideBar'])
+    const { useTranslation } = containers.useI18n()
+    const { t } = useTranslation('SideBar')
 
     const navlinks = routes.map(
         ({ path, name, exact, noMobile }) => (

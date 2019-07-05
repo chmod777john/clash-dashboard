@@ -1,5 +1,4 @@
 import React, { useLayoutEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import EE from '@lib/event'
 import { Card, Header, Icon } from '@components'
 import { containers } from '@stores'
@@ -9,7 +8,8 @@ import './style.scss'
 
 export default function Proxies () {
     const { data, fetch } = containers.useData()
-    const { t } = useTranslation(['Proxies'])
+    const { useTranslation } = containers.useI18n()
+    const { t } = useTranslation('Proxies')
 
     useLayoutEffect(() => {
         fetch()

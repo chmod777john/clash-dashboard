@@ -1,11 +1,11 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { BaseComponentProps, I18nProps } from '@models'
+import { containers } from '@stores'
+import { BaseComponentProps } from '@models'
 import { noop } from '@lib/helper'
 import classnames from 'classnames'
 import './style.scss'
 
-interface TagsProps extends BaseComponentProps, I18nProps {
+interface TagsProps extends BaseComponentProps {
     data: string[]
     onClick: (name: string) => void
     select: string
@@ -16,7 +16,8 @@ interface TagsProps extends BaseComponentProps, I18nProps {
 export function Tags (props: TagsProps) {
     const { className, data, onClick, select, canClick, rowHeight: rawHeight } = props
 
-    const { t } = useTranslation(['Proxies'])
+    const { useTranslation } = containers.useI18n()
+    const { t } = useTranslation('Proxies')
     const [expand, setExpand] = useState(false)
     const [showExtend, setShowExtend] = useState(false)
 

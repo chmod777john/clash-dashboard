@@ -4,6 +4,7 @@ import * as API from '@lib/request'
 import { useObject, composeContainer } from '@lib/hook'
 import { jsBridge } from '@lib/jsBridge'
 import { setLocalStorageItem, partition, to } from '@lib/helper'
+import { useI18n } from '@i18n'
 
 function useData () {
     const { value: data, change } = useObject<Models.Data>({
@@ -98,7 +99,8 @@ function useClashXData () {
 const { Provider, containers } = composeContainer({
     useData,
     useAPIInfo,
-    useClashXData
+    useClashXData,
+    useI18n
 })
 
 export { Provider, containers }

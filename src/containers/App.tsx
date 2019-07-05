@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { hot } from 'react-hot-loader/root'
 import classnames from 'classnames'
-import { I18nProps } from '@models'
 import { isClashX } from '@lib/jsBridge'
 import './App.scss'
 
@@ -14,9 +13,6 @@ import Settings from '@containers/Settings'
 import SlideBar from '@containers/Sidebar'
 import ExternalControllerModal from '@containers/ExternalControllerDrawer'
 import { getLogsStreamReader } from '@lib/request'
-
-export interface AppProps extends I18nProps {
-}
 
 function App () {
     useEffect(() => {

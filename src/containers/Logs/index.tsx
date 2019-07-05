@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
-import { useTranslation } from 'react-i18next'
+import { containers } from '@stores'
 import { Card, Header } from '@components'
 import { getLogsStreamReader } from '@lib/request'
 import { StreamReader } from '@lib/streamer'
@@ -11,7 +11,8 @@ export default function Logs () {
     const listRef = useRef<HTMLUListElement>()
     const logsRef = useRef<Log[]>([])
     const [logs, setLogs] = useState<Log[]>([])
-    const { t } = useTranslation(['Logs'])
+    const { useTranslation } = containers.useI18n()
+    const { t } = useTranslation('Logs')
 
     useLayoutEffect(() => {
         const ul = listRef.current

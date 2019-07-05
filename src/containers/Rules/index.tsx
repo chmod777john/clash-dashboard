@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Header, Card, Row, Col } from '@components'
 import { containers } from '@stores'
 import { FixedSizeList as List } from 'react-window'
@@ -8,7 +7,8 @@ import './style.scss'
 
 export default function Rules () {
     const { data, fetch } = containers.useData()
-    const { t } = useTranslation(['Rules'])
+    const { useTranslation } = containers.useI18n()
+    const { t } = useTranslation('Rules')
     const { rules } = data
 
     useEffect(() => {
