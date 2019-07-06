@@ -17,8 +17,8 @@
     },
     "homepage": "https://github.com/Dreamacro/clash-dashboard",
     "scripts": {
-        "build": "npm run clean-dist && NODE_ENV=production webpack -p --config=configs/webpack/prod.js",
-        "clean-dist": "rm -f -r -d dist",
+        "build": "npm run clean-dist && NODE_ENV=production webpack --config=configs/webpack/prod.js",
+        "clean-dist": "rm -rf dist",
         "lint": "npm run lint:ts && npm run lint:sass",
         "lint:ts": "tslint './src/**/*.ts*' --format stylish",
         "lint:sass": "stylelint ./src/**/*.scss",
@@ -41,7 +41,6 @@
         "@types/react-router-dom": "^4.3.4",
         "@types/react-virtualized-auto-sizer": "^1.0.0",
         "@types/react-window": "^1.8.0",
-        "@types/yaml": "^1.0.2",
         "autoprefixer": "^9.6.0",
         "awesome-typescript-loader": "^5.2.1",
         "babel-loader": "^8.0.6",
@@ -53,7 +52,6 @@
         "mini-css-extract-plugin": "^0.7.0",
         "offline-plugin": "^5.0.7",
         "postcss-loader": "^3.0.0",
-        "react-addons-test-utils": "^15.6.2",
         "react-hot-loader": "^4.12.1",
         "sass": "^1.22.2",
         "sass-loader": "^7.1.0",
@@ -86,7 +84,6 @@
         "react-virtualized-auto-sizer": "^1.0.2",
         "react-window": "^1.8.4",
         "unstated-next": "^1.1.0",
-        "use-immer": "^0.3.2",
-        "yaml": "^1.6.0"
+        "use-immer": "^0.3.2"
     }
 }
