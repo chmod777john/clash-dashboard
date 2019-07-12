@@ -7,7 +7,7 @@ import { setLocalStorageItem, partition, to } from '@lib/helper'
 import { useI18n } from '@i18n'
 
 function useData () {
-    const { value: data, change } = useObject<Models.Data>({
+    const { value: data, setSingle, setMulti } = useObject<Models.Data>({
         general: {},
         proxy: [],
         proxyGroup: [],
@@ -32,7 +32,7 @@ function useData () {
 
         const [{ data: general }, rawProxies, rules] = resp
 
-        change('general', {
+        setSingle('general', {
             port: general.port,
             socksPort: general['socks-port'],
             redirPort: general['redir-port'],
@@ -49,16 +49,18 @@ function useData () {
             .map(key => ({ ...rawProxies.data.proxies[key], name: key }))
         const [proxy, groups] = partition(proxies, proxy => !policyGroup.has(proxy.type))
 
-        change('proxy', proxy as API.Proxy[])
-        change('proxyGroup', groups as API.Group[])
-        change('rules', rules.data.rules)
+        setMulti({
+            proxy: proxy as API.Proxy[],
+            proxyGroup: groups as API.Group[],
+            rules: rules.data.rules
+        })
     }
 
     return { data, fetch, unauthorized: { visible, show, hidden } }
 }
 
 function useAPIInfo () {
-    const { value: data, set } = useObject<Models.APIInfo>({
+    const { value: data, setMulti } = useObject<Models.APIInfo>({
         hostname: '127.0.0.1',
         port: '9090',
         secret: ''
@@ -66,7 +68,7 @@ function useAPIInfo () {
 
     async function fetch () {
         const info = await API.getExternalControllerConfig()
-        set({ ...info })
+        setMulti({ ...info })
     }
 
     async function update (info: Models.APIInfo) {
@@ -81,7 +83,7 @@ function useAPIInfo () {
 }
 
 function useClashXData () {
-    const { value: data, set } = useObject<Models.ClashXData>({
+    const { value: data, setMulti } = useObject<Models.ClashXData>({
         startAtLogin: false,
         systemProxy: false
     })
@@ -90,7 +92,7 @@ function useClashXData () {
         const startAtLogin = await jsBridge.getStartAtLogin()
         const systemProxy = await jsBridge.isSystemProxySet()
 
-        set({ startAtLogin, systemProxy })
+        setMulti({ startAtLogin, systemProxy })
     }
 
     return { data, fetch }

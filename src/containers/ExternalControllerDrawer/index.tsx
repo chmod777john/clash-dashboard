@@ -9,7 +9,7 @@ export default function ExternalController () {
     const { t } = useTranslation('Settings')
     const { data: info, update, fetch } = containers.useAPIInfo()
     const { unauthorized: { hidden, visible } } = containers.useData()
-    const { value, set, change } = useObject({
+    const { value, setMulti, setSingle } = useObject({
         hostname: '',
         port: '',
         secret: ''
@@ -20,7 +20,7 @@ export default function ExternalController () {
     }, [])
 
     useEffect(() => {
-        set({ hostname: info.hostname, port: info.port, secret: info.secret })
+        setMulti({ hostname: info.hostname, port: info.port, secret: info.secret })
     }, [info])
 
     function handleOk () {
@@ -46,7 +46,7 @@ export default function ExternalController () {
                         align="left"
                         inside={true}
                         value={value.hostname}
-                        onChange={hostname => change('hostname', hostname)}
+                        onChange={hostname => setSingle('hostname', hostname)}
                     />
                 </Col>
             </Row>
@@ -57,7 +57,7 @@ export default function ExternalController () {
                         align="left"
                         inside={true}
                         value={value.port}
-                        onChange={port => change('port', port)}
+                        onChange={port => setSingle('port', port)}
                     />
                 </Col>
             </Row>
@@ -68,7 +68,7 @@ export default function ExternalController () {
                         align="left"
                         inside={true}
                         value={value.secret}
-                        onChange={secret => change('secret', secret)}
+                        onChange={secret => setSingle('secret', secret)}
                     />
                 </Col>
             </Row>
