@@ -9,14 +9,6 @@ import './style.scss'
 
 const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]
 
-async function handleStartAtLoginChange (state: boolean) {
-    await jsBridge.setStartAtLogin(state)
-}
-
-async function handleSetSystemProxy (state: boolean) {
-    await jsBridge.setSystemProxy(state)
-}
-
 export default function Settings () {
     const { data: clashXData, fetch: fetchClashXData } = containers.useClashXData()
     const { data, fetch, unauthorized: { show } } = containers.useData()
@@ -46,6 +38,16 @@ export default function Settings () {
         if (!err) {
             fetch()
         }
+    }
+
+    async function handleStartAtLoginChange (state: boolean) {
+        await jsBridge.setStartAtLogin(state)
+        fetchClashXData()
+    }
+
+    async function handleSetSystemProxy (state: boolean) {
+        await jsBridge.setSystemProxy(state)
+        fetchClashXData()
     }
 
     function changeLanguage (language: string) {
