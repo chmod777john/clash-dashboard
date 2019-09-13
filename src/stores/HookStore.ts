@@ -7,7 +7,7 @@ import { setLocalStorageItem, partition, to } from '@lib/helper'
 import { useI18n } from '@i18n'
 
 function useData () {
-    const { value: data, setSingle, setMulti } = useObject<Models.Data>({
+    const { value: data, setSingle, setMulti, set } = useObject<Models.Data>({
         general: {},
         proxy: [],
         proxyGroup: [],
@@ -58,7 +58,16 @@ function useData () {
         })
     }
 
-    return { data, fetch, unauthorized: { visible, show, hidden } }
+    function updateDelay (proxy: string, delay: number) {
+        set(draft => {
+            const p = draft.proxy.find(p => p.name === proxy)
+            if (p) {
+                p.history.push({ time: Date.now().toString(), delay })
+            }
+        })
+    }
+
+    return { data, fetch, unauthorized: { visible, show, hidden }, updateDelay }
 }
 
 function useAPIInfo () {

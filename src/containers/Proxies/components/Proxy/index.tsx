@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useLayoutEffect, useEffect } from 'react'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models'
+import { containers } from '@stores'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
@@ -31,10 +32,14 @@ async function getDelay (name: string) {
 export function Proxy (props: ProxyProps) {
     const { config, className } = props
     const [delay, setDelay] = useState(0)
+    const { updateDelay } = containers.useData()
 
     async function speedTest () {
         const [delay, err] = await to(getDelay(config.name))
-        setDelay(err ? 0 : delay)
+
+        const validDelay = err ? 0 : delay
+        setDelay(validDelay)
+        updateDelay(config.name, validDelay)
     }
 
     useEffect(() => {
