@@ -7,7 +7,7 @@ import { setLocalStorageItem, partition, to } from '@lib/helper'
 import { useI18n } from '@i18n'
 
 function useData () {
-    const { value: data, setSingle, setMulti, set } = useObject<Models.Data>({
+    const [data, set] = useObject<Models.Data>({
         general: {},
         proxy: [],
         proxyGroup: [],
@@ -32,7 +32,7 @@ function useData () {
 
         const [{ data: general }, rawProxies, rules] = resp
 
-        setSingle('general', {
+        set('general', {
             port: general.port,
             socksPort: general['socks-port'],
             redirPort: general['redir-port'],
@@ -51,7 +51,7 @@ function useData () {
             .map(key => ({ ...rawProxies.data.proxies[key], name: key }))
         const [proxy, groups] = partition(proxies, proxy => !policyGroup.has(proxy.type))
 
-        setMulti({
+        set({
             proxy: proxy as API.Proxy[],
             proxyGroup: general.mode === 'Global' ? [proxyList] : groups as API.Group[],
             rules: rules.data.rules
@@ -71,7 +71,7 @@ function useData () {
 }
 
 function useAPIInfo () {
-    const { value: data, setMulti } = useObject<Models.APIInfo>({
+    const [data, set] = useObject<Models.APIInfo>({
         hostname: '127.0.0.1',
         port: '9090',
         secret: ''
@@ -79,7 +79,7 @@ function useAPIInfo () {
 
     async function fetch () {
         const info = await API.getExternalControllerConfig()
-        setMulti({ ...info })
+        set({ ...info })
     }
 
     async function update (info: Models.APIInfo) {
@@ -94,7 +94,7 @@ function useAPIInfo () {
 }
 
 function useClashXData () {
-    const { value: data, setMulti } = useObject<Models.ClashXData>({
+    const [data, set] = useObject<Models.ClashXData>({
         startAtLogin: false,
         systemProxy: false
     })
@@ -103,7 +103,7 @@ function useClashXData () {
         const startAtLogin = await jsBridge.getStartAtLogin()
         const systemProxy = await jsBridge.isSystemProxySet()
 
-        setMulti({ startAtLogin, systemProxy })
+        set({ startAtLogin, systemProxy })
     }
 
     return { data, fetch }

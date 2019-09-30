@@ -15,7 +15,7 @@ export default function Settings () {
     const { data: apiInfo } = containers.useAPIInfo()
     const { useTranslation, setLang, lang } = containers.useI18n()
     const { t } = useTranslation('Settings')
-    const { value: info, setSingle } = useObject({
+    const [info, set] = useObject({
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
         isClashX: false
@@ -24,13 +24,13 @@ export default function Settings () {
     useEffect(() => {
         fetch()
         if (isClashX()) {
-            fetchClashXData().then(() => setSingle('isClashX', true))
+            fetchClashXData().then(() => set('isClashX', true))
         }
     }, [])
 
     useEffect(() => {
-        setSingle('socks5ProxyPort', data.general.socksPort)
-        setSingle('httpProxyPort', data.general.port)
+        set('socks5ProxyPort', data.general.socksPort)
+        set('httpProxyPort', data.general.port)
     }, [data])
 
     async function handleProxyModeChange (mode: string) {
@@ -58,7 +58,7 @@ export default function Settings () {
         const [, err] = await to(updateConfig({ 'port': info.httpProxyPort }))
         if (!err) {
             await fetch()
-            setSingle('httpProxyPort', data.general.port)
+            set('httpProxyPort', data.general.port)
         }
     }
 
@@ -66,7 +66,7 @@ export default function Settings () {
         const [, err] = await to(updateConfig({ 'socks-port': info.socks5ProxyPort }))
         if (!err) {
             await fetch()
-            setSingle('socks5ProxyPort', data.general.socksPort)
+            set('socks5ProxyPort', data.general.socksPort)
         }
     }
 
@@ -164,7 +164,7 @@ export default function Settings () {
                         <Col span={8}>
                             <Input
                                 value={info.socks5ProxyPort}
-                                onChange={socks5ProxyPort => setSingle('socks5ProxyPort', parseInt(socks5ProxyPort, 10))}
+                                onChange={socks5ProxyPort => set('socks5ProxyPort', parseInt(socks5ProxyPort, 10))}
                                 onBlur={handleSocksPortSave}
                             />
                         </Col>
@@ -178,7 +178,7 @@ export default function Settings () {
                         <Col span={8}>
                             <Input
                                 value={info.httpProxyPort}
-                                onChange={httpProxyPort => setSingle('httpProxyPort', parseInt(httpProxyPort, 10))}
+                                onChange={httpProxyPort => set('httpProxyPort', parseInt(httpProxyPort, 10))}
                                 onBlur={handleHttpPortSave}
                             />
                         </Col>
