@@ -76,6 +76,7 @@ export interface APIInfo {
 }
 
 export interface Data {
+    version?: string
 
     general?: {
 

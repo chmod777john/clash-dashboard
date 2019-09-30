@@ -39,7 +39,6 @@ export default function Proxies () {
 
     const [sort, setSort] = useState(sortType.None)
     const proxies = useMemo(() => {
-        console.log(1)
         switch (sort) {
         case sortType.Desc:
             return data.proxy.slice().sort((a, b) => compareDesc(a, b))

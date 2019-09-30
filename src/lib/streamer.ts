@@ -1,9 +1,11 @@
 import { to } from '@lib/helper'
+import semver from 'semver'
 import EventEmitter from 'eventemitter3'
 
 export interface Config {
     url: string
-    headers?: { [key: string]: string }
+    version: string
+    token?: string
     bufferLength?: number
     retryInterval?: number
 }
@@ -24,7 +26,35 @@ export class StreamReader<T> {
             config
         )
 
+        if (semver.valid(config.version) && semver.gt(config.version, 'v0.15.0-52-gc384693')) {
+            this.websocketLoop()
+            return
+        }
         this.loop()
+    }
+
+    protected websocketLoop () {
+        const url = new URL(this.config.url)
+        url.protocol = location.protocol === 'http:' ? 'ws:' : 'wss:'
+        url.searchParams.set('token', this.config.token)
+
+        const connection = new WebSocket(url.toJSON())
+        connection.addEventListener('message', msg => {
+            const data = JSON.parse(msg.data)
+            this.EE.emit('data', [data])
+            if (this.config.bufferLength > 0) {
+                this.innerBuffer.push(data)
+                if (this.innerBuffer.length > this.config.bufferLength) {
+                    this.innerBuffer.splice(0, this.innerBuffer.length - this.config.bufferLength)
+                }
+            }
+        })
+
+        connection.addEventListener('close', () => setTimeout(this.websocketLoop, this.config.retryInterval))
+        connection.addEventListener('error', err => {
+            this.EE.emit('error', err)
+            setTimeout(this.websocketLoop, this.config.retryInterval)
+        })
     }
 
     protected async loop () {
@@ -32,7 +62,7 @@ export class StreamReader<T> {
             this.config.url,
             {
                 mode: 'cors',
-                headers: this.config.headers
+                headers: this.config.token ? { Authorization: `Bearer ${this.config.token}` } : {}
             }
         ))
         if (err) {

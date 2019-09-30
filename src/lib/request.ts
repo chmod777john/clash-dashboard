@@ -1,11 +1,9 @@
-import axios, { AxiosInstance } from 'axios'
-import { Partial, getLocalStorageItem } from '@lib/helper'
+import axios from 'axios'
+import { Partial, getLocalStorageItem, to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
+import { createAsyncSingleton } from '@lib/asyncSingleton'
 import { Log } from '@models/Log'
 import { StreamReader } from './streamer'
-
-let instance: AxiosInstance
-let logsStreamReader: StreamReader<Log> = null
 
 export interface Config {
     port: number
@@ -51,6 +49,19 @@ export interface Group {
     history: History[]
 }
 
+export const getInstance = createAsyncSingleton(async () => {
+    const {
+        hostname,
+        port,
+        secret
+    } = await getExternalControllerConfig()
+
+    return axios.create({
+        baseURL: `//${hostname}:${port}`,
+        headers: secret ? { Authorization: `Bearer ${secret}` } : {}
+    })
+})
+
 export async function getConfig () {
     const req = await getInstance()
     return req.get<Config>('configs')
@@ -81,6 +92,11 @@ export async function getProxy (name: string) {
     return req.get<Proxy>(`proxies/${name}`)
 }
 
+export async function getVersion () {
+    const req = await getInstance()
+    return req.get<{ version: string }>('version')
+}
+
 export async function getProxyDelay (name: string) {
     const req = await getInstance()
     return req.get<{ delay: number }>(`proxies/${name}/delay`, {
@@ -94,25 +110,6 @@ export async function getProxyDelay (name: string) {
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
     return req.put<void>(`proxies/${name}`, { name: select })
-}
-
-export async function getInstance () {
-    if (instance) {
-        return instance
-    }
-
-    const {
-        hostname,
-        port,
-        secret
-    } = await getExternalControllerConfig()
-
-    instance = axios.create({
-        baseURL: `//${hostname}:${port}`,
-        headers: secret ? { Authorization: `Bearer ${secret}` } : {}
-    })
-
-    return instance
 }
 
 export async function getExternalControllerConfig () {
@@ -137,14 +134,12 @@ export async function getExternalControllerConfig () {
     return { hostname, port, secret }
 }
 
-export async function getLogsStreamReader () {
-    if (logsStreamReader) {
-        return logsStreamReader
-    }
+export const getLogsStreamReader = createAsyncSingleton(async function getLogsStreamReader () {
     const externalController = await getExternalControllerConfig()
     const { data: config } = await getConfig()
-    const logUrl = `//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
-    const auth = externalController.secret ? { Authorization: `Bearer ${externalController.secret}` } : {}
-    logsStreamReader = new StreamReader({ url: logUrl, bufferLength: 200, headers: auth })
-    return logsStreamReader
-}
+    const [data, err] = await to(getVersion())
+    const version = err ? 'unkonwn version' : data.data.version
+
+    const logUrl = `${location.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
+    return new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: externalController.secret, version })
+})

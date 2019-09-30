@@ -8,6 +8,7 @@ import { useI18n } from '@i18n'
 
 function useData () {
     const [data, set] = useObject<Models.Data>({
+        version: '',
         general: {},
         proxy: [],
         proxyGroup: [],
@@ -56,6 +57,13 @@ function useData () {
             proxyGroup: general.mode === 'Global' ? [proxyList] : groups as API.Group[],
             rules: rules.data.rules
         })
+
+        const [version, vErr] = await to(API.getVersion())
+        if (vErr) {
+            return
+        }
+
+        set('version', version.data.version)
     }
 
     function updateDelay (proxy: string, delay: number) {
