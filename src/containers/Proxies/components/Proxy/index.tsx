@@ -43,7 +43,7 @@ export function Proxy (props: ProxyProps) {
     }
 
     useEffect(() => {
-        setDelay(config.history.length ? config.history.slice(-1)[0].delay : 0)
+        setDelay(config.history && config.history.length ? config.history.slice(-1)[0].delay : 0)
     }, [config])
 
     useLayoutEffect(() => {
