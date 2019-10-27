@@ -4,7 +4,8 @@ export default {
         Overview: 'Overview',
         Logs: 'Logs',
         Rules: 'Rules',
-        Settings: 'Setting'
+        Settings: 'Setting',
+        Connections: 'Connections'
     },
     Settings: {
         title: 'Settings',
@@ -40,6 +41,30 @@ export default {
     },
     Rules: {
         title: 'Rules'
+    },
+    Connections: {
+        title: 'Connections',
+        keepClosed: 'Keep closed connections',
+        total: {
+            text: 'total',
+            upload: 'upload',
+            download: 'download'
+        },
+        closeAll: {
+            title: 'Warning',
+            content: 'This would close all connections'
+        },
+        columns: {
+            host: 'Host',
+            network: 'Network',
+            type: 'Type',
+            chains: 'Chains',
+            rule: 'Rule',
+            time: 'Time',
+            speed: 'Speed',
+            upload: 'Upload',
+            download: 'Download'
+        }
     },
     Proxies: {
         title: 'Proxies',

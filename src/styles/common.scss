@@ -22,13 +22,20 @@ body {
 
     ::-webkit-scrollbar {
         z-index: 11;
-        width: 5px;
         background: transparent;
 
         &-thumb {
             border-radius: 5px;
             background: #2c8af8;
         }
+    }
+
+    ::-webkit-scrollbar:vertical {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar:horizontal {
+        height: 6px;
     }
 }
 

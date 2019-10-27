@@ -1,10 +1,9 @@
 import { to } from '@lib/helper'
-import semver from 'semver'
 import EventEmitter from 'eventemitter3'
 
 export interface Config {
     url: string
-    version: string
+    useWebsocket: boolean
     token?: string
     bufferLength?: number
     retryInterval?: number
@@ -26,11 +25,9 @@ export class StreamReader<T> {
             config
         )
 
-        if (semver.valid(config.version) && semver.gt(config.version, 'v0.15.0-52-gc384693')) {
-            this.websocketLoop()
-            return
-        }
-        this.loop()
+        this.config.useWebsocket
+            ? this.websocketLoop()
+            : this.loop()
     }
 
     protected websocketLoop () {
@@ -102,11 +99,11 @@ export class StreamReader<T> {
         }
     }
 
-    subscribe<T> (event: string, callback: (data: T) => void) {
+    subscribe (event: string, callback: (data: T[]) => void) {
         this.EE.addListener(event, callback)
     }
 
-    unsubscribe<T> (event: string, callback: (data: T) => void) {
+    unsubscribe (event: string, callback: (data: T[]) => void) {
         this.EE.removeListener(event, callback)
     }
 

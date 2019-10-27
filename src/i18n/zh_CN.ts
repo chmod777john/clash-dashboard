@@ -4,7 +4,8 @@ export default {
         Overview: '总览',
         Logs: '日志',
         Rules: '规则',
-        Settings: '设置'
+        Settings: '设置',
+        Connections: '连接'
     },
     Settings: {
         title: '设置',
@@ -40,6 +41,30 @@ export default {
     },
     Rules: {
         title: '规则'
+    },
+    Connections: {
+        title: '连接',
+        keepClosed: '保留关闭连接',
+        total: {
+            text: '总量',
+            upload: '上传',
+            download: '下载'
+        },
+        closeAll: {
+            title: '警告',
+            content: '将会关闭所有连接'
+        },
+        columns: {
+            host: '域名',
+            network: '网络',
+            type: '类型',
+            chains: '节点链',
+            rule: '规则',
+            time: '连接时间',
+            speed: '速率',
+            upload: '上传',
+            download: '下载'
+        }
     },
     Proxies: {
         title: '代理',

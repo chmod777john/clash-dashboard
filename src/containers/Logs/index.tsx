@@ -31,7 +31,7 @@ export default function Logs () {
             const streamReader = await getLogsStreamReader()
             logsRef.current = streamReader.buffer()
             setLogs(logsRef.current)
-            streamReader.subscribe<Log[]>('data', handleLog)
+            streamReader.subscribe('data', handleLog)
         }()
 
         return () => streamReader && streamReader.unsubscribe('data', handleLog)

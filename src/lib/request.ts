@@ -1,4 +1,5 @@
 import axios from 'axios'
+import semver from 'semver'
 import { Partial, getLocalStorageItem, to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { createAsyncSingleton } from '@lib/asyncSingleton'
@@ -47,6 +48,30 @@ export interface Group {
     now: string
     all: string[]
     history: History[]
+}
+
+export interface Snapshot {
+    uploadTotal: number
+    downloadTotal: number
+    connections: Connections[]
+}
+
+export interface Connections {
+    id: string
+    metadata: {
+        network: string
+        type: string
+        host: string
+        sourceIP: string
+        sourcePort: string
+        destinationPort: string
+        destinationIP?: string
+    }
+    upload: number
+    download: number
+    start: string
+    chains: string[]
+    rule: string
 }
 
 export const getInstance = createAsyncSingleton(async () => {
@@ -107,6 +132,11 @@ export async function getProxyDelay (name: string) {
     })
 }
 
+export async function closeAllConnections () {
+    const req = await getInstance()
+    return req.delete('connections')
+}
+
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
     return req.put<void>(`proxies/${name}`, { name: select })
@@ -134,12 +164,23 @@ export async function getExternalControllerConfig () {
     return { hostname, port, secret }
 }
 
-export const getLogsStreamReader = createAsyncSingleton(async function getLogsStreamReader () {
+export const getLogsStreamReader = createAsyncSingleton(async function () {
     const externalController = await getExternalControllerConfig()
     const { data: config } = await getConfig()
     const [data, err] = await to(getVersion())
     const version = err ? 'unkonwn version' : data.data.version
 
+    const useWebsocket = semver.valid(version) && semver.gt(version, 'v0.15.0-52-gc384693')
     const logUrl = `${location.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
-    return new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: externalController.secret, version })
+    return new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
+})
+
+export const getConnectionStreamReader = createAsyncSingleton(async function () {
+    const externalController = await getExternalControllerConfig()
+    const [data, err] = await to(getVersion())
+    const version = err ? 'unkonwn version' : data.data.version
+
+    const useWebsocket = !!version || true
+    const logUrl = `${location.protocol}//${externalController.hostname}:${externalController.port}/connections`
+    return new StreamReader<Snapshot>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
 })

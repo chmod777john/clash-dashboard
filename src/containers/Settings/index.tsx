@@ -104,7 +104,7 @@ export default function Settings () {
                             <span className="label">{t('labels.startAtLogin')}</span>
                         </Col>
                         <Col span={8} className="value-column">
-                            <Switch disabled={!isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
+                            <Switch disabled={!info.isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
                         </Col>
                     </Col>
                     <Col span={12}>
@@ -123,7 +123,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8} className="value-column">
                             <Switch
-                                disabled={!isClashX}
+                                disabled={!info.isClashX}
                                 checked={systemProxy}
                                 onChange={handleSetSystemProxy}
                             />

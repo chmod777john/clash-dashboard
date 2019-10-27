@@ -1,6 +1,9 @@
 import { Draft } from 'immer'
 import { useImmer } from 'use-immer'
 import { createContainer } from 'unstated-next'
+import { useRef, useEffect } from 'react'
+
+import { noop } from '@lib/helper'
 
 export function useObject<T extends object> (initialValue: T) {
     const [copy, rawSet] = useImmer(initialValue)
@@ -29,6 +32,24 @@ export function useObject<T extends object> (initialValue: T) {
     }
 
     return [copy, set] as [T, typeof set]
+}
+
+export function useInterval (callback: () => void, delay: number) {
+    const savedCallback = useRef(noop)
+
+    useEffect(() => savedCallback.current = callback, [callback])
+
+    useEffect(
+        () => {
+            const handler = () => savedCallback.current()
+
+            if (delay !== null) {
+                const id = setInterval(handler, delay)
+                return () => clearInterval(id)
+            }
+        },
+        [delay]
+    )
 }
 
 type containerFn<Value, State = void> = (initialState?: State) => Value

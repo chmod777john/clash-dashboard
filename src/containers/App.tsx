@@ -11,6 +11,7 @@ import Logs from '@containers/Logs'
 import Rules from '@containers/Rules'
 import Settings from '@containers/Settings'
 import SlideBar from '@containers/Sidebar'
+import Connections from '@containers/Connections'
 import ExternalControllerModal from '@containers/ExternalControllerDrawer'
 import { getLogsStreamReader } from '@lib/request'
 
@@ -24,6 +25,7 @@ function App () {
         { path: '/proxies', name: 'Proxies', component: Proxies },
         { path: '/logs', name: 'Logs', component: Logs },
         { path: '/rules', name: 'Rules', component: Rules, noMobile: true },
+        { path: '/connections', name: 'Connections', component: Connections, noMobile: true },
         { path: '/settings', name: 'Settings', component: Settings }
     ]
 

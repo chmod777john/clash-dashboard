@@ -1,0 +1,41 @@
+@import '~@styles/variables';
+
+$length: 18px;
+$padding: 26px;
+
+.checkbox {
+    display: flex;
+    position: relative;
+    padding-left: $padding;
+    cursor: pointer;
+    line-height: $length;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: $length;
+        height: $length;
+        border-radius: 3px;
+        transition: background-color 0.3s ease;
+        transform: translateY(-$length / 2);
+        background-color: $color-white;
+        border: 1px solid $color-primary-lightly;
+    }
+
+    &.checked::before {
+        background-color: $color-primary;
+    }
+}
+
+.checkbox-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    color: $color-white;
+    line-height: $length;
+    transform: translateY(-$length / 2) scale(0.6);
+    font-weight: bold;
+}

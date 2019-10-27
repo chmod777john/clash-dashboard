@@ -1,0 +1,115 @@
+@import '~@styles/variables';
+
+.connections-card {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-top: 10px;
+    padding: 0;
+
+    .connections {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .connections-body {
+        flex: 1 0 auto;
+    }
+
+    .connections-th {
+        $height: 30px;
+
+        position: relative;
+        text-align: center;
+        color: $color-gray-darken;
+        background: #f3f6f9;
+        height: $height;
+        line-height: $height;
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .connections-resizer {
+        $padding: 8px;
+        $width: 20px;
+
+        position: absolute;
+        opacity: 0;
+        right: $width / -2;
+        top: $padding;
+        bottom: $padding;
+        width: $width;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+        font-size: 14px;
+        font-weight: 300;
+
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            left: $width / 2;
+            transform: translateX(-2px);
+            width: 2px;
+            height: 100%;
+            background-color: rgba($color-gray-darken, 60%);
+        }
+    }
+
+    .connections-tr {
+        white-space: nowrap;
+
+        &:hover .connections-resizer {
+            opacity: 1;
+        }
+    }
+
+    .connetions-item {
+        height: 36px;
+    }
+
+    .connections-block {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        line-height: 36px;
+        padding: 0 10px;
+        color: $color-primary-darken;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.center {
+            text-align: center;
+        }
+
+        &.completed {
+            background-color: darken(#f3f6f9, 3%);
+            color: rgba($color-primary-darken, 50%);
+        }
+    }
+}
+
+.connections-filter {
+    color: $color-primary-dark;
+    font-size: 14px;
+    line-height: 20px;
+    margin-left: 15px;
+    text-shadow: 0 0 6px rgba($color: $color-primary-dark, $alpha: 0.4);
+    cursor: pointer;
+
+    &.dangerous {
+        color: $color-red;
+        text-shadow: 0 0 6px rgba($color: $color-primary, $alpha: 0.2);
+    }
+
+    &.total {
+        flex: 1;
+        cursor: unset;
+    }
+}

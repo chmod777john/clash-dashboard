@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: "clash-iconfont";
-    src: url('//at.alicdn.com/t/font_841708_z4foe3sarr8.ttf?t=1567008313882') format('truetype');
+    src: url('//at.alicdn.com/t/font_841708_w4jpsvny2x.ttf?t=1572182107550') format('truetype');
 }
 
 .clash-iconfont {
@@ -51,3 +51,5 @@
 .icon-sort-descending::before { content: "\e8b4"; }
 
 .icon-sort-ascending::before { content: "\e8b5"; }
+
+.icon-close-all::before { content: "\e71b"; }

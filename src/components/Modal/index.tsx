@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react'
+import React, { useRef, useLayoutEffect, MouseEvent, useState } from 'react'
 import classnames from 'classnames'
 import { createPortal } from 'react-dom'
 import { BaseComponentProps } from '@models'
@@ -55,7 +55,7 @@ export function Modal (props: ModalProps) {
         return () => document.body.removeChild(portalRef.current)
     }, [])
 
-    function handleMaskClick (e) {
+    function handleMaskClick (e: MouseEvent) {
         if (e.target === maskRef.current) {
             onClose()
         }
@@ -89,4 +89,18 @@ export function Modal (props: ModalProps) {
     )
 
     return createPortal(modal, portalRef.current)
+}
+
+export function useModal () {
+    const [visible, setVisible] = useState(false)
+
+    function show () {
+        setVisible(true)
+    }
+
+    function hide () {
+        setVisible(false)
+    }
+
+    return { visible, show, hide }
 }
