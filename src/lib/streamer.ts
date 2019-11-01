@@ -35,7 +35,7 @@ export class StreamReader<T> {
         url.protocol = location.protocol === 'http:' ? 'ws:' : 'wss:'
         url.searchParams.set('token', this.config.token)
 
-        const connection = new WebSocket(url.toJSON())
+        const connection = new WebSocket(url.toString())
         connection.addEventListener('message', msg => {
             const data = JSON.parse(msg.data)
             this.EE.emit('data', [data])
