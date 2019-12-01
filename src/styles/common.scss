@@ -68,6 +68,10 @@ body {
     margin: 20px 0;
 }
 
+input {
+    -webkit-appearance: none;
+}
+
 @media (max-width: 768px) {
     .app {
         padding-left: 0;
