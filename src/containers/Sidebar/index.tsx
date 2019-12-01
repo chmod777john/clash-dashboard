@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { containers } from '@stores'
 
 import './style.scss'
-const logo = require('@assets/logo.png')
+import logo from '@assets/logo.png'
 
 interface SidebarProps {
     routes: {
