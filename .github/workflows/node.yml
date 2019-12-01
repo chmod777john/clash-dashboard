@@ -1,0 +1,33 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Dashboard code
+      uses: actions/checkout@v1
+    - name: Setup Nodejs
+      uses: actions/setup-node@v1
+      with:
+        node-version: '13.x'
+    - name: Reuse Cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Install package
+      run: |
+        npm ci
+        npm run build
+    - name: Deploy
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: dist
+        fqdn: clash.razord.top
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
