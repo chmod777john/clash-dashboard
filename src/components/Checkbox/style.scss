@@ -37,5 +37,6 @@ $padding: 26px;
     color: $color-white;
     line-height: $length;
     transform: translateY(-$length / 2) scale(0.6);
+    text-shadow: none;
     font-weight: bold;
 }
