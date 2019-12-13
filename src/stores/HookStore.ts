@@ -12,6 +12,7 @@ function useData () {
         general: {},
         proxy: [],
         proxyGroup: [],
+        proxyProviders: [],
         rules: []
     })
 
@@ -26,12 +27,12 @@ function useData () {
     }
 
     async function fetch () {
-        const [resp, err] = await to(Promise.all([API.getConfig(), API.getProxies(), API.getRules()]))
+        const [resp, err] = await to(Promise.all([API.getConfig(), API.getProxies(), API.getRules(), API.getProxyProviders()]))
         if (err && (!err.response || err.response.status === 401)) {
             show()
         }
 
-        const [{ data: general }, rawProxies, rules] = resp
+        const [{ data: general }, rawProxies, rules, proxyProviders] = resp
 
         set('general', {
             port: general.port,
@@ -52,9 +53,15 @@ function useData () {
             .map(key => ({ ...rawProxies.data.proxies[key], name: key }))
         const [proxy, groups] = partition(proxies, proxy => !policyGroup.has(proxy.type))
 
+        const providers = Object.keys(proxyProviders.data.providers)
+            .map<API.Provider>(name => proxyProviders.data.providers[name])
+            .filter(pd => pd.name !== 'default')
+            .filter(pd => pd.vehicleType !== 'Compatible')
+
         set({
             proxy: proxy as API.Proxy[],
             proxyGroup: general.mode === 'Global' ? [proxyList] : groups as API.Group[],
+            proxyProviders: providers,
             rules: rules.data.rules
         })
 

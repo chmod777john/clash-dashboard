@@ -84,6 +84,8 @@ export default {
             tls: 'TLS'
         },
         groupTitle: 'Policy Group',
+        providerTitle: 'Providers',
+        providerUpdateTime: 'Last updated at',
         expandText: 'Expand',
         collapseText: 'Collapse',
         speedTestText: 'Speed Test'

@@ -12,7 +12,7 @@ interface IconProps extends BaseComponentProps {
     onClick?: React.FormEventHandler
 }
 
-export const Icon: React.SFC<IconProps> = props => {
+export function Icon (props: IconProps) {
     const { type, size = 14, className: cn, style: s } = props
     const className = classnames('clash-iconfont', `icon-${type}`, cn)
     const style: React.CSSProperties = { fontSize: size, ...s }

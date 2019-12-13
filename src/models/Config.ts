@@ -115,5 +115,7 @@ export interface Data {
 
     proxyGroup?: API.Group[]
 
+    proxyProviders?: API.Provider[]
+
     rules?: API.Rule[]
 }

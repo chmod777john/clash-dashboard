@@ -31,6 +31,20 @@ export interface Proxies {
     }
 }
 
+export interface Provider {
+    name: string
+    proxies: Array<Group | Proxy>
+    type: 'Proxy' | 'Rule'
+    vehicleType: 'HTTP' | 'File' | 'Compatible'
+    updatedAt?: string
+}
+
+export interface ProxyProviders {
+    providers: {
+        [key: string]: Provider
+    }
+}
+
 interface History {
     time: string
     delay: number
@@ -105,6 +119,33 @@ export async function getRules () {
 export async function updateRules () {
     const req = await getInstance()
     return req.put<void>('rules')
+}
+
+export async function getProxyProviders () {
+    const req = await getInstance()
+    return req.get<ProxyProviders>('providers/proxies', {
+        validateStatus (status) {
+            // compatible old version
+            return (status >= 200 && status < 300) || status === 404
+        }
+    })
+    // compatible old version
+    .then(resp => {
+        if (resp.status === 404) {
+            resp.data = { providers: {} }
+        }
+        return resp
+    })
+}
+
+export async function updateProvider (name: string) {
+    const req = await getInstance()
+    return req.put<void>(`providers/proxies/${name}`)
+}
+
+export async function healthCheckProvider (name: string) {
+    const req = await getInstance()
+    return req.get<void>(`providers/proxies/${name}/healthcheck`)
 }
 
 export async function getProxies () {

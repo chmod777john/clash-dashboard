@@ -139,7 +139,7 @@ interface OptionProps extends BaseComponentProps {
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void
 }
 
-export const Option: React.SFC<OptionProps> = props => {
+export function Option (props: OptionProps) {
     const { className: cn, style, key, disabled = false, children, onClick = () => {} } = props
     const className = classnames('option', { disabled }, cn)
 

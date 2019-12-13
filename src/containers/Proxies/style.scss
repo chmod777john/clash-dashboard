@@ -7,7 +7,6 @@
     display: flex;
     margin-right: calc(-1 * var(--gap));
     margin-top: 20px;
-    padding-bottom: 100px;
     flex-wrap: wrap;
     align-content: flex-start;
     list-style: none;
@@ -67,6 +66,14 @@
     color: $color-primary-dark;
     text-shadow: 0 2px 6px rgba($color: $color-primary-dark, $alpha: 0.4);
     cursor: pointer;
+}
+
+.proxies-providers-item {
+    margin: 20px 0;
+}
+
+.proxies-providers-list {
+    list-style: none;
 }
 
 @media (max-width: 768px) {

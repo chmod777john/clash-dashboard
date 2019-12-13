@@ -8,7 +8,7 @@ interface HeaderProps extends BaseComponentProps {
     title: string
 }
 
-export const Header: React.SFC<HeaderProps> = props => {
+export function Header (props: HeaderProps) {
     const { title, children, className, style } = props
 
     return <header className={classnames('header', className)} style={style}>

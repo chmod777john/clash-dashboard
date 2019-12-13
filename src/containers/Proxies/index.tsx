@@ -1,10 +1,12 @@
-import React, { useLayoutEffect, useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
+import useSWR from 'swr'
 import EE from '@lib/event'
+import { useRound } from '@lib/hook'
 import { Card, Header, Icon } from '@components'
 import { containers } from '@stores'
 import * as API from '@lib/request'
 
-import { Proxy, Group } from './components'
+import { Proxy, Group, Provider } from './components'
 import './style.scss'
 
 enum sortType {
@@ -29,15 +31,15 @@ export default function Proxies () {
     const { data, fetch } = containers.useData()
     const { useTranslation } = containers.useI18n()
     const { t } = useTranslation('Proxies')
+    useSWR('data', fetch)
 
-    useLayoutEffect(() => {
-        fetch()
-    }, [])
     function handleNotitySpeedTest () {
         EE.notifySpeedTest()
     }
 
-    const [sort, setSort] = useState(sortType.None)
+    const { current: sort, next } = useRound(
+        [sortType.None, sortType.Asc, sortType.Desc]
+    )
     const proxies = useMemo(() => {
         switch (sort) {
         case sortType.Desc:
@@ -48,42 +50,61 @@ export default function Proxies () {
             return data.proxy.slice()
         }
     }, [sort, data])
-    function handleSort () {
-        setSort((sort + 1) % 3)
-    }
+    const handleSort = next
 
     return (
         <div className="page">
-            <div className="proxies-container">
-                <Header title={t('groupTitle')} />
-                <Card className="proxies-group-card">
-                    <ul className="proxies-group-list">
+            {
+                data.proxyGroup.length !== 0 &&
+                <div className="proxies-container">
+                    <Header title={t('groupTitle')} />
+                    <Card className="proxies-group-card">
+                        <ul className="proxies-group-list">
+                            {
+                                data.proxyGroup.map(p => (
+                                    <li className="proxies-group-item" key={p.name}>
+                                        <Group config={p} />
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </Card>
+                </div>
+            }
+            {
+                data.proxyProviders.length !== 0 &&
+                <div className="proxies-container">
+                    <Header title={t('providerTitle')} />
+                    <ul className="proxies-providers-list">
                         {
-                            data.proxyGroup.map(p => (
-                                <li className="proxies-group-item" key={p.name}>
-                                    <Group config={p} />
+                            data.proxyProviders.map(p => (
+                                <li className="proxies-providers-item" key={p.name}>
+                                    <Provider provider={p} />
                                 </li>
                             ))
                         }
                     </ul>
-                </Card>
-            </div>
-            <div className="proxies-container">
-                <Header title={t('title')}>
-                    <Icon className="proxies-action-icon" type={sortMap[sort]} onClick={handleSort} size={20} />
-                    <Icon className="proxies-action-icon" type="speed" size={20} />
-                    <span className="proxies-speed-test" onClick={handleNotitySpeedTest}>{t('speedTestText')}</span>
-                </Header>
-                <ul className="proxies-list">
-                    {
-                        proxies.map(p => (
-                            <li key={p.name}>
-                                <Proxy config={p} />
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div>
+                </div>
+            }
+            {
+                proxies.length !== 0 &&
+                <div className="proxies-container">
+                    <Header title={t('title')}>
+                        <Icon className="proxies-action-icon" type={sortMap[sort]} onClick={handleSort} size={20} />
+                        <Icon className="proxies-action-icon" type="speed" size={20} />
+                        <span className="proxies-speed-test" onClick={handleNotitySpeedTest}>{t('speedTestText')}</span>
+                    </Header>
+                    <ul className="proxies-list">
+                        {
+                            proxies.map(p => (
+                                <li key={p.name}>
+                                    <Proxy config={p} />
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            }
         </div>
     )
 }

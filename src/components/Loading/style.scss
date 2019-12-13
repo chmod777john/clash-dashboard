@@ -1,0 +1,13 @@
+.loading {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba($color: #fff, $alpha: 0.9);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}

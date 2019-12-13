@@ -1,0 +1,14 @@
+@import '~@styles/variables';
+
+.tag {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    font-size: 12px;
+    padding: 0 12px;
+    text-align: center;
+    background-color: #fff;
+    border: 2px solid $color-primary-dark;
+    color: $color-primary-dark;
+    border-radius: 12px;
+}

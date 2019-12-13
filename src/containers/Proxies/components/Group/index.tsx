@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { containers } from '@stores'
 import { changeProxySelected, Group as IGroup } from '@lib/request'
-import { Tags } from '@components'
+import { Tags, Tag } from '@components'
 import './style.scss'
 
 interface GroupProps {
@@ -22,7 +22,7 @@ export function Group (props: GroupProps) {
         <div className="proxy-group">
             <div className="proxy-group-part">
                 <span className="proxy-group-name">{ config.name }</span>
-                <span className="proxy-group-type">{ config.type }</span>
+                <Tag className="proxy-group-type">{ config.type }</Tag>
             </div>
             <div className="proxy-group-tags-container">
                 <Tags

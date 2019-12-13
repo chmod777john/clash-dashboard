@@ -84,6 +84,8 @@ export default {
             tls: 'TLS'
         },
         groupTitle: '策略组',
+        providerTitle: '代理集',
+        providerUpdateTime: '最后更新于',
         expandText: '展开',
         collapseText: '收起',
         speedTestText: '测速'

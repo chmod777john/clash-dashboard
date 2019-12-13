@@ -1,7 +1,7 @@
 import { Draft } from 'immer'
 import { useImmer } from 'use-immer'
 import { createContainer } from 'unstated-next'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
 
 import { noop } from '@lib/helper'
 
@@ -70,4 +70,20 @@ export function composeContainer<T, C extends containerFn<T>, U extends { [key: 
             return obj
         }, {} as { [K in keyof U]: U[K] })
     }
+}
+
+export function useRound<T> (list: T[], defidx = 0) {
+    if (list.length < 2) {
+        throw new Error('List requires at least two elements')
+    }
+
+    const [state, setState] = useState(defidx)
+
+    function next () {
+        setState((state + 1) % list.length)
+    }
+
+    const current = useMemo(() => list[state], [state])
+
+    return { current, next }
 }

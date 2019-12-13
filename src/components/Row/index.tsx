@@ -14,7 +14,7 @@ interface RowProps extends BaseComponentProps {
     justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between'
 }
 
-export const Row: React.SFC<RowProps> = props => {
+export function Row (props: RowProps) {
     const {
         gutter = 24,
         align = 'top',

@@ -12,7 +12,7 @@ interface ColProps extends BaseComponentProps {
     span?: number
 }
 
-export const Col: React.SFC<ColProps> = props => {
+export function Col (props: ColProps) {
     const {
         offset = 0,
         order = 0,
