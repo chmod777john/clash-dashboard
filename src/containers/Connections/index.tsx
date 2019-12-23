@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef, useLayoutEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useBlockLayout, useResizeColumns, useTable } from 'react-table'
-import { VariableSizeGrid as Grid, GridOnScrollProps, GridChildComponentProps } from 'react-window'
-import AutoSizer from 'react-virtualized-auto-sizer'
 import classnames from 'classnames'
 import { Header, Card, Checkbox, Modal, useModal, Icon } from '@components'
 import { containers } from '@stores'
@@ -174,48 +172,33 @@ export default function Connections () {
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow,
-        columns: realColumns,
-        totalColumnsWidth
+        prepareRow
     } = useTable(
         { columns, data },
         useBlockLayout,
         useResizeColumns
     )
     const headerGroup = useMemo(() => headerGroups[0], [headerGroups])
-    const renderItem = useCallback(
-        ({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
-            const row = rows[rowIndex]
-            prepareRow(row)
-            const cell = row.cells[columnIndex]
-            const classname = classnames(
-                'connections-block',
-                { center: shouldCenter.has(cell.column.id), completed: !!(row.original as any).completed }
-            )
-
-            return (
-                <div {...row.getRowProps({ style })} className="connections-item">
-                    <div {...cell.getCellProps()} className={classname}>
-                        { cell.render('Cell') }
-                    </div>
-                </div>
-            )
-        },
-        [prepareRow, rows]
-    )
-
-    // handle consistency of react-window and react-table
-    const [girdLeft, setGirdLeft] = useState(0)
-    const handleScroll = useCallback(({ scrollLeft }: GridOnScrollProps) => setGirdLeft(scrollLeft), [setGirdLeft])
-    const handleColumnWidth = useCallback(index => realColumns[index].width, [realColumns])
-    const gridRef = useRef<Grid>()
-    useLayoutEffect(() => {
-        gridRef.current && gridRef.current.resetAfterIndices({
-            columnIndex: 0,
-            rowIndex: 0,
-            shouldForceUpdate: false
-        })
-    }, [totalColumnsWidth])
+    const renderItem = useMemo(() => rows.map((row, index) => {
+        prepareRow(row)
+        return (
+            <div {...row.getRowProps()} className="connections-item">
+                {
+                    row.cells.map((cell) => {
+                        const classname = classnames(
+                            'connections-block',
+                            { center: shouldCenter.has(cell.column.id), completed: !!(row.original as any).completed }
+                        )
+                        return (
+                            <div {...cell.getCellProps()} className={classname}>
+                                { cell.render('Cell') }
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }), [prepareRow, rows])
 
     return (
         <div className="page">
@@ -228,7 +211,7 @@ export default function Connections () {
             </Header>
             <Card className="connections-card">
                 <div {...getTableProps()} className="connections">
-                    <div {...headerGroup.getHeaderGroupProps()} className="connections-tr" style={{ transform: `translateX(-${girdLeft}px)` }}>
+                    <div {...headerGroup.getHeaderGroupProps()} className="connections-header">
                         {
                             headerGroup.headers.map((column, idx) => {
                                 const id = column.id
@@ -249,25 +232,7 @@ export default function Connections () {
                     </div>
 
                     <div {...getTableBodyProps()} className="connections-body">
-                        <AutoSizer>
-                            {
-                                ({ height, width }) => (
-                                    <Grid
-                                        ref={gridRef}
-                                        onScroll={handleScroll}
-                                        itemData={data}
-                                        itemKey={({ rowIndex, columnIndex, data }) => `${data[rowIndex].id}/${columnIndex}`}
-                                        height={height}
-                                        width={width}
-                                        columnCount={columns.length}
-                                        columnWidth={handleColumnWidth}
-                                        rowCount={rows.length}
-                                        rowHeight={() => 36}>
-                                        { renderItem }
-                                    </Grid>
-                                )
-                            }
-                        </AutoSizer>
+                        { renderItem }
                     </div>
                 </div>
             </Card>
