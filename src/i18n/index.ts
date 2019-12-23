@@ -10,6 +10,8 @@ const Language = {
     zh_CN
 }
 
+export type Lang = keyof typeof Language
+
 const languageKey = 'language'
 
 const locales = Object.keys(Language)
@@ -30,10 +32,10 @@ function getNavigatorLanguage (): string[] {
     return found
 }
 
-function getLanguage () {
+function getLanguage (): Lang {
     const localLanguage = getLocalStorageItem(languageKey)
     if (localLanguage && locales.includes(localLanguage)) {
-        return localLanguage
+        return localLanguage as Lang
     }
 
     const navigatorLanguage = getNavigatorLanguage()
@@ -51,7 +53,7 @@ function getLanguage () {
 export function useI18n () {
     const [lang, set] = useState(getLanguage())
 
-    function setLang (lang: string) {
+    function setLang (lang: Lang) {
         set(lang)
         setLocalStorageItem(languageKey, lang)
     }

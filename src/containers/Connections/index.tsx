@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo, useCallback, useRef, useLayoutEffe
 import { useBlockLayout, useResizeColumns, useTable } from 'react-table'
 import { VariableSizeGrid as Grid, GridOnScrollProps, GridChildComponentProps } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { format } from 'timeago.js'
 import classnames from 'classnames'
 import { Header, Card, Checkbox, Modal, useModal, Icon } from '@components'
 import { containers } from '@stores'
@@ -10,6 +9,7 @@ import * as API from '@lib/request'
 import { StreamReader } from '@lib/streamer'
 import { useObject } from '@lib/hook'
 import { noop } from '@lib/helper'
+import { fromNow } from '@lib/date'
 import { useConnections } from './store'
 import './style.scss'
 
@@ -114,7 +114,7 @@ export default function Connections () {
                 host: `${ c.metadata.host || c.metadata.destinationIP }:${ c.metadata.destinationPort }`,
                 chains: c.chains.slice().reverse().join(' --> '),
                 rule: c.rule,
-                time: format(new Date(c.start), lang),
+                time: fromNow(new Date(c.start), lang),
                 upload: formatTraffic(c.upload),
                 download: formatTraffic(c.download),
                 type: c.metadata.type,

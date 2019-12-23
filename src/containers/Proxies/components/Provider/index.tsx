@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { format } from 'timeago.js'
 import { Card, Tag, Icon, Loading, useLoading } from '@components'
 import { containers } from '@stores'
+import { fromNow } from '@lib/date'
 import { Provider as IProvider, Proxy as IProxy, updateProvider, healthCheckProvider } from '@lib/request'
 import { Proxy } from '../Proxy'
 import './style.scss'
@@ -40,7 +40,7 @@ export function Provider (props: ProvidersProps) {
                 <div className="proxy-provider-header-part">
                     {
                         provider.updatedAt &&
-                        <span className="proxy-provider-update">{ `${t('providerUpdateTime')}: ${format(new Date(provider.updatedAt), lang)}`}</span>
+                        <span className="proxy-provider-update">{ `${t('providerUpdateTime')}: ${fromNow(new Date(provider.updatedAt), lang)}`}</span>
                     }
                     <Icon className="proxy-provider-icon healthcheck" type="healthcheck" size={18} onClick={handleHealthChech} />
                     <Icon className="proxy-provider-icon" type="update" size={18} onClick={handleUpdate} />

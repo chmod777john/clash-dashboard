@@ -5,6 +5,7 @@ import { updateConfig } from '@lib/request'
 import { useObject } from '@lib/hook'
 import { to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
+import { Lang } from '@i18n'
 import './style.scss'
 
 const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]
@@ -50,7 +51,7 @@ export default function Settings () {
         fetchClashXData()
     }
 
-    function changeLanguage (language: string) {
+    function changeLanguage (language: Lang) {
         setLang(language)
     }
 

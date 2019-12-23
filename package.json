@@ -87,7 +87,6 @@
         "react-window": "^1.8.5",
         "semver": "^6.3.0",
         "swr": "^0.1.13",
-        "timeago.js": "^4.0.1",
         "unstated-next": "^1.1.0",
         "use-immer": "^0.3.5"
     }
