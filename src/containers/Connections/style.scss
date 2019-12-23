@@ -17,11 +17,6 @@
         overflow: auto;
     }
 
-    .connections-header {
-        position: sticky;
-        top: 0;
-    }
-
     .connections-body {
         flex: 1 0 auto;
     }
@@ -68,7 +63,9 @@
         }
     }
 
-    .connections-tr {
+    .connections-header {
+        position: sticky;
+        top: 0;
         white-space: nowrap;
 
         &:hover .connections-resizer {
