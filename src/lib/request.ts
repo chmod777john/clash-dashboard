@@ -1,5 +1,4 @@
 import axios from 'axios'
-import semver from 'semver'
 import { Partial, getLocalStorageItem, to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { createAsyncSingleton } from '@lib/asyncSingleton'
@@ -210,8 +209,8 @@ export const getLogsStreamReader = createAsyncSingleton(async function () {
     const { data: config } = await getConfig()
     const [data, err] = await to(getVersion())
     const version = err ? 'unkonwn version' : data.data.version
+    const useWebsocket = !!version || true
 
-    const useWebsocket = semver.valid(version) && semver.gt(version, 'v0.15.0-52-gc384693')
     const logUrl = `${location.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
     return new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
 })
