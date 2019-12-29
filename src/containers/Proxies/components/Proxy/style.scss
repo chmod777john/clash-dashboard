@@ -20,14 +20,14 @@
     }
 
     .proxy-name {
-        max-height: 30px;
+        display: -webkit-box;
         margin-top: 10px;
         color: $color-primary-darken;
         font-size: 10px;
         overflow: hidden;
-        word-break: keep-all;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        word-break: break-word;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
     .proxy-delay {
