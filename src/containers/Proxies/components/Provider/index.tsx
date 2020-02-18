@@ -1,9 +1,11 @@
 import * as React from 'react'
+import { useMemo } from 'react'
 import { Card, Tag, Icon, Loading, useLoading } from '@components'
 import { containers } from '@stores'
 import { fromNow } from '@lib/date'
 import { Provider as IProvider, Proxy as IProxy, updateProvider, healthCheckProvider } from '@lib/request'
 import { Proxy } from '../Proxy'
+import { compareDesc } from '../../'
 import './style.scss'
 
 interface ProvidersProps {
@@ -29,6 +31,10 @@ export function Provider (props: ProvidersProps) {
         updateProvider(provider.name).then(() => fetch()).finally(() => hide())
     }
 
+    const proxies = useMemo(() => {
+        return (provider.proxies as IProxy[]).slice().sort((a, b) => -1 * compareDesc(a, b))
+    }, [provider.proxies])
+
     return (
         <Card className="proxy-provider">
             <Loading visible={visible} />
@@ -48,7 +54,7 @@ export function Provider (props: ProvidersProps) {
             </div>
             <ul className="proxies-list">
                 {
-                    provider.proxies.map((p: IProxy) => (
+                    proxies.map((p: IProxy) => (
                         <li key={p.name}>
                             <Proxy className="proxy-provider-item" config={p} />
                         </li>

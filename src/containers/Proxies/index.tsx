@@ -21,7 +21,7 @@ const sortMap = {
     [sortType.Desc]: 'sort-descending'
 }
 
-function compareDesc (a: API.Proxy, b: API.Proxy) {
+export function compareDesc (a: API.Proxy, b: API.Proxy) {
     const lastDelayA = a.history.length ? a.history.slice(-1)[0].delay : 0
     const lastDelayB = b.history.length ? b.history.slice(-1)[0].delay : 0
     return (lastDelayB || Number.MAX_SAFE_INTEGER) - (lastDelayA || Number.MAX_SAFE_INTEGER)
