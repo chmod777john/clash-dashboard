@@ -87,6 +87,28 @@ export interface Connections {
     rule: string
 }
 
+export async function getExternalControllerConfig () {
+    if (isClashX()) {
+        const info = await jsBridge.getAPIInfo()
+
+        return {
+            hostname: info.host,
+            port: info.port,
+            secret: info.secret
+        }
+    }
+
+    const hostname = getLocalStorageItem('externalControllerAddr', '127.0.0.1')
+    const port = getLocalStorageItem('externalControllerPort', '9090')
+    const secret = getLocalStorageItem('secret', '')
+
+    if (!hostname || !port) {
+        throw new Error('can\'t get hostname or port')
+    }
+
+    return { hostname, port, secret }
+}
+
 export const getInstance = createAsyncSingleton(async () => {
     const {
         hostname,
@@ -129,12 +151,12 @@ export async function getProxyProviders () {
         }
     })
     // compatible old version
-    .then(resp => {
-        if (resp.status === 404) {
-            resp.data = { providers: {} }
-        }
-        return resp
-    })
+        .then(resp => {
+            if (resp.status === 404) {
+                resp.data = { providers: {} }
+            }
+            return resp
+        })
 }
 
 export async function updateProvider (name: string) {
@@ -180,28 +202,6 @@ export async function closeAllConnections () {
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
     return req.put<void>(`proxies/${name}`, { name: select })
-}
-
-export async function getExternalControllerConfig () {
-    if (isClashX()) {
-        const info = await jsBridge.getAPIInfo()
-
-        return {
-            hostname: info.host,
-            port: info.port,
-            secret: info.secret
-        }
-    }
-
-    const hostname = getLocalStorageItem('externalControllerAddr', '127.0.0.1')
-    const port = getLocalStorageItem('externalControllerPort', '9090')
-    const secret = getLocalStorageItem('secret', '')
-
-    if (!hostname || !port) {
-        throw new Error('can\'t get hostname or port')
-    }
-
-    return { hostname, port, secret }
 }
 
 export const getLogsStreamReader = createAsyncSingleton(async function () {

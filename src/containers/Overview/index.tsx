@@ -1,5 +1,5 @@
 import * as React from 'react'
-const logo = require('@assets/LOGO-fixing.svg')
+import logo from '@assets/logo-fixing.svg'
 
 export default function Overview () {
     return (

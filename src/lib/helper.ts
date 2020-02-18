@@ -10,6 +10,7 @@ export function removeLocalStorageItem (key: string) {
     return window.localStorage.removeItem(key)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop () {}
 
 /**

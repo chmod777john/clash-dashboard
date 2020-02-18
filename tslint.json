@@ -1,9 +1,0 @@
-{
-    "extends": "tslint-config-standard",
-    "rules": {
-        "indent": [true, "spaces", 4],
-        "ter-indent": [true, 4],
-        "no-empty": false,
-        "quotemark": [true, "single", "jsx-double"]
-    }
-}

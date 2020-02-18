@@ -109,7 +109,7 @@ export default function Connections () {
             })
             .map(c => ({
                 id: c.id,
-                host: `${ c.metadata.host || c.metadata.destinationIP }:${ c.metadata.destinationPort }`,
+                host: `${c.metadata.host || c.metadata.destinationIP}:${c.metadata.destinationPort}`,
                 chains: c.chains.slice().reverse().join(' --> '),
                 rule: c.rule,
                 time: fromNow(new Date(c.start), lang),
@@ -141,7 +141,7 @@ export default function Connections () {
     ), [lang, t])
 
     useEffect(() => {
-        let streamReader: StreamReader<API.Snapshot> = null
+        const streamReader: StreamReader<API.Snapshot> = null
 
         function handleConnection (snapshots: API.Snapshot[]) {
             for (const snapshot of snapshots) {
@@ -154,10 +154,10 @@ export default function Connections () {
             }
         }
 
-        void async function () {
+        ;(async function () {
             const streamReader = await API.getConnectionStreamReader()
             streamReader.subscribe('data', handleConnection)
-        }()
+        }())
 
         return () => {
             if (streamReader) {
@@ -179,18 +179,18 @@ export default function Connections () {
         useResizeColumns
     )
     const headerGroup = useMemo(() => headerGroups[0], [headerGroups])
-    const renderItem = useMemo(() => rows.map((row, index) => {
+    const renderItem = useMemo(() => rows.map((row, i) => {
         prepareRow(row)
         return (
-            <div {...row.getRowProps()} className="connections-item">
+            <div {...row.getRowProps()} className="connections-item" key={i}>
                 {
-                    row.cells.map((cell) => {
+                    row.cells.map((cell, j) => {
                         const classname = classnames(
                             'connections-block',
                             { center: shouldCenter.has(cell.column.id), completed: !!(row.original as any).completed }
                         )
                         return (
-                            <div {...cell.getCellProps()} className={classname}>
+                            <div {...cell.getCellProps()} className={classname} key={j}>
                                 { cell.render('Cell') }
                             </div>
                         )
@@ -204,7 +204,7 @@ export default function Connections () {
         <div className="page">
             <Header title={t('title')}>
                 <span className="connections-filter total">
-                    { `(${t('total.text')}: ${t('total.upload')} ${ formatTraffic(traffic.uploadTotal) } ${t('total.download')} ${ formatTraffic(traffic.downloadTotal) })` }
+                    { `(${t('total.text')}: ${t('total.upload')} ${formatTraffic(traffic.uploadTotal)} ${t('total.download')} ${formatTraffic(traffic.downloadTotal)})` }
                 </span>
                 <Checkbox className="connections-filter" checked={save} onChange={toggleSave}>{ t('keepClosed') }</Checkbox>
                 <Icon className="connections-filter dangerous" onClick={show} type="close-all" size={20} />
@@ -217,7 +217,7 @@ export default function Connections () {
                                 const id = column.id
                                 const handleClick = couldSort.has(id) ? () => handleSort(id) : noop
                                 return (
-                                    <div {...column.getHeaderProps()} className="connections-th" onClick={handleClick}>
+                                    <div {...column.getHeaderProps()} className="connections-th" onClick={handleClick} key={id}>
                                         { column.render('Header') }
                                         {
                                             sort.column === id && (sort.asc ? ' ↑' : ' ↓')

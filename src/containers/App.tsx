@@ -21,7 +21,7 @@ function App () {
     }, [])
 
     const routes = [
-        // { path: '/', name: 'Overview', component: Overview, exact: true },
+    // { path: '/', name: 'Overview', component: Overview, exact: true },
         { path: '/proxies', name: 'Proxies', component: Proxies },
         { path: '/logs', name: 'Logs', component: Logs },
         { path: '/rules', name: 'Rules', component: Rules, noMobile: true },

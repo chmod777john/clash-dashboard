@@ -56,7 +56,7 @@ export default function Settings () {
     }
 
     async function handleHttpPortSave () {
-        const [, err] = await to(updateConfig({ 'port': info.httpProxyPort }))
+        const [, err] = await to(updateConfig({ port: info.httpProxyPort }))
         if (!err) {
             await fetch()
             set('httpProxyPort', data.general.port)

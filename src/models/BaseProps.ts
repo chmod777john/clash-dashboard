@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router'
  * expose base router component props
  * and mobx store to props
  */
-export interface BaseRouterProps extends RouteComponentProps<any> {}
+export type BaseRouterProps = RouteComponentProps
 
 export interface BaseComponentProps {
     className?: string

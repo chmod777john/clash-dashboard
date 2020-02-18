@@ -37,7 +37,9 @@ export function useObject<T extends object> (initialValue: T) {
 export function useInterval (callback: () => void, delay: number) {
     const savedCallback = useRef(noop)
 
-    useEffect(() => savedCallback.current = callback, [callback])
+    useEffect(() => {
+        savedCallback.current = callback
+    }, [callback])
 
     useEffect(
         () => {

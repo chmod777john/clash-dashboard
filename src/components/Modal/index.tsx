@@ -37,7 +37,7 @@ export function Modal (props: ModalProps) {
         show = true,
         title = 'Modal',
         size = 'small',
-        footer= true,
+        footer = true,
         onOk = noop,
         onClose = noop,
         bodyClassName,

@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect, useState, useMemo } from 'react'
 import classnames from 'classnames'
 import { Icon } from '@components'
 import { BaseComponentProps } from '@models'
+import { noop } from '@lib/helper'
 import { createPortal } from 'react-dom'
 import './style.scss'
 
@@ -24,16 +25,6 @@ export function Select (props: SelectProps) {
     const attachmentRef = useRef<HTMLDivElement>()
     const targetRef = useRef<HTMLDivElement>()
 
-    useLayoutEffect(() => {
-        document.addEventListener('click', handleGlobalClick, true)
-        return () => {
-            document.addEventListener('click', handleGlobalClick, true)
-            if (portalRef.current) {
-                document.body.removeChild(portalRef.current)
-            }
-        }
-    }, [])
-
     const [showDropDownList, setShowDropDownList] = useState(false)
     const [hasCreateDropList, setHasCreateDropList] = useState(false)
     const dropdownListStyles = useMemo(() => {
@@ -47,15 +38,25 @@ export function Select (props: SelectProps) {
         return {}
     }, [])
 
-    function handleGlobalClick (e) {
+    function handleGlobalClick (e: MouseEvent) {
         const el = attachmentRef.current
 
-        if (el && !el.contains(e.target)) {
+        if (el?.contains(e.target as Node)) {
             setShowDropDownList(false)
         }
     }
 
-    function handleShowDropList (e) {
+    useLayoutEffect(() => {
+        document.addEventListener('click', handleGlobalClick, true)
+        return () => {
+            document.addEventListener('click', handleGlobalClick, true)
+            if (portalRef.current) {
+                document.body.removeChild(portalRef.current)
+            }
+        }
+    }, [])
+
+    function handleShowDropList () {
         if (!hasCreateDropList) {
             if (!portalRef.current) {
                 // create container element
@@ -140,7 +141,7 @@ interface OptionProps extends BaseComponentProps {
 }
 
 export function Option (props: OptionProps) {
-    const { className: cn, style, key, disabled = false, children, onClick = () => {} } = props
+    const { className: cn, style, key, disabled = false, children, onClick = noop } = props
     const className = classnames('option', { disabled }, cn)
 
     return (

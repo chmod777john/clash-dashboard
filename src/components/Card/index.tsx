@@ -3,7 +3,7 @@ import { BaseComponentProps } from '@models/BaseProps'
 import classnames from 'classnames'
 import './style.scss'
 
-interface CardProps extends BaseComponentProps {}
+type CardProps = BaseComponentProps
 
 export function Card (props: CardProps) {
     const { className, style, children } = props

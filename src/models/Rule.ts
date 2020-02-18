@@ -4,7 +4,7 @@ export interface Rule {
 
     payload?: string
 
-    proxy?: string   // proxy or proxy group name
+    proxy?: string // proxy or proxy group name
 
 }
 

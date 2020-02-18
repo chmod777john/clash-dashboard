@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 import { useState, useCallback } from 'react'
 import get from 'lodash/get'
 import { getLocalStorageItem, setLocalStorageItem } from '@lib/helper'

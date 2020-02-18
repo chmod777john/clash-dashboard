@@ -4,7 +4,7 @@ import { BaseComponentProps } from '@models/BaseProps'
 
 import './style.scss'
 
-interface SpinnerProps extends BaseComponentProps {}
+type SpinnerProps = BaseComponentProps
 
 export function Spinner (props: SpinnerProps) {
     const classname = classnames('spinner', props.className)

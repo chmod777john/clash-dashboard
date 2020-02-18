@@ -20,19 +20,19 @@ export default function Logs () {
     }, [logsRef.current])
 
     useEffect(() => {
-        let streamReader: StreamReader<Log> = null
+        const streamReader: StreamReader<Log> = null
 
         function handleLog (newLogs: Log[]) {
             logsRef.current = logsRef.current.slice().concat(newLogs.map(d => ({ ...d, time: new Date() })))
             setLogs(logsRef.current)
         }
 
-        void async function () {
+        ;(async function () {
             const streamReader = await getLogsStreamReader()
             logsRef.current = streamReader.buffer()
             setLogs(logsRef.current)
             streamReader.subscribe('data', handleLog)
-        }()
+        }())
 
         return () => streamReader && streamReader.unsubscribe('data', handleLog)
     }, [])

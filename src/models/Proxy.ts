@@ -90,7 +90,7 @@ export interface FallbackProxyGroup {
 
     url?: string
 
-    interval?: number  // second
+    interval?: number // second
 }
 
 export interface UrlTestProxyGroup {
@@ -102,5 +102,5 @@ export interface UrlTestProxyGroup {
 
     url?: string
 
-    interval?: number  // second
+    interval?: number // second
 }

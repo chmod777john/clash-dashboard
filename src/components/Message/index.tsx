@@ -63,30 +63,6 @@ export function Message (props: MessageProps) {
     )
 }
 
-export const info = (
-    content: string,
-    duration?: number,
-    onClose?: typeof noop
-) => showMessage({ type: 'info', content, duration, onClose })
-
-export const success = (
-    content: string,
-    duration?: number,
-    onClose?: typeof noop
-) => showMessage({ type: 'success', content, duration, onClose })
-
-export const warning = (
-    content: string,
-    duration?: number,
-    onClose?: typeof noop
-) => showMessage({ type: 'warning', content, duration, onClose })
-
-export const error = (
-    content: string,
-    duration?: number,
-    onClose?: typeof noop
-) => showMessage({ type: 'error', content, duration, onClose })
-
 export function showMessage (args: ArgsProps) {
     // create container element
     const container = document.createElement('div')
@@ -113,3 +89,27 @@ export function showMessage (args: ArgsProps) {
 
     render(<Message {...props} />, container)
 }
+
+export const info = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'info', content, duration, onClose })
+
+export const success = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'success', content, duration, onClose })
+
+export const warning = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'warning', content, duration, onClose })
+
+export const error = (
+    content: string,
+    duration?: number,
+    onClose?: typeof noop
+) => showMessage({ type: 'error', content, duration, onClose })

@@ -15,7 +15,7 @@ export default function Rules () {
         fetch()
     }, [])
 
-    function renderRuleItem ({ index, style }) {
+    function renderRuleItem ({ index, style }: { index: number, style: React.CSSProperties }) {
         const rule = rules[index]
         return (
             <li className="rule-item" style={style}>

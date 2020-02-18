@@ -45,7 +45,7 @@ function useData () {
 
         const policyGroup = new Set(['Selector', 'URLTest', 'Fallback', 'LoadBalance'])
         const unUsedProxy = new Set(['DIRECT', 'REJECT', 'GLOBAL'])
-        const proxyList = rawProxies.data.proxies['GLOBAL'] as API.Group
+        const proxyList = rawProxies.data.proxies.GLOBAL as API.Group
         // fix missing name
         proxyList.name = 'GLOBAL'
         const proxies = proxyList.all

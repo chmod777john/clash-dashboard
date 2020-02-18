@@ -1,0 +1,29 @@
+env:
+  browser: true
+  es6: true
+extends:
+  - 'plugin:react/recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - standard
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 2018
+  sourceType: module
+  project: './tsconfig.json'
+plugins:
+  - react
+  - '@typescript-eslint'
+settings:
+  react:
+    version: 'detect'
+rules:
+  '@typescript-eslint/indent': ['error', 4, { 'SwitchCase': 0 }]
+  'indent': 'off'
+  '@typescript-eslint/explicit-function-return-type': 'off'
+  '@typescript-eslint/member-delimiter-style': ['warn', { multiline: { delimiter: 'none' }, singleline: { delimiter: 'comma' } }]
+  '@typescript-eslint/no-explicit-any': 'off'

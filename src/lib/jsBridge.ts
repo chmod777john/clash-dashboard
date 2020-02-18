@@ -52,6 +52,8 @@ declare global {
 
 }
 
+type JsBridgeCallback = (jsbridge: JsBridgeAPI) => void
+
 /**
  * Check if perched in ClashX Runtime
  */
@@ -68,10 +70,9 @@ export let jsBridge: JsBridge = null
  * JsBridge class
  */
 export class JsBridge {
-
     instance: JsBridgeAPI = null
 
-    constructor (callback = jsbridge => {}) {
+    constructor (callback: JsBridgeCallback) {
         if (window.WebViewJavascriptBridge) {
             this.instance = window.WebViewJavascriptBridge
             callback(this.instance)
@@ -89,7 +90,7 @@ export class JsBridge {
      * @param {Function} cb callback when jsbridge initialized
      * @see https://github.com/marcuswestin/WebViewJavascriptBridge
      */
-    private initBridge (callback) {
+    private initBridge (callback: JsBridgeCallback) {
         /**
          * You need check if inClashX first
          */
