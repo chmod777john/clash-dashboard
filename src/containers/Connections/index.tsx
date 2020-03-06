@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { useBlockLayout, useResizeColumns, useTable } from 'react-table'
 import classnames from 'classnames'
-import { Header, Card, Checkbox, Modal, useModal, Icon } from '@components'
+import { Header, Card, Checkbox, Modal, Icon } from '@components'
 import { containers } from '@stores'
 import * as API from '@lib/request'
 import { StreamReader } from '@lib/streamer'
-import { useObject } from '@lib/hook'
+import { useObject, useVisible } from '@lib/hook'
 import { noop } from '@lib/helper'
 import { fromNow } from '@lib/date'
 import { useConnections } from './store'
@@ -87,7 +87,7 @@ export default function Connections () {
     }
 
     // close all connections
-    const { visible, show, hide } = useModal()
+    const { visible, show, hide } = useVisible()
     function handleCloseConnections () {
         API.closeAllConnections().finally(() => hide())
     }

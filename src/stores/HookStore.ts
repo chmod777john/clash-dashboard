@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import * as Models from '@models'
 import * as API from '@lib/request'
-import { useObject, composeContainer } from '@lib/hook'
+import { useObject, composeContainer, useVisible } from '@lib/hook'
 import { jsBridge } from '@lib/jsBridge'
 import { setLocalStorageItem, partition, to } from '@lib/helper'
 import { useI18n } from '@i18n'
+import { AxiosError } from 'axios'
 
 function useData () {
     const [data, set] = useObject<Models.Data>({
@@ -16,19 +16,12 @@ function useData () {
         rules: []
     })
 
-    const [visible, setVisible] = useState(false)
-
-    function show () {
-        setVisible(true)
-    }
-
-    function hidden () {
-        setVisible(false)
-    }
+    const { visible, show, hide } = useVisible()
 
     async function fetch () {
         const [resp, err] = await to(Promise.all([API.getConfig(), API.getProxies(), API.getRules(), API.getProxyProviders()]))
-        if (err && (!err.response || err.response.status === 401)) {
+        const rErr = err as AxiosError
+        if (rErr && (!rErr.response || rErr.response.status === 401)) {
             show()
         }
 
@@ -82,7 +75,7 @@ function useData () {
         })
     }
 
-    return { data, fetch, unauthorized: { visible, show, hidden }, updateDelay }
+    return { data, fetch, unauthorized: { visible, show, hide }, updateDelay }
 }
 
 function useAPIInfo () {
@@ -108,6 +101,14 @@ function useAPIInfo () {
     return { data, fetch, update }
 }
 
+function useConfig () {
+    const [data, set] = useObject({
+        breakConnections: false
+    })
+
+    return { data, set }
+}
+
 function useClashXData () {
     const [data, set] = useObject<Models.ClashXData>({
         startAtLogin: false,
@@ -128,7 +129,8 @@ const { Provider, containers } = composeContainer({
     useData,
     useAPIInfo,
     useClashXData,
-    useI18n
+    useI18n,
+    useConfig
 })
 
 export { Provider, containers }

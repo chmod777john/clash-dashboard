@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, MouseEvent, useState } from 'react'
+import React, { useRef, useLayoutEffect, MouseEvent } from 'react'
 import classnames from 'classnames'
 import { createPortal } from 'react-dom'
 import { BaseComponentProps } from '@models'
@@ -89,18 +89,4 @@ export function Modal (props: ModalProps) {
     )
 
     return createPortal(modal, portalRef.current)
-}
-
-export function useModal () {
-    const [visible, setVisible] = useState(false)
-
-    function show () {
-        setVisible(true)
-    }
-
-    function hide () {
-        setVisible(false)
-    }
-
-    return { visible, show, hide }
 }

@@ -88,6 +88,7 @@ export default {
         providerUpdateTime: 'Last updated at',
         expandText: 'Expand',
         collapseText: 'Collapse',
-        speedTestText: 'Speed Test'
+        speedTestText: 'Speed Test',
+        breakConnectionsText: 'Close connections which include the group'
     }
 }

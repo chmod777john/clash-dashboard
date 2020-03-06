@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models/BaseProps'
 import { Spinner } from './Spinner'
@@ -18,18 +18,4 @@ export function Loading (props: LoadingProps) {
             </div>
         )
         : null
-}
-
-export function useLoading (initial: boolean) {
-    const [visible, setVisible] = useState(initial)
-
-    function hide () {
-        setVisible(false)
-    }
-
-    function show () {
-        setVisible(true)
-    }
-
-    return { visible, hide, show }
 }

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import useSWR from 'swr'
 import EE from '@lib/event'
 import { useRound } from '@lib/hook'
-import { Card, Header, Icon } from '@components'
+import { Card, Header, Icon, Checkbox } from '@components'
 import { containers } from '@stores'
 import * as API from '@lib/request'
 
@@ -30,6 +30,7 @@ export function compareDesc (a: API.Proxy, b: API.Proxy) {
 export default function Proxies () {
     const { data, fetch } = containers.useData()
     const { useTranslation } = containers.useI18n()
+    const { data: config, set: setConfig } = containers.useConfig()
     const { t } = useTranslation('Proxies')
     useSWR('data', fetch)
 
@@ -57,7 +58,14 @@ export default function Proxies () {
             {
                 data.proxyGroup.length !== 0 &&
                 <div className="proxies-container">
-                    <Header title={t('groupTitle')} />
+                    <Header title={t('groupTitle')}>
+                        <Checkbox
+                            className="connections-filter"
+                            checked={config.breakConnections}
+                            onChange={value => setConfig('breakConnections', value)}>
+                            {t('breakConnectionsText')}
+                        </Checkbox>
+                    </Header>
                     <Card className="proxies-group-card">
                         <ul className="proxies-group-list">
                             {

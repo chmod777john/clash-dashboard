@@ -199,6 +199,16 @@ export async function closeAllConnections () {
     return req.delete('connections')
 }
 
+export async function closeConnection (id: string) {
+    const req = await getInstance()
+    return req.delete(`connections/${id}`)
+}
+
+export async function getConnections () {
+    const req = await getInstance()
+    return req.get<Snapshot>('connections')
+}
+
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
     return req.put<void>(`proxies/${name}`, { name: select })

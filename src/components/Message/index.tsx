@@ -1,8 +1,9 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import classnames from 'classnames'
 import { unmountComponentAtNode, render } from 'react-dom'
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
+import { useVisible } from '@lib/hook'
 import './style.scss'
 
 const TYPE_ICON_MAP = {
@@ -40,13 +41,13 @@ export function Message (props: MessageProps) {
         duration = 1500
     } = props
 
-    const [visible, setVisible] = useState(false)
+    const { visible, show, hide } = useVisible()
 
     useLayoutEffect(() => {
-        window.setTimeout(() => setVisible(true), 0)
+        window.setTimeout(() => show(), 0)
 
         const id = window.setTimeout(() => {
-            setVisible(false)
+            hide()
             onClose()
         }, duration)
         return () => window.clearTimeout(id)

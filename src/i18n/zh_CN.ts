@@ -88,6 +88,7 @@ export default {
         providerUpdateTime: '最后更新于',
         expandText: '展开',
         collapseText: '收起',
-        speedTestText: '测速'
+        speedTestText: '测速',
+        breakConnectionsText: '切换时打断包含策略组的连接'
     }
 }

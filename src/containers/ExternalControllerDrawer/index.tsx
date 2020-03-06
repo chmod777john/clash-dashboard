@@ -8,7 +8,7 @@ export default function ExternalController () {
     const { useTranslation } = containers.useI18n()
     const { t } = useTranslation('Settings')
     const { data: info, update, fetch } = containers.useAPIInfo()
-    const { unauthorized: { hidden, visible } } = containers.useData()
+    const { unauthorized: { hide, visible } } = containers.useData()
     const [value, set] = useObject({
         hostname: '',
         port: '',
@@ -33,7 +33,7 @@ export default function ExternalController () {
             show={visible}
             title={t('externalControllerSetting.title')}
             bodyClassName="external-controller"
-            onClose={hidden}
+            onClose={hide}
             onOk={handleOk}
         >
             <Alert type="info" inside={true}>

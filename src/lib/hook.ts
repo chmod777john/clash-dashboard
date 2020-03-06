@@ -89,3 +89,16 @@ export function useRound<T> (list: T[], defidx = 0) {
 
     return { current, next }
 }
+
+export function useVisible (initial = false) {
+    const [visible, setVisible] = useState(initial)
+
+    function hide () {
+        setVisible(false)
+    }
+
+    function show () {
+        setVisible(true)
+    }
+    return { visible, hide, show }
+}

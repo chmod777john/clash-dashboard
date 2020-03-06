@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { useMemo } from 'react'
-import { Card, Tag, Icon, Loading, useLoading } from '@components'
+import { Card, Tag, Icon, Loading } from '@components'
 import { containers } from '@stores'
 import { fromNow } from '@lib/date'
 import { Provider as IProvider, Proxy as IProxy, updateProvider, healthCheckProvider } from '@lib/request'
+import { useVisible } from '@lib/hook'
 import { Proxy } from '../Proxy'
 import { compareDesc } from '../../'
 import './style.scss'
@@ -19,7 +20,7 @@ export function Provider (props: ProvidersProps) {
 
     const { t } = useTranslation('Proxies')
 
-    const { visible, hide, show } = useLoading(false)
+    const { visible, hide, show } = useVisible()
 
     function handleHealthChech () {
         show()
