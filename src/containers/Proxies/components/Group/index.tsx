@@ -9,7 +9,7 @@ interface GroupProps {
 }
 
 export function Group (props: GroupProps) {
-    const { fetch } = containers.useData()
+    const { fetch, data: Data } = containers.useData()
     const { data: Config } = containers.useConfig()
     const { config } = props
 
@@ -31,6 +31,15 @@ export function Group (props: GroupProps) {
         }
     }
 
+    function shouldError (name: string) {
+        const history = Data.proxyMap.get(name)?.history
+        if (history?.length) {
+            return !history.slice(-1)[0].delay
+        }
+
+        return false
+    }
+
     const canClick = config.type === 'Selector'
     return (
         <div className="proxy-group">
@@ -43,6 +52,7 @@ export function Group (props: GroupProps) {
                     className="proxy-group-tags"
                     data={config.all}
                     onClick={handleChangeProxySelected}
+                    shouldError={shouldError}
                     select={config.now}
                     canClick={canClick}
                     rowHeight={30} />

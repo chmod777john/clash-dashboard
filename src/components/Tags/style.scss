@@ -1,8 +1,6 @@
 @import '~@styles/variables';
 
 $height: 22px;
-$add-height: 25px;
-$delete-height: 22px;
 
 .tags-container {
     display: flex;
@@ -35,6 +33,19 @@ $delete-height: 22px;
 
     li.can-click {
         cursor: pointer;
+    }
+
+    li.error {
+        color: #fff;
+        background-color: $color-red;
+        border-color: $color-red;
+    }
+
+    li.tags-selected.error {
+        background: linear-gradient(135deg, $color-primary-dark, $color-red);
+        border: none;
+        height: $height + 2px;
+        padding: 0 7px;
     }
 
     .tags-selected {

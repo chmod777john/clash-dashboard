@@ -118,4 +118,6 @@ export interface Data {
     proxyProviders?: API.Provider[]
 
     rules?: API.Rule[]
+
+    proxyMap?: Map<string, API.Proxy>
 }

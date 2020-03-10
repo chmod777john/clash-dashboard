@@ -51,7 +51,7 @@ interface History {
 
 export interface Proxy {
     name: string
-    type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Socks' | 'Http'
+    type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Socks' | 'Http' | 'Snell'
     history: History[]
 }
 

@@ -13,7 +13,8 @@ function useData () {
         proxy: [],
         proxyGroup: [],
         proxyProviders: [],
-        rules: []
+        rules: [],
+        proxyMap: new Map<string, API.Proxy>()
     })
 
     const { visible, show, hide } = useVisible()
@@ -51,11 +52,23 @@ function useData () {
             .filter(pd => pd.name !== 'default')
             .filter(pd => pd.vehicleType !== 'Compatible')
 
+        const proxyMap = new Map<string, API.Proxy>()
+        for (const p of proxy) {
+            proxyMap.set(p.name, p as API.Proxy)
+        }
+
+        for (const provider of providers) {
+            for (const p of provider.proxies) {
+                proxyMap.set(p.name, p as API.Proxy)
+            }
+        }
+
         set({
             proxy: proxy as API.Proxy[],
             proxyGroup: general.mode === 'Global' ? [proxyList] : groups as API.Group[],
             proxyProviders: providers,
-            rules: rules.data.rules
+            rules: rules.data.rules,
+            proxyMap
         })
 
         const [version, vErr] = await to(API.getVersion())
