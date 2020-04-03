@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo, useLayoutEffect } from 'react'
 import { useBlockLayout, useResizeColumns, useTable } from 'react-table'
 import classnames from 'classnames'
 import { Header, Card, Checkbox, Modal, Icon } from '@components'
@@ -63,7 +63,7 @@ function formatSpeed (upload: number, download: number) {
 
 export default function Connections () {
     const { useTranslation, lang } = containers.useI18n()
-    const { t } = useTranslation('Connections')
+    const t = useMemo(() => useTranslation('Connections').t, [useTranslation])
 
     // total
     const [traffic, setTraffic] = useObject({
@@ -138,9 +138,9 @@ export default function Connections () {
             minWidth: c[1],
             width: c[1]
         })
-    ), [lang, t])
+    ), [t])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const streamReader: StreamReader<API.Snapshot> = null
 
         function handleConnection (snapshots: API.Snapshot[]) {
