@@ -20,7 +20,7 @@ export function Group (props: GroupProps) {
             const list: string[] = []
             const snapshot = await getConnections()
             for (const connection of snapshot.data.connections) {
-                if (connection.chains.includes(name)) {
+                if (connection.chains.includes(props.config.name)) {
                     list.push(connection.id)
                 }
             }
