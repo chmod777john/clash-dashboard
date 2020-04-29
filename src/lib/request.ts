@@ -161,12 +161,12 @@ export async function getProxyProviders () {
 
 export async function updateProvider (name: string) {
     const req = await getInstance()
-    return req.put<void>(`providers/proxies/${name}`)
+    return req.put<void>(`providers/proxies/${encodeURIComponent(name)}`)
 }
 
 export async function healthCheckProvider (name: string) {
     const req = await getInstance()
-    return req.get<void>(`providers/proxies/${name}/healthcheck`)
+    return req.get<void>(`providers/proxies/${encodeURIComponent(name)}/healthcheck`)
 }
 
 export async function getProxies () {
@@ -176,7 +176,7 @@ export async function getProxies () {
 
 export async function getProxy (name: string) {
     const req = await getInstance()
-    return req.get<Proxy>(`proxies/${name}`)
+    return req.get<Proxy>(`proxies/${encodeURIComponent(name)}`)
 }
 
 export async function getVersion () {
@@ -186,7 +186,7 @@ export async function getVersion () {
 
 export async function getProxyDelay (name: string) {
     const req = await getInstance()
-    return req.get<{ delay: number }>(`proxies/${name}/delay`, {
+    return req.get<{ delay: number }>(`proxies/${encodeURIComponent(name)}/delay`, {
         params: {
             timeout: 5000,
             url: 'http://www.gstatic.com/generate_204'
@@ -211,7 +211,7 @@ export async function getConnections () {
 
 export async function changeProxySelected (name: string, select: string) {
     const req = await getInstance()
-    return req.put<void>(`proxies/${name}`, { name: select })
+    return req.put<void>(`proxies/${encodeURIComponent(name)}`, { name: select })
 }
 
 export const getLogsStreamReader = createAsyncSingleton(async function () {
