@@ -1,5 +1,6 @@
-import * as React from 'react'
-import { containers } from '@stores'
+import React, { useMemo } from 'react'
+import { useRecoilValue } from 'recoil'
+import { useProxy, useConfig, proxyMapping } from '@stores'
 import { changeProxySelected, Group as IGroup, getConnections, closeConnection } from '@lib/request'
 import { Tags, Tag } from '@components'
 import './style.scss'
@@ -9,13 +10,14 @@ interface GroupProps {
 }
 
 export function Group (props: GroupProps) {
-    const { fetch, data: Data } = containers.useData()
-    const { data: Config } = containers.useConfig()
+    const { update } = useProxy()
+    const proxyMap = useRecoilValue(proxyMapping)
+    const { data: Config } = useConfig()
     const { config } = props
 
     async function handleChangeProxySelected (name: string) {
         await changeProxySelected(props.config.name, name)
-        await fetch()
+        await update()
         if (Config.breakConnections) {
             const list: string[] = []
             const snapshot = await getConnections()
@@ -31,14 +33,17 @@ export function Group (props: GroupProps) {
         }
     }
 
-    function shouldError (name: string) {
-        const history = Data.proxyMap.get(name)?.history
-        if (history?.length) {
-            return !history.slice(-1)[0].delay
+    const errSet = useMemo(() => {
+        const set = new Set<string>()
+        for (const proxy of config.all) {
+            const history = proxyMap.get(proxy)?.history
+            if (history?.length && history.slice(-1)[0].delay !== 0) {
+                set.add(proxy)
+            }
         }
 
-        return false
-    }
+        return set
+    }, [proxyMap])
 
     const canClick = config.type === 'Selector'
     return (
@@ -52,7 +57,7 @@ export function Group (props: GroupProps) {
                     className="proxy-group-tags"
                     data={config.all}
                     onClick={handleChangeProxySelected}
-                    shouldError={shouldError}
+                    errSet={errSet}
                     select={config.now}
                     canClick={canClick}
                     rowHeight={30} />

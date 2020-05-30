@@ -5,7 +5,8 @@ export default {
         Logs: 'Logs',
         Rules: 'Rules',
         Settings: 'Setting',
-        Connections: 'Connections'
+        Connections: 'Connections',
+        Version: 'Version'
     },
     Settings: {
         title: 'Settings',

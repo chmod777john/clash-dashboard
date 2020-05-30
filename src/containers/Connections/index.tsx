@@ -2,7 +2,7 @@ import React, { useMemo, useLayoutEffect } from 'react'
 import { useBlockLayout, useResizeColumns, useTable } from 'react-table'
 import classnames from 'classnames'
 import { Header, Card, Checkbox, Modal, Icon } from '@components'
-import { containers } from '@stores'
+import { useI18n } from '@stores'
 import * as API from '@lib/request'
 import { StreamReader } from '@lib/streamer'
 import { useObject, useVisible } from '@lib/hook'
@@ -62,7 +62,7 @@ function formatSpeed (upload: number, download: number) {
 }
 
 export default function Connections () {
-    const { useTranslation, lang } = containers.useI18n()
+    const { useTranslation, lang } = useI18n()
     const t = useMemo(() => useTranslation('Connections').t, [useTranslation])
 
     // total

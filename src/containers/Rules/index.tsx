@@ -1,19 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Header, Card, Row, Col } from '@components'
-import { containers } from '@stores'
+import { useI18n, useRule } from '@stores'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import useSWR from 'swr'
 import './style.scss'
 
 export default function Rules () {
-    const { data, fetch } = containers.useData()
-    const { useTranslation } = containers.useI18n()
+    const { rules, update } = useRule()
+    const { useTranslation } = useI18n()
     const { t } = useTranslation('Rules')
-    const { rules } = data
 
-    useEffect(() => {
-        fetch()
-    }, [])
+    useSWR('rules', update)
 
     function renderRuleItem ({ index, style }: { index: number, style: React.CSSProperties }) {
         const rule = rules[index]

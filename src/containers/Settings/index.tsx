@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
-import { containers } from '@stores'
+import { useI18n, useClashXData, useAPIInfo, useGeneral, useIdentity } from '@stores'
 import { updateConfig } from '@lib/request'
 import { useObject } from '@lib/hook'
-import { to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { Lang } from '@i18n'
 import './style.scss'
@@ -11,10 +10,11 @@ import './style.scss'
 const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]
 
 export default function Settings () {
-    const { data: clashXData, fetch: fetchClashXData } = containers.useClashXData()
-    const { data, fetch, unauthorized: { show } } = containers.useData()
-    const { data: apiInfo } = containers.useAPIInfo()
-    const { useTranslation, setLang, lang } = containers.useI18n()
+    const { data: clashXData, update: fetchClashXData } = useClashXData()
+    const { general, update: fetchGeneral } = useGeneral()
+    const { set: setIdentity } = useIdentity()
+    const { data: apiInfo } = useAPIInfo()
+    const { useTranslation, setLang, lang } = useI18n()
     const { t } = useTranslation('Settings')
     const [info, set] = useObject({
         socks5ProxyPort: 7891,
@@ -23,22 +23,20 @@ export default function Settings () {
     })
 
     useEffect(() => {
-        fetch()
+        fetchGeneral()
         if (isClashX()) {
             fetchClashXData().then(() => set('isClashX', true))
         }
     }, [])
 
     useEffect(() => {
-        set('socks5ProxyPort', data.general.socksPort)
-        set('httpProxyPort', data.general.port)
-    }, [data])
+        set('socks5ProxyPort', general.socksPort)
+        set('httpProxyPort', general.port)
+    }, [general])
 
     async function handleProxyModeChange (mode: string) {
-        const [, err] = await to(updateConfig({ mode }))
-        if (!err) {
-            fetch()
-        }
+        await updateConfig({ mode })
+        await fetchGeneral()
     }
 
     async function handleStartAtLoginChange (state: boolean) {
@@ -56,26 +54,18 @@ export default function Settings () {
     }
 
     async function handleHttpPortSave () {
-        const [, err] = await to(updateConfig({ port: info.httpProxyPort }))
-        if (!err) {
-            await fetch()
-            set('httpProxyPort', data.general.port)
-        }
+        await updateConfig({ port: info.httpProxyPort })
+        await fetchGeneral()
     }
 
     async function handleSocksPortSave () {
-        const [, err] = await to(updateConfig({ 'socks-port': info.socks5ProxyPort }))
-        if (!err) {
-            await fetch()
-            set('socks5ProxyPort', data.general.socksPort)
-        }
+        await updateConfig({ 'socks-port': info.socks5ProxyPort })
+        await fetchGeneral()
     }
 
     async function handleAllowLanChange (state: boolean) {
-        const [, err] = await to(updateConfig({ 'allow-lan': state }))
-        if (!err) {
-            await fetch()
-        }
+        await updateConfig({ 'allow-lan': state })
+        await fetchGeneral()
     }
 
     const {
@@ -83,7 +73,7 @@ export default function Settings () {
         port: externalControllerPort
     } = apiInfo
 
-    const { allowLan, mode } = data.general
+    const { allowLan, mode } = general
     const {
         startAtLogin,
         systemProxy
@@ -189,7 +179,7 @@ export default function Settings () {
                             <span className="label">{t('labels.externalController')}</span>
                         </Col>
                         <Col className="external-controller" span={10}>
-                            <span className="modify-btn" onClick={show}>
+                            <span className="modify-btn" onClick={() => setIdentity(false)}>
                                 {`${externalControllerHost}:${externalControllerPort}`}
                             </span>
                         </Col>

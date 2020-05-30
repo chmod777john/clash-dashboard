@@ -5,7 +5,8 @@ export default {
         Logs: '日志',
         Rules: '规则',
         Settings: '设置',
-        Connections: '连接'
+        Connections: '连接',
+        Version: '版本'
     },
     Settings: {
         title: '设置',

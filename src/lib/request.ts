@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Partial, getLocalStorageItem, to } from '@lib/helper'
+import { getLocalStorageItem, to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { createAsyncSingleton } from '@lib/asyncSingleton'
 import { Log } from '@models/Log'
@@ -181,7 +181,7 @@ export async function getProxy (name: string) {
 
 export async function getVersion () {
     const req = await getInstance()
-    return req.get<{ version: string }>('version')
+    return req.get<{ version: string, premium?: boolean }>('version')
 }
 
 export async function getProxyDelay (name: string) {

@@ -64,17 +64,6 @@ export interface Config {
 
 }
 
-export interface ClashXData {
-    startAtLogin: boolean
-    systemProxy: boolean
-}
-
-export interface APIInfo {
-    hostname: string
-    port: string
-    secret?: string
-}
-
 export interface Data {
     version?: string
 

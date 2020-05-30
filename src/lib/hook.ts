@@ -1,6 +1,5 @@
 import { Draft } from 'immer'
 import { useImmer } from 'use-immer'
-import { createContainer } from 'unstated-next'
 import { useRef, useEffect, useState, useMemo } from 'react'
 
 import { noop } from '@lib/helper'
@@ -52,26 +51,6 @@ export function useInterval (callback: () => void, delay: number) {
         },
         [delay]
     )
-}
-
-type containerFn<Value, State = void> = (initialState?: State) => Value
-
-export function composeContainer<T, C extends containerFn<T>, U extends { [key: string]: C }, K extends keyof U> (mapping: U) {
-    function Global () {
-        return Object.keys(mapping).reduce((obj, key) => {
-            obj[key as K] = mapping[key]()
-            return obj
-        }, {} as { [K in keyof U]: T })
-    }
-
-    const allContainer = createContainer(Global)
-    return {
-        Provider: allContainer.Provider,
-        containers: Object.keys(mapping).reduce((obj, key) => {
-            obj[key as K] = (() => allContainer.useContainer()[key]) as U[K]
-            return obj
-        }, {} as { [K in keyof U]: U[K] })
-    }
 }
 
 export function useRound<T> (list: T[], defidx = 0) {

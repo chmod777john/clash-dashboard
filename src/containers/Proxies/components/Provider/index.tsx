@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useMemo } from 'react'
 import { Card, Tag, Icon, Loading } from '@components'
-import { containers } from '@stores'
+import { useI18n, useProxyProviders } from '@stores'
 import { fromNow } from '@lib/date'
 import { Provider as IProvider, Proxy as IProxy, updateProvider, healthCheckProvider } from '@lib/request'
 import { useVisible } from '@lib/hook'
@@ -14,22 +14,22 @@ interface ProvidersProps {
 }
 
 export function Provider (props: ProvidersProps) {
-    const { fetch } = containers.useData()
-    const { useTranslation, lang } = containers.useI18n()
-    const { provider } = props
+    const { update } = useProxyProviders()
+    const { useTranslation, lang } = useI18n()
 
+    const { provider } = props
     const { t } = useTranslation('Proxies')
 
     const { visible, hide, show } = useVisible()
 
     function handleHealthChech () {
         show()
-        healthCheckProvider(provider.name).then(() => fetch()).finally(() => hide())
+        healthCheckProvider(provider.name).then(() => update()).finally(() => hide())
     }
 
     function handleUpdate () {
         show()
-        updateProvider(provider.name).then(() => fetch()).finally(() => hide())
+        updateProvider(provider.name).then(() => update()).finally(() => hide())
     }
 
     const proxies = useMemo(() => {

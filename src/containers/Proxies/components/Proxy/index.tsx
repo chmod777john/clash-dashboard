@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useLayoutEffect, useEffect } from 'react'
+import React, { useMemo, useLayoutEffect } from 'react'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models'
-import { containers } from '@stores'
+import { useProxy } from '@stores'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
@@ -14,8 +14,8 @@ interface ProxyProps extends BaseComponentProps {
 
 const TagColors = {
     '#909399': 0,
-    '#00c520': 150,
-    '#ff9a28': 500,
+    '#00c520': 260,
+    '#ff9a28': 600,
     '#ff3e5e': Infinity
 }
 
@@ -31,20 +31,24 @@ async function getDelay (name: string) {
 
 export function Proxy (props: ProxyProps) {
     const { config, className } = props
-    const [delay, setDelay] = useState(0)
-    const { updateDelay } = containers.useData()
+    const { set } = useProxy()
 
     async function speedTest () {
         const [delay, err] = await to(getDelay(config.name))
 
         const validDelay = err ? 0 : delay
-        setDelay(validDelay)
-        updateDelay(config.name, validDelay)
+        set(draft => {
+            const proxy = draft.proxies.find(p => p.name === proxy)
+            if (proxy) {
+                proxy.history.push({ time: Date.now().toString(), delay: validDelay })
+            }
+        })
     }
 
-    useEffect(() => {
-        setDelay(config.history && config.history.length ? config.history.slice(-1)[0].delay : 0)
-    }, [config])
+    const delay = useMemo(
+        () => config.history?.length ? config.history.slice(-1)[0].delay : 0,
+        [config]
+    )
 
     useLayoutEffect(() => {
         EE.subscribe(Action.SPEED_NOTIFY, speedTest)

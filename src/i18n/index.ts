@@ -1,13 +1,11 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
-import { useState, useCallback } from 'react'
-import get from 'lodash/get'
 import { getLocalStorageItem, setLocalStorageItem } from '@lib/helper'
 
 import en_US from './en_US'
 import zh_CN from './zh_CN'
 
-const Language = {
+export const Language = {
     en_US,
     zh_CN
 }
@@ -16,7 +14,7 @@ export type Lang = keyof typeof Language
 
 const languageKey = 'language'
 
-const locales = Object.keys(Language)
+export const locales = Object.keys(Language)
 
 function getNavigatorLanguage (): string[] {
     const found: string[] = []
@@ -34,7 +32,7 @@ function getNavigatorLanguage (): string[] {
     return found
 }
 
-function getLanguage (): Lang {
+export function getLanguage (): Lang {
     const localLanguage = getLocalStorageItem(languageKey)
     if (localLanguage && locales.includes(localLanguage)) {
         return localLanguage as Lang
@@ -52,23 +50,6 @@ function getLanguage (): Lang {
     return 'en_US'
 }
 
-export function useI18n () {
-    const [lang, set] = useState(getLanguage())
-
-    function setLang (lang: Lang) {
-        set(lang)
-        setLocalStorageItem(languageKey, lang)
-    }
-
-    const useTranslation = useCallback(
-        function (namespace: string) {
-            function t (path: string) {
-                return get(Language[lang][namespace], path) as string
-            }
-            return { t }
-        },
-        [lang]
-    )
-
-    return { lang, locales, setLang, useTranslation }
+export function setLanguage (lang: Lang) {
+    setLocalStorageItem(languageKey, lang)
 }

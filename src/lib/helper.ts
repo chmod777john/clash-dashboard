@@ -26,8 +26,6 @@ export async function to <T, E = Error> (promise: Promise<T>): Promise<[T, E]> {
     }
 }
 
-export type Partial<T> = { [P in keyof T]?: T[P] }
-
 export function partition<T> (arr: T[], fn: (T) => boolean): [T[], T[]] {
     const left: T[] = []
     const right: T[] = []
