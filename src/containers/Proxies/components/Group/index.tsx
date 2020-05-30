@@ -37,7 +37,7 @@ export function Group (props: GroupProps) {
         const set = new Set<string>()
         for (const proxy of config.all) {
             const history = proxyMap.get(proxy)?.history
-            if (history?.length && history.slice(-1)[0].delay !== 0) {
+            if (history?.length && history.slice(-1)[0].delay === 0) {
                 set.add(proxy)
             }
         }
