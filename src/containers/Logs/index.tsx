@@ -27,7 +27,7 @@ export default function Logs () {
             setLogs(logsRef.current)
         }
 
-        ;(async function () {
+        (async function () {
             const streamReader = await getLogsStreamReader()
             logsRef.current = streamReader.buffer()
             setLogs(logsRef.current)

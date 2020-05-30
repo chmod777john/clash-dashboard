@@ -46,7 +46,7 @@ declare global {
         /**
          * Global jsbridge init callback
          */
-        WVJBCallbacks?: Function[]
+        WVJBCallbacks?: JsBridgeCallback[]
 
     }
 

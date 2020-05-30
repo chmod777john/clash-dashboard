@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
 import { getLocalStorageItem, setLocalStorageItem } from '@lib/helper'
 
 import en_US from './en_US'

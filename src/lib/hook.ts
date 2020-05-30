@@ -4,7 +4,7 @@ import { useRef, useEffect, useState, useMemo } from 'react'
 
 import { noop } from '@lib/helper'
 
-export function useObject<T extends object> (initialValue: T) {
+export function useObject<T extends Record<string, unknown>> (initialValue: T) {
     const [copy, rawSet] = useImmer(initialValue)
 
     function set<K extends keyof Draft<T>> (key: K, value: Draft<T>[K]): void

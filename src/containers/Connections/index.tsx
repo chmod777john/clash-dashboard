@@ -154,7 +154,7 @@ export default function Connections () {
             }
         }
 
-        ;(async function () {
+        (async function () {
             const streamReader = await API.getConnectionStreamReader()
             streamReader.subscribe('data', handleConnection)
         }())
