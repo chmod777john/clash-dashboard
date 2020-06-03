@@ -155,7 +155,7 @@ export default function Settings () {
                         <Col span={8}>
                             <Input
                                 value={info.socks5ProxyPort}
-                                onChange={socks5ProxyPort => set('socks5ProxyPort', parseInt(socks5ProxyPort, 10))}
+                                onChange={socks5ProxyPort => set('socks5ProxyPort', +socks5ProxyPort)}
                                 onBlur={handleSocksPortSave}
                             />
                         </Col>
@@ -169,7 +169,7 @@ export default function Settings () {
                         <Col span={8}>
                             <Input
                                 value={info.httpProxyPort}
-                                onChange={httpProxyPort => set('httpProxyPort', parseInt(httpProxyPort, 10))}
+                                onChange={httpProxyPort => set('httpProxyPort', +httpProxyPort)}
                                 onBlur={handleHttpPortSave}
                             />
                         </Col>
