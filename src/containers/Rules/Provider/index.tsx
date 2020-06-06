@@ -16,7 +16,7 @@ export function Provider (props: ProvidersProps) {
     const { useTranslation, lang } = useI18n()
 
     const { provider } = props
-    const { t } = useTranslation('Proxies')
+    const { t } = useTranslation('Rules')
 
     const { visible, hide, show } = useVisible()
 
@@ -34,6 +34,7 @@ export function Provider (props: ProvidersProps) {
                     <span className="rule-provider-name">{ provider.name }</span>
                     <Tag>{ provider.vehicleType }</Tag>
                     <Tag className="rule-provider-behavior">{ provider.behavior }</Tag>
+                    <span className="rule-provider-update">{ `${t('ruleCount')}: ${provider.ruleCount}` }</span>
                 </div>
                 <div className="rule-provider-header-part">
                     {

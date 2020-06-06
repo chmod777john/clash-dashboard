@@ -43,7 +43,8 @@ export default {
     Rules: {
         title: 'Rules',
         providerTitle: 'Providers',
-        providerUpdateTime: 'Last updated at'
+        providerUpdateTime: 'Last updated at',
+        ruleCount: 'Rule count'
     },
     Connections: {
         title: 'Connections',

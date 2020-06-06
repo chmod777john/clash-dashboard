@@ -43,7 +43,8 @@ export default {
     Rules: {
         title: '规则',
         providerTitle: '规则集',
-        providerUpdateTime: '最后更新于'
+        providerUpdateTime: '最后更新于',
+        ruleCount: '规则条数'
     },
     Connections: {
         title: '连接',
