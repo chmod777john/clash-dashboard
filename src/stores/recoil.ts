@@ -7,7 +7,7 @@ import { getLanguage, setLanguage, Lang, locales, Language } from '@i18n'
 import { useRecoilObjectWithImmer } from '@lib/recoil'
 import * as API from '@lib/request'
 import { setLocalStorageItem, partition, to } from '@lib/helper'
-import { jsBridge } from '@lib/jsBridge'
+import { jsBridge, isClashX } from '@lib/jsBridge'
 import * as Models from '@models'
 
 const identity = atom({
@@ -62,6 +62,32 @@ export function useI18n () {
     return { lang, locales, setLang, useTranslation }
 }
 
+export const version = atom({
+    key: 'version',
+    default: {
+        version: '',
+        premium: false
+    }
+})
+
+export function useVersion () {
+    const [data, set] = useRecoilState(version)
+    const { set: setIdentity } = useIdentity()
+
+    async function update () {
+        const [resp, err] = await to(API.getVersion())
+        setIdentity(!err)
+
+        set(
+            err
+                ? { version: '', premium: false }
+                : { version: resp.data.version, premium: !!resp.data.premium }
+        )
+    }
+
+    return { version: data.version, premium: data.premium, update }
+}
+
 export const config = atom({
     key: 'config',
     default: {
@@ -90,6 +116,31 @@ export function useProxyProviders () {
             .map<API.Provider>(name => proxyProviders.data.providers[name])
             .filter(pd => pd.name !== 'default')
             .filter(pd => pd.vehicleType !== 'Compatible')
+
+        set(providers)
+    }
+
+    return { providers: data, update }
+}
+
+export const ruleProvider = atom({
+    key: 'ruleProvider',
+    default: [] as API.RuleProvider[]
+})
+
+export function useRuleProviders () {
+    const [data, set] = useRecoilState(ruleProvider)
+    const [{ premium }] = useRecoilState(version)
+
+    async function update () {
+        if (!premium) {
+            return
+        }
+
+        const ruleProviders = await API.getRuleProviders()
+
+        const providers = Object.keys(ruleProviders.data.providers)
+            .map<API.RuleProvider>(name => ruleProviders.data.providers[name])
 
         set(providers)
     }
@@ -179,35 +230,10 @@ export const proxyMapping = selector({
     }
 })
 
-export const version = atom({
-    key: 'version',
-    default: {
-        version: '',
-        premium: false
-    }
-})
-
-export function useVersion () {
-    const [data, set] = useRecoilState(version)
-    const { set: setIdentity } = useIdentity()
-
-    async function update () {
-        const [resp, err] = await to(API.getVersion())
-        setIdentity(!err)
-
-        set(
-            err
-                ? { version: '', premium: false }
-                : { version: resp.data.version, premium: !!resp.data.premium }
-        )
-    }
-
-    return { version: data.version, premium: data.premium, update }
-}
-
 export const clashxData = atom({
     key: 'clashxData',
     default: {
+        isClashX: false,
         startAtLogin: false,
         systemProxy: false
     }
@@ -217,10 +243,14 @@ export function useClashXData () {
     const [data, set] = useRecoilState(clashxData)
 
     async function update () {
+        if (!isClashX()) {
+            return
+        }
+
         const startAtLogin = await jsBridge.getStartAtLogin()
         const systemProxy = await jsBridge.isSystemProxySet()
 
-        set({ startAtLogin, systemProxy })
+        set({ startAtLogin, systemProxy, isClashX: true })
     }
 
     return { data, update }

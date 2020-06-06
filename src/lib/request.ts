@@ -25,23 +25,32 @@ export interface Rule {
 }
 
 export interface Proxies {
-    proxies: {
-        [key: string]: Proxy | Group
-    }
+    proxies: Record<string, Proxy | Group>
 }
 
 export interface Provider {
     name: string
     proxies: Array<Group | Proxy>
-    type: 'Proxy' | 'Rule'
+    type: 'Proxy'
     vehicleType: 'HTTP' | 'File' | 'Compatible'
     updatedAt?: string
 }
 
+export interface RuleProvider {
+    name: string
+    type: 'Rule'
+    vehicleType: 'HTTP' | 'File'
+    behavior: string
+    ruleCount: number
+    updatedAt?: string
+}
+
+export interface RuleProviders {
+    providers: Record<string, RuleProvider>
+}
+
 export interface ProxyProviders {
-    providers: {
-        [key: string]: Provider
-    }
+    providers: Record<string, Provider>
 }
 
 interface History {
@@ -159,9 +168,19 @@ export async function getProxyProviders () {
         })
 }
 
+export async function getRuleProviders () {
+    const req = await getInstance()
+    return req.get<RuleProviders>('providers/rules')
+}
+
 export async function updateProvider (name: string) {
     const req = await getInstance()
     return req.put<void>(`providers/proxies/${encodeURIComponent(name)}`)
+}
+
+export async function updateRuleProvider (name: string) {
+    const req = await getInstance()
+    return req.put<void>(`providers/rules/${encodeURIComponent(name)}`)
 }
 
 export async function healthCheckProvider (name: string) {

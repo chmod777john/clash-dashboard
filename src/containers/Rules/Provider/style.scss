@@ -1,0 +1,79 @@
+@import '~@styles/variables';
+
+.rule-provider {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    padding: 20px;
+    color: $color-black-light;
+}
+
+.rule-provider-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rule-provider-header-part {
+    display: flex;
+    align-items: center;
+}
+
+.rule-provider-name {
+    width: 120px;
+    margin-right: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rule-provider-behavior {
+    margin-left: 12px;
+    background-color: $color-primary-dark;
+    color: #fff;
+}
+
+.rule-provider-spinner {
+    transform: scale(0.4);
+}
+
+.rule-provider-proxies {
+    list-style: none;
+}
+
+.rule-provider-item {
+    box-shadow: 0 0 24px 0 rgba(44, 138, 248, 0.2);
+
+    &:hover {
+        box-shadow: 0 0 24px 0 rgba(84, 117, 154, 0.4);
+    }
+}
+
+.rule-provider-update {
+    line-height: 14px;
+    font-size: 14px;
+}
+
+.rule-provider-icon {
+    display: block;
+    margin-left: 20px;
+    cursor: pointer;
+
+    &.rule-provider-loading::before {
+        color: $color-gray-darken;
+        cursor: not-allowed;
+        animation: spinner 2s infinite linear;
+    }
+}
+
+@media (max-width: 768px) {
+    .rule-provider-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rule-provider-header-part {
+        margin: 6px 0;
+    }
+}

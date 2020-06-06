@@ -62,9 +62,11 @@ function ProxyGroups () {
 }
 
 function ProxyProviders () {
-    const { providers } = useProxyProviders()
+    const { providers, update } = useProxyProviders()
     const { useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
+
+    useSWR('providers', update)
 
     return <>
         {
@@ -134,10 +136,7 @@ function Proxies () {
 
 export default function ProxyContainer () {
     const { update: updateProxy } = useProxy()
-    const { update: updateProvider } = useProxyProviders()
-
     useSWR('proxies', updateProxy)
-    useSWR('providers', updateProvider)
 
     return (
         <div className="page">

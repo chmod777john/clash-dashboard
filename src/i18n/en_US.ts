@@ -41,7 +41,9 @@ export default {
         title: 'Logs'
     },
     Rules: {
-        title: 'Rules'
+        title: 'Rules',
+        providerTitle: 'Providers',
+        providerUpdateTime: 'Last updated at'
     },
     Connections: {
         title: 'Connections',

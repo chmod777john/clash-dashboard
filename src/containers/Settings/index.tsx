@@ -4,7 +4,7 @@ import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Inpu
 import { useI18n, useClashXData, useAPIInfo, useGeneral, useIdentity } from '@stores'
 import { updateConfig } from '@lib/request'
 import { useObject } from '@lib/hook'
-import { isClashX, jsBridge } from '@lib/jsBridge'
+import { jsBridge } from '@lib/jsBridge'
 import { Lang } from '@i18n'
 import './style.scss'
 
@@ -19,15 +19,12 @@ export default function Settings () {
     const { t } = useTranslation('Settings')
     const [info, set] = useObject({
         socks5ProxyPort: 7891,
-        httpProxyPort: 7890,
-        isClashX: false
+        httpProxyPort: 7890
     })
 
     useEffect(() => {
         fetchGeneral()
-        if (isClashX()) {
-            fetchClashXData().then(() => set('isClashX', true))
-        }
+        fetchClashXData()
     }, [])
 
     useEffect(() => {
@@ -96,7 +93,7 @@ export default function Settings () {
                             <span className="label">{t('labels.startAtLogin')}</span>
                         </Col>
                         <Col span={8} className="value-column">
-                            <Switch disabled={!info.isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
+                            <Switch disabled={!clashXData.isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
                         </Col>
                     </Col>
                     <Col span={12}>
@@ -115,7 +112,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8} className="value-column">
                             <Switch
-                                disabled={!info.isClashX}
+                                disabled={!clashXData.isClashX}
                                 checked={systemProxy}
                                 onChange={handleSetSystemProxy}
                             />

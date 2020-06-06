@@ -1,10 +1,42 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Header, Card, Row, Col } from '@components'
-import { useI18n, useRule } from '@stores'
+import { useI18n, useRule, useRuleProviders, useVersion } from '@stores'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import useSWR from 'swr'
+import { Provider } from './Provider'
 import './style.scss'
+
+function RuleProviders () {
+    const { providers, update } = useRuleProviders()
+    const { premium } = useVersion()
+    const { useTranslation } = useI18n()
+    const { t } = useTranslation('Rules')
+
+    useLayoutEffect(() => {
+        if (premium) {
+            update()
+        }
+    }, [premium])
+
+    return <>
+        {
+            providers.length !== 0 &&
+            <div className="proxies-container">
+                <Header title={t('providerTitle')} />
+                <ul className="proxies-providers-list">
+                    {
+                        providers.map(p => (
+                            <li className="proxies-providers-item" key={p.name}>
+                                <Provider provider={p} />
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        }
+    </>
+}
 
 export default function Rules () {
     const { rules, update } = useRule()
@@ -34,6 +66,7 @@ export default function Rules () {
 
     return (
         <div className="page">
+            <RuleProviders />
             <Header title={t('title')} />
             <Card className="rules-card">
                 <AutoSizer className="rules">
