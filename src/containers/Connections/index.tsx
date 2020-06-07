@@ -8,6 +8,7 @@ import { StreamReader } from '@lib/streamer'
 import { useObject, useVisible } from '@lib/hook'
 import { noop } from '@lib/helper'
 import { fromNow } from '@lib/date'
+import { RuleType } from '@models'
 import { useConnections } from './store'
 import './style.scss'
 
@@ -111,7 +112,7 @@ export default function Connections () {
                 id: c.id,
                 host: `${c.metadata.host || c.metadata.destinationIP}:${c.metadata.destinationPort}`,
                 chains: c.chains.slice().reverse().join(' --> '),
-                rule: c.rule,
+                rule: c.rule === RuleType.RuleSet ? `${c.rule}(${c.rulePayload})` : c.rule,
                 time: fromNow(new Date(c.start), lang),
                 upload: formatTraffic(c.upload),
                 download: formatTraffic(c.download),

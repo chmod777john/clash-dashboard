@@ -94,6 +94,7 @@ export interface Connections {
     start: string
     chains: string[]
     rule: string
+    rulePayload: string
 }
 
 export async function getExternalControllerConfig () {
