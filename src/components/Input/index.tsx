@@ -10,6 +10,7 @@ interface InputProps extends BaseComponentProps {
     inside?: boolean
     autoFocus?: boolean
     type?: string
+    disabled?: boolean
     onChange?: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void
     onBlur?: (event?: React.FocusEvent<HTMLInputElement>) => void
 }
@@ -23,6 +24,7 @@ export function Input (props: InputProps) {
         inside = false,
         autoFocus = false,
         type = 'text',
+        disabled = false,
         onChange = noop,
         onBlur = noop
     } = props
@@ -30,6 +32,7 @@ export function Input (props: InputProps) {
 
     return (
         <input
+            disabled={disabled}
             className={classname}
             style={style}
             value={value}

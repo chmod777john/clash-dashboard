@@ -152,6 +152,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8}>
                             <Input
+                                disabled={clashXData.isClashX}
                                 value={info.socks5ProxyPort}
                                 onChange={socks5ProxyPort => set('socks5ProxyPort', +socks5ProxyPort)}
                                 onBlur={handleSocksPortSave}
@@ -166,6 +167,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8}>
                             <Input
+                                disabled={clashXData.isClashX}
                                 value={info.httpProxyPort}
                                 onChange={httpProxyPort => set('httpProxyPort', +httpProxyPort)}
                                 onBlur={handleHttpPortSave}
