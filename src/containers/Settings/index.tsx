@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import classnames from 'classnames'
 import capitalize from 'lodash/capitalize'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { useI18n, useClashXData, useAPIInfo, useGeneral, useIdentity } from '@stores'
@@ -179,7 +180,9 @@ export default function Settings () {
                             <span className="label">{t('labels.externalController')}</span>
                         </Col>
                         <Col className="external-controller" span={10}>
-                            <span className="modify-btn" onClick={() => setIdentity(false)}>
+                            <span
+                                className={classnames({ 'modify-btn': !clashXData.isClashX })}
+                                onClick={() => !clashXData.isClashX && setIdentity(false)}>
                                 {`${externalControllerHost}:${externalControllerPort}`}
                             </span>
                         </Col>
