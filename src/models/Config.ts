@@ -92,7 +92,7 @@ export interface Data {
         /**
          * clash proxy mode
          */
-        mode?: string
+        mode?: 'script' | 'rule' | 'direct' | 'global'
 
         /**
          * clash tty log level

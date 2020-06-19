@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import EE from '@lib/event'
 import { useRound } from '@lib/hook'
 import { Card, Header, Icon, Checkbox } from '@components'
-import { useI18n, useConfig, useProxy, useProxyProviders } from '@stores'
+import { useI18n, useConfig, useProxy, useProxyProviders, useGeneral } from '@stores'
 import * as API from '@lib/request'
 
 import { Proxy, Group, Provider } from './components'
@@ -28,14 +28,20 @@ export function compareDesc (a: API.Proxy, b: API.Proxy) {
 }
 
 function ProxyGroups () {
-    const { groups } = useProxy()
+    const { groups, global } = useProxy()
     const { data: config, set: setConfig } = useConfig()
+    const { general } = useGeneral()
     const { useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
 
+    const list = useMemo(
+        () => general.mode === 'global' ? [global] : groups,
+        [general, groups, global]
+    )
+
     return <>
         {
-            groups.length !== 0 &&
+            list.length !== 0 &&
             <div className="proxies-container">
                 <Header title={t('groupTitle')}>
                     <Checkbox
@@ -48,7 +54,7 @@ function ProxyGroups () {
                 <Card className="proxies-group-card">
                     <ul className="proxies-group-list">
                         {
-                            groups.map(p => (
+                            list.map(p => (
                                 <li className="proxies-group-item" key={p.name}>
                                     <Group config={p} />
                                 </li>

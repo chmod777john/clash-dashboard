@@ -163,7 +163,7 @@ export function useGeneral () {
             port: data.port,
             socksPort: data['socks-port'],
             redirPort: data['redir-port'],
-            mode: data.mode,
+            mode: data.mode.toLowerCase() as Models.Data['general']['mode'],
             logLevel: data['log-level'],
             allowLan: data['allow-lan']
         })
