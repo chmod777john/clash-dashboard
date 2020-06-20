@@ -38,7 +38,7 @@ export function Proxy (props: ProxyProps) {
 
         const validDelay = err ? 0 : delay
         set(draft => {
-            const proxy = draft.proxies.find(p => p.name === proxy)
+            const proxy = draft.proxies.find(p => p.name === config.name)
             if (proxy) {
                 proxy.history.push({ time: Date.now().toString(), delay: validDelay })
             }
