@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { BaseComponentProps } from '@models'
 import { Button } from '@components'
 import { noop } from '@lib/helper'
+import { useI18n } from '@stores'
 import './style.scss'
 
 interface ModalProps extends BaseComponentProps {
@@ -47,6 +48,9 @@ export function Modal (props: ModalProps) {
         children
     } = props
 
+    const { useTranslation } = useI18n()
+    const { t } = useTranslation('Modal')
+
     const portalRef = useRef<HTMLDivElement>(document.createElement('div'))
     const maskRef = useRef<HTMLDivElement>()
 
@@ -79,8 +83,8 @@ export function Modal (props: ModalProps) {
                 {
                     footer && (
                         <div className="footer">
-                            <Button onClick={() => onClose()}>取 消</Button>
-                            <Button type="primary" onClick={() => onOk()}>确 定</Button>
+                            <Button onClick={() => onClose()}>{ t('cancel') }</Button>
+                            <Button type="primary" onClick={() => onOk()}>{ t('ok') }</Button>
                         </div>
                     )
                 }

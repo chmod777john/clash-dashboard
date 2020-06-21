@@ -94,5 +94,9 @@ export default {
         collapseText: 'Collapse',
         speedTestText: 'Speed Test',
         breakConnectionsText: 'Close connections which include the group'
+    },
+    Modal: {
+        ok: 'Ok',
+        cancel: 'Cancel'
     }
 }
