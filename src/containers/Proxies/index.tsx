@@ -95,8 +95,11 @@ function ProxyProviders () {
 
 function Proxies () {
     const { proxies } = useProxy()
+    const { update: updateGeneral } = useGeneral()
     const { useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
+
+    useSWR('general', updateGeneral)
 
     function handleNotitySpeedTest () {
         EE.notifySpeedTest()

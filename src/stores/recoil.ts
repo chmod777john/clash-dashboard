@@ -1,5 +1,6 @@
 import { atom, useRecoilState, selector } from 'recoil'
 import get from 'lodash/get'
+import throttle from 'lodash/throttle'
 import { useCallback } from 'react'
 import { AxiosError } from 'axios'
 
@@ -169,7 +170,7 @@ export function useGeneral () {
         })
     }
 
-    return { general: data, update }
+    return { general: data, update: throttle(update, 50) }
 }
 
 export const proxies = atom({
