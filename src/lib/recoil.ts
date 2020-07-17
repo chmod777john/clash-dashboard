@@ -10,16 +10,16 @@ export function useRecoilObjectWithImmer<T> (value: RecoilState<T>) {
     function set<K extends keyof Draft<T>> (f: (draft: Draft<T>) => void | T): void
     function set<K extends keyof Draft<T>> (data: any, value?: Draft<T>[K]): void {
         if (typeof data === 'string') {
-            rawSet(produce(copy, (draft: Draft<T>) => {
+            rawSet(pre => produce(pre, (draft: Draft<T>) => {
                 const key = data as K
                 const v = value
                 draft[key] = v
             }))
         } else if (typeof data === 'function') {
             const fn = data as (draft: Draft<T>) => void | T
-            rawSet(produce(copy, fn) as T)
+            rawSet(pre => produce(pre, fn) as T)
         } else if (typeof data === 'object') {
-            rawSet(produce(copy, (draft: Draft<T>) => {
+            rawSet(pre => produce(pre, (draft: Draft<T>) => {
                 const obj = data as Draft<T>
                 for (const key of Object.keys(obj)) {
                     const k = key as keyof Draft<T>
