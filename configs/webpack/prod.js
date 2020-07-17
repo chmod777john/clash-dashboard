@@ -1,5 +1,5 @@
 // production config
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const { resolve } = require('path')
 const TerserPlugin = require('terser-webpack-plugin')
 // const ManifestPlugin = require('webpack-pwa-manifest')
