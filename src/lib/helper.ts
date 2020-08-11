@@ -20,9 +20,9 @@ export function noop () {}
 export async function to <T, E = Error> (promise: Promise<T>): Promise<[T, E]> {
     try {
         const ret = await promise
-        return [ret, null as E]
+        return [ret, null as unknown as E]
     } catch (e) {
-        return [null as T, e]
+        return [null as unknown as T, e]
     }
 }
 

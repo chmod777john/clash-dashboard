@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState, useMemo } from 'react'
+import React, { useRef, useLayoutEffect, useState, useMemo, ReactElement } from 'react'
 import classnames from 'classnames'
 import { Icon } from '@components'
 import { BaseComponentProps } from '@models'
@@ -15,6 +15,8 @@ interface SelectProps extends BaseComponentProps {
      */
     value: OptionValue
 
+    children?: ReactElement
+
     onSelect?: (value: OptionValue, e: React.MouseEvent<HTMLLIElement>) => void
 }
 
@@ -22,8 +24,8 @@ export function Select (props: SelectProps) {
     const { value, onSelect, children, className: cn, style } = props
 
     const portalRef = useRef<HTMLDivElement>()
-    const attachmentRef = useRef<HTMLDivElement>()
-    const targetRef = useRef<HTMLDivElement>()
+    const attachmentRef = useRef<HTMLDivElement>(null)
+    const targetRef = useRef<HTMLDivElement>(null)
 
     const [showDropDownList, setShowDropDownList] = useState(false)
     const [hasCreateDropList, setHasCreateDropList] = useState(false)
@@ -70,19 +72,19 @@ export function Select (props: SelectProps) {
     }
 
     const matchChild = useMemo(() => {
-        let matchChild: React.ReactElement<any> = null
+        let matchChild: React.ReactElement | null = null
 
-        React.Children.forEach(children, (child: React.ReactElement<any>) => {
-            if (child.props && child.props.value === value) {
+        React.Children.forEach(children, (child) => {
+            if (child?.props?.value === value) {
                 matchChild = child
             }
         })
 
-        return matchChild
+        return matchChild as React.ReactElement | null
     }, [value, children])
 
     const hookedChildren = useMemo(() => {
-        return React.Children.map(children, (child: React.ReactElement<any>) => {
+        return React.Children.map(children ?? [], (child: React.ReactElement<any>) => {
             if (!child.props || !child.type) {
                 return child
             }
@@ -96,7 +98,7 @@ export function Select (props: SelectProps) {
             const rawOnClickEvent = child.props.onClick
             return React.cloneElement(child, Object.assign({}, child.props, {
                 onClick: (e: React.MouseEvent<HTMLLIElement>) => {
-                    onSelect(child.props.value, e)
+                    onSelect?.(child.props.value, e)
                     setShowDropDownList(false)
                     rawOnClickEvent && rawOnClickEvent(e)
                 },
@@ -125,10 +127,13 @@ export function Select (props: SelectProps) {
                 ref={targetRef}
                 onClick={handleShowDropList}
             >
-                {matchChild && matchChild.props && matchChild.props.children}
+                {matchChild?.props?.children}
                 <Icon type="triangle-down" />
             </div>
-            {hasCreateDropList && createPortal(dropDownList, portalRef.current)}
+            {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion,@typescript-eslint/no-non-null-asserted-optional-chain
+                hasCreateDropList && createPortal(dropDownList, portalRef?.current!)
+            }
         </>
     )
 }

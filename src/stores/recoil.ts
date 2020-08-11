@@ -249,8 +249,8 @@ export function useClashXData () {
             return
         }
 
-        const startAtLogin = await jsBridge.getStartAtLogin()
-        const systemProxy = await jsBridge.isSystemProxySet()
+        const startAtLogin = await jsBridge?.getStartAtLogin() ?? false
+        const systemProxy = await jsBridge?.isSystemProxySet() ?? false
 
         set({ startAtLogin, systemProxy, isClashX: true })
     }

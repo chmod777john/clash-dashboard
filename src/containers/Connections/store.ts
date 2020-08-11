@@ -18,21 +18,26 @@ class Store {
                     this.connections.delete(id)
                 } else {
                     const connection = this.connections.get(id)
-                    connection.completed = true
-                    connection.speed = { upload: 0, download: 0 }
+                    if (connection) {
+                        connection.completed = true
+                        connection.speed = { upload: 0, download: 0 }
+                    }
                 }
             }
         }
 
         for (const id of mapping.keys()) {
             if (!this.connections.has(id)) {
-                this.connections.set(id, { ...mapping.get(id), speed: { upload: 0, download: 0 } })
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                this.connections.set(id, { ...mapping.get(id)!, speed: { upload: 0, download: 0 } })
                 continue
             }
 
-            const c = this.connections.get(id)
-            const n = mapping.get(id)
-            this.connections.set(id, { ...n, speed: { upload: n.upload - c.upload, download: n.download - c.download } })
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const c = this.connections.get(id)!
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const n = mapping.get(id)!
+            this.connections?.set(id, { ...n, speed: { upload: n.upload - c.upload, download: n.download - c.download } })
         }
     }
 
@@ -40,7 +45,7 @@ class Store {
         if (this.saveDisconnection) {
             this.saveDisconnection = false
             for (const id of this.connections.keys()) {
-                if (this.connections.get(id).completed) {
+                if (this.connections?.get(id)?.completed) {
                     this.connections.delete(id)
                 }
             }

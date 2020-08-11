@@ -1,6 +1,6 @@
 import { Draft } from 'immer'
 import { useImmer } from 'use-immer'
-import { useRef, useEffect, useState, useMemo } from 'react'
+import { useRef, useEffect, useState, useMemo, useCallback } from 'react'
 
 import { noop } from '@lib/helper'
 
@@ -15,7 +15,8 @@ export function useObject<T extends Record<string, unknown>> (initialValue: T) {
             rawSet(draft => {
                 const key = data as K
                 const v = value
-                draft[key] = v
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                draft[key] = v!
             })
         } else if (typeof data === 'function') {
             rawSet(data)
@@ -30,7 +31,7 @@ export function useObject<T extends Record<string, unknown>> (initialValue: T) {
         }
     }
 
-    return [copy, set] as [T, typeof set]
+    return [copy, useCallback(set, [rawSet])] as [T, typeof set]
 }
 
 export function useInterval (callback: () => void, delay: number) {

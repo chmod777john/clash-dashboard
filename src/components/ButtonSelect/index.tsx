@@ -30,7 +30,7 @@ export function ButtonSelect (props: ButtonSelectProps) {
                         value={option.value}
                         key={option.value}
                         className={classnames('button-select-options', { actived: value === option.value })}
-                        onClick={() => onSelect(option.value)}>
+                        onClick={() => onSelect?.(option.value)}>
                         { option.label }
                     </button>
                 ))

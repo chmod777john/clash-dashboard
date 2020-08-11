@@ -1,5 +1,6 @@
-import { to } from '@lib/helper'
 import EventEmitter from 'eventemitter3'
+import { SetRequired } from 'type-fest'
+import { to } from '@lib/helper'
 
 export interface Config {
     url: string
@@ -11,7 +12,7 @@ export interface Config {
 
 export class StreamReader<T> {
     protected EE = new EventEmitter()
-    protected config: Config
+    protected config: SetRequired<Config, 'bufferLength' | 'retryInterval'>
     protected innerBuffer: T[] = []
     protected isClose = false
 
@@ -33,7 +34,7 @@ export class StreamReader<T> {
     protected websocketLoop () {
         const url = new URL(this.config.url)
         url.protocol = location.protocol === 'http:' ? 'ws:' : 'wss:'
-        url.searchParams.set('token', this.config.token)
+        url.searchParams.set('token', this.config.token ?? '')
 
         const connection = new WebSocket(url.toString())
         connection.addEventListener('message', msg => {
@@ -62,7 +63,7 @@ export class StreamReader<T> {
                 headers: this.config.token ? { Authorization: `Bearer ${this.config.token}` } : {}
             }
         ))
-        if (err) {
+        if (err || !resp.body) {
             this.retry(err)
             return
         }
@@ -74,7 +75,7 @@ export class StreamReader<T> {
                 break
             }
 
-            const [{ value }, err] = await to(reader.read())
+            const [{ value }, err] = await to(reader?.read())
             if (err) {
                 this.retry(err)
                 break
@@ -83,7 +84,8 @@ export class StreamReader<T> {
             const lines = decoder.decode(value).trim().split('\n')
             const data = lines.map(l => JSON.parse(l))
             this.EE.emit('data', data)
-            if (this.config.bufferLength > 0) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            if (this.config.bufferLength! > 0) {
                 this.innerBuffer.push(...data)
                 if (this.innerBuffer.length > this.config.bufferLength) {
                     this.innerBuffer.splice(0, this.innerBuffer.length - this.config.bufferLength)

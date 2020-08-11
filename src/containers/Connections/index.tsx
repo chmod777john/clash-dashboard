@@ -142,7 +142,7 @@ export default function Connections () {
     ), [t])
 
     useLayoutEffect(() => {
-        const streamReader: StreamReader<API.Snapshot> = null
+        let streamReader: StreamReader<API.Snapshot> | null = null
 
         function handleConnection (snapshots: API.Snapshot[]) {
             for (const snapshot of snapshots) {
@@ -156,7 +156,7 @@ export default function Connections () {
         }
 
         (async function () {
-            const streamReader = await API.getConnectionStreamReader()
+            streamReader = await API.getConnectionStreamReader()
             streamReader.subscribe('data', handleConnection)
         }())
 
@@ -175,7 +175,7 @@ export default function Connections () {
         rows,
         prepareRow
     } = useTable(
-        { columns, data },
+        { columns: columns as any, data },
         useBlockLayout,
         useResizeColumns
     )

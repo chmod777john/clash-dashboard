@@ -100,7 +100,8 @@ export interface Connections {
 
 export async function getExternalControllerConfig () {
     if (isClashX()) {
-        const info = await jsBridge.getAPIInfo()
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const info = await jsBridge!.getAPIInfo()
 
         return {
             hostname: info.host,

@@ -21,7 +21,7 @@ const TagColors = {
 
 async function getDelay (name: string) {
     if (isClashX()) {
-        const delay = await jsBridge.getProxyDelay(name)
+        const delay = await jsBridge?.getProxyDelay(name) ?? 0
         return delay
     }
 

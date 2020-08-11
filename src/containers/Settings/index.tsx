@@ -31,9 +31,9 @@ export default function Settings () {
     }, [])
 
     useEffect(() => {
-        set('socks5ProxyPort', general.socksPort)
-        set('httpProxyPort', general.port)
-        set('mixedProxyPort', general.mixedPort ?? 0)
+        set('socks5ProxyPort', general?.socksPort ?? 0)
+        set('httpProxyPort', general?.port ?? 0)
+        set('mixedProxyPort', general?.mixedPort ?? 0)
     }, [general])
 
     async function handleProxyModeChange (mode: string) {
@@ -42,12 +42,12 @@ export default function Settings () {
     }
 
     async function handleStartAtLoginChange (state: boolean) {
-        await jsBridge.setStartAtLogin(state)
+        await jsBridge?.setStartAtLogin(state)
         fetchClashXData()
     }
 
     async function handleSetSystemProxy (state: boolean) {
-        await jsBridge.setSystemProxy(state)
+        await jsBridge?.setSystemProxy(state)
         fetchClashXData()
     }
 
@@ -116,7 +116,7 @@ export default function Settings () {
                             <span className="label">{t('labels.language')}</span>
                         </Col>
                         <Col span={14} className="value-column">
-                            <ButtonSelect options={languageOptions} value={lang} onSelect={changeLanguage} />
+                            <ButtonSelect options={languageOptions} value={lang} onSelect={(lang) => changeLanguage(lang as Lang)} />
                         </Col>
                     </Col>
                 </Row>

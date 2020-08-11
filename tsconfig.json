@@ -5,6 +5,7 @@
         "esModuleInterop": true,
         "noImplicitAny": false,
         "noUnusedLocals": true,
+        "strict": true,
         "module": "commonjs",
         "target": "es5",
         "jsx": "react",

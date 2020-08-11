@@ -13,7 +13,8 @@ export function useRecoilObjectWithImmer<T> (value: RecoilState<T>) {
             rawSet(pre => produce(pre, (draft: Draft<T>) => {
                 const key = data as K
                 const v = value
-                draft[key] = v
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                draft[key] = v!
             }))
         } else if (typeof data === 'function') {
             const fn = data as (draft: Draft<T>) => void | T

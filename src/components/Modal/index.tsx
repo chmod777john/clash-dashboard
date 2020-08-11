@@ -52,11 +52,11 @@ export function Modal (props: ModalProps) {
     const { t } = useTranslation('Modal')
 
     const portalRef = useRef<HTMLDivElement>(document.createElement('div'))
-    const maskRef = useRef<HTMLDivElement>()
+    const maskRef = useRef<HTMLDivElement>(null)
 
     useLayoutEffect(() => {
         document.body.appendChild(portalRef.current)
-        return () => document.body.removeChild(portalRef.current)
+        return () => { document.body.removeChild(portalRef.current) }
     }, [])
 
     function handleMaskClick (e: MouseEvent) {
