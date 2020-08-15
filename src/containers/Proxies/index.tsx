@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import useSWR from 'swr'
 import EE from '@lib/event'
 import { useRound } from '@lib/hook'
 import { Card, Header, Icon, Checkbox } from '@components'
@@ -68,11 +67,9 @@ function ProxyGroups () {
 }
 
 function ProxyProviders () {
-    const { providers, update } = useProxyProviders()
+    const { providers } = useProxyProviders()
     const { useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
-
-    useSWR('providers', update)
 
     return <>
         {
@@ -95,11 +92,8 @@ function ProxyProviders () {
 
 function Proxies () {
     const { proxies } = useProxy()
-    const { update: updateGeneral } = useGeneral()
     const { useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
-
-    useSWR('general', updateGeneral)
 
     function handleNotitySpeedTest () {
         EE.notifySpeedTest()
@@ -144,9 +138,6 @@ function Proxies () {
 }
 
 export default function ProxyContainer () {
-    const { update: updateProxy } = useProxy()
-    useSWR('proxies', updateProxy)
-
     return (
         <div className="page">
             <ProxyGroups />

@@ -20,11 +20,10 @@ export default function Sidebar (props: SidebarProps) {
     const { routes } = props
     const { useTranslation } = useI18n()
     const { version, premium, update } = useVersion()
-    const { data: { isClashX }, update: updateClashXData } = useClashXData()
+    const { data } = useClashXData()
     const { t } = useTranslation('SideBar')
 
     useSWR('version', update)
-    useSWR('clashx', updateClashXData)
 
     const navlinks = routes.map(
         ({ path, name, exact, noMobile }) => (
@@ -41,7 +40,7 @@ export default function Sidebar (props: SidebarProps) {
                 { navlinks }
             </ul>
             <div className="sidebar-version">
-                <span className="sidebar-version-label">Clash{ isClashX && 'X' } { t('Version') }</span>
+                <span className="sidebar-version-label">Clash{ data?.isClashX && 'X' } { t('Version') }</span>
                 <span className="sidebar-version-text">{ version }</span>
                 { premium && <span className="sidebar-version-label">Premium</span> }
             </div>

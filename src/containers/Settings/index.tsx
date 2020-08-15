@@ -26,11 +26,6 @@ export default function Settings () {
     })
 
     useEffect(() => {
-        fetchGeneral()
-        fetchClashXData()
-    }, [])
-
-    useEffect(() => {
         set('socks5ProxyPort', general?.socksPort ?? 0)
         set('httpProxyPort', general?.port ?? 0)
         set('mixedProxyPort', general?.mixedPort ?? 0)
@@ -81,10 +76,10 @@ export default function Settings () {
     } = apiInfo
 
     const { allowLan, mode } = general
-    const {
-        startAtLogin,
-        systemProxy
-    } = clashXData
+
+    const startAtLogin = clashXData?.startAtLogin ?? false
+    const systemProxy = clashXData?.systemProxy ?? false
+    const isClashX = clashXData?.isClashX ?? false
 
     const proxyModeOptions = useMemo(() => {
         const options = [
@@ -108,7 +103,7 @@ export default function Settings () {
                             <span className="label">{t('labels.startAtLogin')}</span>
                         </Col>
                         <Col span={8} className="value-column">
-                            <Switch disabled={!clashXData.isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
+                            <Switch disabled={!clashXData?.isClashX} checked={startAtLogin} onChange={handleStartAtLoginChange} />
                         </Col>
                     </Col>
                     <Col span={12}>
@@ -127,7 +122,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8} className="value-column">
                             <Switch
-                                disabled={!clashXData.isClashX}
+                                disabled={!isClashX}
                                 checked={systemProxy}
                                 onChange={handleSetSystemProxy}
                             />
@@ -167,7 +162,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8}>
                             <Input
-                                disabled={clashXData.isClashX}
+                                disabled={isClashX}
                                 value={info.socks5ProxyPort}
                                 onChange={socks5ProxyPort => set('socks5ProxyPort', +socks5ProxyPort)}
                                 onBlur={handleSocksPortSave}
@@ -182,7 +177,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8}>
                             <Input
-                                disabled={clashXData.isClashX}
+                                disabled={isClashX}
                                 value={info.httpProxyPort}
                                 onChange={httpProxyPort => set('httpProxyPort', +httpProxyPort)}
                                 onBlur={handleHttpPortSave}
@@ -195,7 +190,7 @@ export default function Settings () {
                         </Col>
                         <Col span={8}>
                             <Input
-                                disabled={clashXData.isClashX}
+                                disabled={isClashX}
                                 value={info.mixedProxyPort}
                                 onChange={mixedProxyPort => set('mixedProxyPort', +mixedProxyPort)}
                                 onBlur={handleMixedPortSave}
@@ -210,8 +205,8 @@ export default function Settings () {
                         </Col>
                         <Col className="external-controller" span={10}>
                             <span
-                                className={classnames({ 'modify-btn': !clashXData.isClashX })}
-                                onClick={() => !clashXData.isClashX && setIdentity(false)}>
+                                className={classnames({ 'modify-btn': !isClashX })}
+                                onClick={() => !isClashX && setIdentity(false)}>
                                 {`${externalControllerHost}:${externalControllerPort}`}
                             </span>
                         </Col>
