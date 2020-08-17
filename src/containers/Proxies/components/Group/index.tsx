@@ -10,14 +10,14 @@ interface GroupProps {
 }
 
 export function Group (props: GroupProps) {
-    const { update } = useProxy()
+    const { markProxySelected } = useProxy()
     const proxyMap = useRecoilValue(proxyMapping)
     const { data: Config } = useConfig()
     const { config } = props
 
     async function handleChangeProxySelected (name: string) {
         await changeProxySelected(props.config.name, name)
-        await update()
+        markProxySelected(props.config.name, name)
         if (Config.breakConnections) {
             const list: string[] = []
             const snapshot = await getConnections()

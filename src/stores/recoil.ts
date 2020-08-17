@@ -170,7 +170,7 @@ export const proxies = atom({
 export function useProxy () {
     const [allProxy, set] = useRecoilObjectWithImmer(proxies)
 
-    const { data, mutate } = swr('/proxies', async () => {
+    const { mutate } = swr(['/proxies', set], async () => {
         const allProxies = await API.getProxies()
 
         const global = allProxies.data.proxies.GLOBAL as API.Group
@@ -183,15 +183,25 @@ export function useProxy () {
             .filter(key => !unUsedProxy.has(key))
             .map(key => ({ ...allProxies.data.proxies[key], name: key }))
         const [proxy, groups] = partition(proxies, proxy => !policyGroup.has(proxy.type))
-        return { proxies: proxy as API.Proxy[], groups: groups as API.Group[], global: global }
+        set({ proxies: proxy as API.Proxy[], groups: groups as API.Group[], global: global })
     })
-    useEffect(() => data && set(data), [data, set])
+
+    const markProxySelected = useCallback((name: string, selected: string) => {
+        set(draft => {
+            for (const group of draft.groups) {
+                if (group.name === name) {
+                    group.now = selected
+                }
+            }
+        })
+    }, [set])
 
     return {
         proxies: allProxy.proxies,
         groups: allProxy.groups,
         global: allProxy.global,
         update: mutate,
+        markProxySelected,
         set
     }
 }
