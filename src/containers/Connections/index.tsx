@@ -64,7 +64,7 @@ function formatSpeed (upload: number, download: number) {
 
 export default function Connections () {
     const { useTranslation, lang } = useI18n()
-    const t = useMemo(() => useTranslation('Connections').t, [useTranslation])
+    const t = useTranslation('Connections').t
 
     // total
     const [traffic, setTraffic] = useObject({
@@ -123,13 +123,15 @@ export default function Connections () {
             }))
             .sort((a, b) => {
                 if (sort.column !== '') {
+                    const aValue = a[sort.column as keyof typeof a] as string
+                    const bValue = b[sort.column as keyof typeof b] as string
                     return sort.asc
-                        ? a[sort.column].localeCompare(b[sort.column])
-                        : b[sort.column].localeCompare(a[sort.column])
+                        ? aValue.localeCompare(bValue)
+                        : bValue.localeCompare(aValue)
                 }
                 return 0
             })
-    }, [connections, sort])
+    }, [connections, lang, sort.asc, sort.column])
 
     // table
     const columns = useMemo(() => columnsPair.map(
@@ -166,7 +168,7 @@ export default function Connections () {
                 streamReader.destory()
             }
         }
-    }, [])
+    }, [feed, setTraffic])
 
     const {
         getTableProps,

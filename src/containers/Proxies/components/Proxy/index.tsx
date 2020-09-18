@@ -1,4 +1,4 @@
-import React, { useMemo, useLayoutEffect } from 'react'
+import React, { useMemo, useLayoutEffect, useCallback } from 'react'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models'
 import { useProxy } from '@stores'
@@ -33,7 +33,7 @@ export function Proxy (props: ProxyProps) {
     const { config, className } = props
     const { set } = useProxy()
 
-    async function speedTest () {
+    const speedTest = useCallback(async function () {
         const [delay, err] = await to(getDelay(config.name))
 
         const validDelay = err ? 0 : delay
@@ -43,7 +43,7 @@ export function Proxy (props: ProxyProps) {
                 proxy.history.push({ time: Date.now().toString(), delay: validDelay })
             }
         })
-    }
+    }, [config.name, set])
 
     const delay = useMemo(
         () => config.history?.length ? config.history.slice(-1)[0].delay : 0,
@@ -53,10 +53,15 @@ export function Proxy (props: ProxyProps) {
     useLayoutEffect(() => {
         EE.subscribe(Action.SPEED_NOTIFY, speedTest)
         return () => EE.unsubscribe(Action.SPEED_NOTIFY, speedTest)
-    }, [])
+    }, [speedTest])
 
     const hasError = useMemo(() => delay === 0, [delay])
-    const color = useMemo(() => Object.keys(TagColors).find(threshold => delay <= TagColors[threshold]), [delay])
+    const color = useMemo(() =>
+        Object.keys(TagColors).find(
+            threshold => delay <= TagColors[threshold as keyof typeof TagColors]
+        ),
+        [delay]
+    )
 
     const backgroundColor = hasError ? undefined : color
     return (

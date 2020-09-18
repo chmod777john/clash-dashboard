@@ -1,17 +1,5 @@
 {
     "presets": [
-        ["@babel/preset-env", {"modules": false}],
-        "@babel/preset-react"
-    ],
-    "plugins": [
-        "react-hot-loader/babel"
-    ],
-    "env": {
-        "production": {
-        "presets": ["minify"]
-        },
-        "test": {
-        "presets": ["@babel/preset-env", "@babel/preset-react"]
-        }
-    }
+        "react-app"
+    ]
 }

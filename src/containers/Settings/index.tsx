@@ -29,7 +29,7 @@ export default function Settings () {
         set('socks5ProxyPort', general?.socksPort ?? 0)
         set('httpProxyPort', general?.port ?? 0)
         set('mixedProxyPort', general?.mixedPort ?? 0)
-    }, [general])
+    }, [general, set])
 
     async function handleProxyModeChange (mode: string) {
         await updateConfig({ mode })

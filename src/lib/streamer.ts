@@ -33,7 +33,7 @@ export class StreamReader<T> {
 
     protected websocketLoop () {
         const url = new URL(this.config.url)
-        url.protocol = location.protocol === 'http:' ? 'ws:' : 'wss:'
+        url.protocol = window.location.protocol === 'http:' ? 'ws:' : 'wss:'
         url.searchParams.set('token', this.config.token ?? '')
 
         const connection = new WebSocket(url.toString())
@@ -84,7 +84,6 @@ export class StreamReader<T> {
             const lines = decoder.decode(value).trim().split('\n')
             const data = lines.map(l => JSON.parse(l))
             this.EE.emit('data', data)
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             if (this.config.bufferLength! > 0) {
                 this.innerBuffer.push(...data)
                 if (this.innerBuffer.length > this.config.bufferLength) {
@@ -94,7 +93,7 @@ export class StreamReader<T> {
         }
     }
 
-    protected retry (err) {
+    protected retry (err: Error) {
         if (!this.isClose) {
             this.EE.emit('error', err)
             window.setTimeout(this.loop, this.config.retryInterval)

@@ -19,7 +19,7 @@ export default function Logs () {
         if (ul) {
             ul.scrollTop = ul.scrollHeight
         }
-    }, [logsRef.current])
+    })
 
     useEffect(() => {
         let streamReader: StreamReader<Log> | null = null

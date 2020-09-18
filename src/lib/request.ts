@@ -100,7 +100,6 @@ export interface Connections {
 
 export async function getExternalControllerConfig () {
     if (isClashX()) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const info = await jsBridge!.getAPIInfo()
 
         return {
@@ -243,7 +242,7 @@ export const getLogsStreamReader = createAsyncSingleton(async function () {
     const version = err ? 'unkonwn version' : data.data.version
     const useWebsocket = !!version || true
 
-    const logUrl = `${location.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
+    const logUrl = `${window.location.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
     return new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
 })
 
@@ -253,6 +252,6 @@ export const getConnectionStreamReader = createAsyncSingleton(async function () 
     const version = err ? 'unkonwn version' : data.data.version
 
     const useWebsocket = !!version || true
-    const logUrl = `${location.protocol}//${externalController.hostname}:${externalController.port}/connections`
+    const logUrl = `${window.location.protocol}//${externalController.hostname}:${externalController.port}/connections`
     return new StreamReader<Snapshot>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
 })

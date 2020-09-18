@@ -28,14 +28,11 @@ class Store {
 
         for (const id of mapping.keys()) {
             if (!this.connections.has(id)) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 this.connections.set(id, { ...mapping.get(id)!, speed: { upload: 0, download: 0 } })
                 continue
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const c = this.connections.get(id)!
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const n = mapping.get(id)!
             this.connections?.set(id, { ...n, speed: { upload: n.upload - c.upload, download: n.download - c.download } })
         }

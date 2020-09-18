@@ -1,37 +1,40 @@
+/* eslint-disable no-redeclare */
 import { Draft } from 'immer'
 import { useImmer } from 'use-immer'
-import { useRef, useEffect, useState, useMemo, useCallback } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
 
 import { noop } from '@lib/helper'
 
 export function useObject<T extends Record<string, unknown>> (initialValue: T) {
     const [copy, rawSet] = useImmer(initialValue)
 
-    function set<K extends keyof Draft<T>> (key: K, value: Draft<T>[K]): void
-    function set<K extends keyof Draft<T>> (data: Partial<T>): void
-    function set<K extends keyof Draft<T>> (f: (draft: Draft<T>) => void | T): void
-    function set<K extends keyof Draft<T>> (data: any, value?: Draft<T>[K]): void {
-        if (typeof data === 'string') {
-            rawSet(draft => {
-                const key = data as K
-                const v = value
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                draft[key] = v!
-            })
-        } else if (typeof data === 'function') {
-            rawSet(data)
-        } else if (typeof data === 'object') {
-            rawSet((draft: Draft<T>) => {
-                const obj = data as Draft<T>
-                for (const key of Object.keys(obj)) {
-                    const k = key as keyof Draft<T>
-                    draft[k] = obj[k]
-                }
-            })
+    const set = useMemo(() => {
+        function set (data: Partial<T>): void
+        function set (f: (draft: Draft<T>) => void | T): void
+        function set<K extends keyof Draft<T>> (key: K, value: Draft<T>[K]): void
+        function set<K extends keyof Draft<T>> (data: any, value?: Draft<T>[K]): void {
+            if (typeof data === 'string') {
+                rawSet(draft => {
+                    const key = data as K
+                    const v = value
+                    draft[key] = v!
+                })
+            } else if (typeof data === 'function') {
+                rawSet(data)
+            } else if (typeof data === 'object') {
+                rawSet((draft: Draft<T>) => {
+                    const obj = data as Draft<T>
+                    for (const key of Object.keys(obj)) {
+                        const k = key as keyof Draft<T>
+                        draft[k] = obj[k]
+                    }
+                })
+            }
         }
-    }
+        return set
+    }, [rawSet])
 
-    return [copy, useCallback(set, [rawSet])] as [T, typeof set]
+    return [copy, set] as [T, typeof set]
 }
 
 export function useInterval (callback: () => void, delay: number) {
@@ -65,7 +68,7 @@ export function useRound<T> (list: T[], defidx = 0) {
         setState((state + 1) % list.length)
     }
 
-    const current = useMemo(() => list[state], [state])
+    const current = useMemo(() => list[state], [list, state])
 
     return { current, next }
 }

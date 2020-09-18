@@ -17,11 +17,11 @@ export default function ExternalController () {
 
     useEffect(() => {
         fetch()
-    }, [])
+    }, [fetch])
 
     useEffect(() => {
         set({ hostname: info.hostname, port: info.port, secret: info.secret })
-    }, [info])
+    }, [info, set])
 
     function handleOk () {
         const { hostname, port, secret } = value

@@ -43,7 +43,7 @@ export function Group (props: GroupProps) {
         }
 
         return set
-    }, [proxyMap])
+    }, [config.all, proxyMap])
 
     const canClick = config.type === 'Selector'
     return (

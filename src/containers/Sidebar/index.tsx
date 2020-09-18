@@ -35,7 +35,7 @@ export default function Sidebar (props: SidebarProps) {
 
     return (
         <div className="sidebar">
-            <img src={logo} className="sidebar-logo" />
+            <img src={logo} alt="logo" className="sidebar-logo" />
             <ul className="sidebar-menu">
                 { navlinks }
             </ul>

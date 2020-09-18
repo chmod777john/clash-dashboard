@@ -51,7 +51,7 @@ export function useI18n () {
     }
 
     const useTranslation = useCallback(
-        function (namespace: string) {
+        function (namespace: keyof typeof Language['en_US']) {
             function t (path: string) {
                 return get(Language[lang][namespace], path) as string
             }
@@ -257,10 +257,10 @@ export const apiData = atom({
 export function useAPIInfo () {
     const [data, set] = useRecoilState(apiData)
 
-    async function fetch () {
+    const fetch = useCallback(async function fetch () {
         const info = await API.getExternalControllerConfig()
         set({ ...info })
-    }
+    }, [set])
 
     async function update (info: typeof data) {
         const { hostname, port, secret } = info

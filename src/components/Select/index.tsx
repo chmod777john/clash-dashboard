@@ -131,7 +131,6 @@ export function Select (props: SelectProps) {
                 <Icon type="triangle-down" />
             </div>
             {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion,@typescript-eslint/no-non-null-asserted-optional-chain
                 hasCreateDropList && createPortal(dropDownList, portalRef?.current!)
             }
         </>

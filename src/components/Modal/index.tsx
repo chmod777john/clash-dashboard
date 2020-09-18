@@ -55,8 +55,9 @@ export function Modal (props: ModalProps) {
     const maskRef = useRef<HTMLDivElement>(null)
 
     useLayoutEffect(() => {
-        document.body.appendChild(portalRef.current)
-        return () => { document.body.removeChild(portalRef.current) }
+        const current = portalRef.current
+        document.body.appendChild(current)
+        return () => { document.body.removeChild(current) }
     }, [])
 
     function handleMaskClick (e: MouseEvent) {

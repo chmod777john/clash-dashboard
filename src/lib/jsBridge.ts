@@ -72,16 +72,15 @@ export let jsBridge: JsBridge | null = null
 export class JsBridge {
     instance: JsBridgeAPI | null = null
 
-    constructor (callback: JsBridgeCallback) {
+    constructor (callback: () => void) {
         if (window.WebViewJavascriptBridge) {
             this.instance = window.WebViewJavascriptBridge
-            callback(this.instance)
         }
 
         // init jsbridge
         this.initBridge(jsBridge => {
             this.instance = jsBridge
-            callback(jsBridge)
+            callback()
         })
     }
 
@@ -171,9 +170,10 @@ export class JsBridge {
     }
 }
 
-export function setupJsBridge (callback) {
+export function setupJsBridge (callback: () => void) {
     if (jsBridge) {
-        return callback(jsBridge)
+        callback()
+        return
     }
 
     jsBridge = new JsBridge(callback)

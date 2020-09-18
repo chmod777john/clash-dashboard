@@ -51,7 +51,7 @@ export function Message (props: MessageProps) {
             onClose()
         }, duration)
         return () => window.clearTimeout(id)
-    }, [])
+    }, [duration, hide, onClose, show])
 
     return (
         <div

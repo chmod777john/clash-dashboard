@@ -10,7 +10,6 @@ export function removeLocalStorageItem (key: string) {
     return window.localStorage.removeItem(key)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop () {}
 
 /**
@@ -26,7 +25,7 @@ export async function to <T, E = Error> (promise: Promise<T>): Promise<[T, E]> {
     }
 }
 
-export function partition<T> (arr: T[], fn: (T) => boolean): [T[], T[]] {
+export function partition<T> (arr: T[], fn: (arg: T) => boolean): [T[], T[]] {
     const left: T[] = []
     const right: T[] = []
     for (const item of arr) {

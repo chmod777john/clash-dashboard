@@ -1,17 +1,23 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "esModuleInterop": true,
-        "noImplicitAny": false,
-        "noUnusedLocals": true,
-        "strict": true,
-        "module": "commonjs",
         "target": "es5",
-        "jsx": "react",
-        "lib": ["es5", "es6", "dom", "es2017"],
-        "experimentalDecorators": true,
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
         "downlevelIteration": true,
+        "jsx": "react",
         "baseUrl": ".",
         "paths": {
             "@assets": ["src/assets"],
@@ -33,6 +39,6 @@
         }
     },
     "include": [
-        "./src/**/*"
+        "src"
     ]
 }

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { hot } from 'react-hot-loader/root'
 import classnames from 'classnames'
 import { isClashX } from '@lib/jsBridge'
 import './App.scss'
@@ -15,7 +14,7 @@ import Connections from '@containers/Connections'
 import ExternalControllerModal from '@containers/ExternalControllerDrawer'
 import { getLogsStreamReader } from '@lib/request'
 
-function App () {
+export default function () {
     useEffect(() => {
         getLogsStreamReader()
     }, [])
@@ -44,5 +43,3 @@ function App () {
         </div>
     )
 }
-
-export default hot(App)
