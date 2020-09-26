@@ -9,8 +9,8 @@ import './style.scss'
 
 function RuleProviders () {
     const { providers } = useRuleProviders()
-    const { useTranslation } = useI18n()
-    const { t } = useTranslation('Rules')
+    const { translation } = useI18n()
+    const { t } = translation('Rules')
 
     return <>
         {
@@ -33,8 +33,8 @@ function RuleProviders () {
 
 export default function Rules () {
     const { rules, update } = useRule()
-    const { useTranslation } = useI18n()
-    const { t } = useTranslation('Rules')
+    const { translation } = useI18n()
+    const { t } = translation('Rules')
 
     useSWR('rules', update)
 

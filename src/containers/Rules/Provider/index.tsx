@@ -13,10 +13,10 @@ interface ProvidersProps {
 
 export function Provider (props: ProvidersProps) {
     const { update } = useRuleProviders()
-    const { useTranslation, lang } = useI18n()
+    const { translation, lang } = useI18n()
 
     const { provider } = props
-    const { t } = useTranslation('Rules')
+    const { t } = translation('Rules')
 
     const { visible, hide, show } = useVisible()
 

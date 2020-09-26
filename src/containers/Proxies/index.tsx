@@ -30,8 +30,8 @@ function ProxyGroups () {
     const { groups, global } = useProxy()
     const { data: config, set: setConfig } = useConfig()
     const { general } = useGeneral()
-    const { useTranslation } = useI18n()
-    const { t } = useTranslation('Proxies')
+    const { translation } = useI18n()
+    const { t } = translation('Proxies')
 
     const list = useMemo(
         () => general.mode === 'global' ? [global] : groups,
@@ -68,7 +68,7 @@ function ProxyGroups () {
 
 function ProxyProviders () {
     const { providers } = useProxyProviders()
-    const { useTranslation } = useI18n()
+    const { translation: useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
 
     return <>
@@ -92,7 +92,7 @@ function ProxyProviders () {
 
 function Proxies () {
     const { proxies } = useProxy()
-    const { useTranslation } = useI18n()
+    const { translation: useTranslation } = useI18n()
     const { t } = useTranslation('Proxies')
 
     function handleNotitySpeedTest () {

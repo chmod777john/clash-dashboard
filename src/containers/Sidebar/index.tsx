@@ -18,10 +18,10 @@ interface SidebarProps {
 
 export default function Sidebar (props: SidebarProps) {
     const { routes } = props
-    const { useTranslation } = useI18n()
+    const { translation } = useI18n()
     const { version, premium, update } = useVersion()
     const { data } = useClashXData()
-    const { t } = useTranslation('SideBar')
+    const { t } = translation('SideBar')
 
     useSWR('version', update)
 

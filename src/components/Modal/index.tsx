@@ -48,8 +48,8 @@ export function Modal (props: ModalProps) {
         children
     } = props
 
-    const { useTranslation } = useI18n()
-    const { t } = useTranslation('Modal')
+    const { translation } = useI18n()
+    const { t } = translation('Modal')
 
     const portalRef = useRef<HTMLDivElement>(document.createElement('div'))
     const maskRef = useRef<HTMLDivElement>(null)

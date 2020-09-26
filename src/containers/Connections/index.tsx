@@ -63,8 +63,8 @@ function formatSpeed (upload: number, download: number) {
 }
 
 export default function Connections () {
-    const { useTranslation, lang } = useI18n()
-    const t = useTranslation('Connections').t
+    const { translation, lang } = useI18n()
+    const t = useMemo(() => translation('Connections').t, [translation])
 
     // total
     const [traffic, setTraffic] = useObject({

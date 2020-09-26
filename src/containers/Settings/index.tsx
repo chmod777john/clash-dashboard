@@ -17,8 +17,8 @@ export default function Settings () {
     const { general, update: fetchGeneral } = useGeneral()
     const { set: setIdentity } = useIdentity()
     const { data: apiInfo } = useAPIInfo()
-    const { useTranslation, setLang, lang } = useI18n()
-    const { t } = useTranslation('Settings')
+    const { translation, setLang, lang } = useI18n()
+    const { t } = translation('Settings')
     const [info, set] = useObject({
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,

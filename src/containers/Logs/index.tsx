@@ -11,8 +11,8 @@ export default function Logs () {
     const listRef = useRef<HTMLUListElement>(null)
     const logsRef = useRef<Log[]>([])
     const [logs, setLogs] = useState<Log[]>([])
-    const { useTranslation } = useI18n()
-    const { t } = useTranslation('Logs')
+    const { translation } = useI18n()
+    const { t } = translation('Logs')
 
     useLayoutEffect(() => {
         const ul = listRef.current

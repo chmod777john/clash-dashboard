@@ -15,10 +15,10 @@ interface ProvidersProps {
 
 export function Provider (props: ProvidersProps) {
     const { update } = useProxyProviders()
-    const { useTranslation, lang } = useI18n()
+    const { translation, lang } = useI18n()
 
     const { provider } = props
-    const { t } = useTranslation('Proxies')
+    const { t } = translation('Proxies')
 
     const { visible, hide, show } = useVisible()
 

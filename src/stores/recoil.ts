@@ -50,7 +50,7 @@ export function useI18n () {
         setLanguage(lang)
     }
 
-    const useTranslation = useCallback(
+    const translation = useCallback(
         function (namespace: keyof typeof Language['en_US']) {
             function t (path: string) {
                 return get(Language[lang][namespace], path) as string
@@ -60,7 +60,7 @@ export function useI18n () {
         [lang]
     )
 
-    return { lang, locales, setLang, useTranslation }
+    return { lang, locales, setLang, translation }
 }
 
 export const version = atom({
@@ -170,7 +170,7 @@ export const proxies = atom({
 export function useProxy () {
     const [allProxy, set] = useRecoilObjectWithImmer(proxies)
 
-    const { mutate } = swr(['/proxies', set], async () => {
+    const { mutate } = swr('/proxies', async () => {
         const allProxies = await API.getProxies()
 
         const global = allProxies.data.proxies.GLOBAL as API.Group
