@@ -18,7 +18,7 @@
     "homepage": "https://github.com/Dreamacro/clash-dashboard",
     "scripts": {
         "start": "node scripts/start.js",
-        "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
+        "build": "GENERATE_SOURCEMAP=false PUBLIC_URL=./ node scripts/build.js",
         "lint": "npm run lint:ts",
         "lint:ts": "eslint --ext=jsx,ts,tsx --fix src",
         "contributors:add": "all-contributors add",
