@@ -163,7 +163,13 @@ export const proxies = atom({
     default: {
         proxies: [] as API.Proxy[],
         groups: [] as API.Group[],
-        global: {} as API.Group
+        global: {
+            name: 'GLOBAL',
+            type: 'Selector',
+            now: '',
+            history: [],
+            all: []
+        } as API.Group
     }
 })
 
