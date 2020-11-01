@@ -116,11 +116,11 @@ export default function Connections() {
 
     // table
     const columns: TableColumnOption<formatConnection>[] = useMemo(() => [
-        { Header: t(`columns.${Columns.Host}`), accessor: 'host', minWidth: 260, width: 260 },
-        { Header: t(`columns.${Columns.Network}`), accessor: 'network', minWidth: 80, width: 80 },
-        { Header: t(`columns.${Columns.Type}`), accessor: 'type', minWidth: 120, width: 120 },
-        { Header: t(`columns.${Columns.Chains}`), accessor: 'chains', minWidth: 200, width: 200 },
-        { Header: t(`columns.${Columns.Rule}`), accessor: 'rule', minWidth: 140, width: 140 },
+        { Header: t(`columns.${Columns.Host}`), accessor: Columns.Host, minWidth: 260, width: 260 },
+        { Header: t(`columns.${Columns.Network}`), accessor: Columns.Network, minWidth: 80, width: 80 },
+        { Header: t(`columns.${Columns.Type}`), accessor: Columns.Type, minWidth: 120, width: 120 },
+        { Header: t(`columns.${Columns.Chains}`), accessor: Columns.Chains, minWidth: 200, width: 200 },
+        { Header: t(`columns.${Columns.Rule}`), accessor: Columns.Rule, minWidth: 140, width: 140 },
         {
             id: Columns.Speed,
             Header: t(`columns.${Columns.Speed}`),
@@ -137,9 +137,9 @@ export default function Connections() {
             minWidth: 200, width: 200,
             sortDescFirst: true
         },
-        { Header: t(`columns.${Columns.Upload}`), accessor: 'upload', minWidth: 100, width: 100, sortDescFirst: true },
-        { Header: t(`columns.${Columns.Download}`), accessor: 'download', minWidth: 100, width: 100, sortDescFirst: true },
-        { Header: t(`columns.${Columns.Time}`), accessor: 'time', minWidth: 120, width: 120, sortType(rowA, rowB) { return rowB.original.time - rowA.original.time } },
+        { Header: t(`columns.${Columns.Upload}`), accessor: Columns.Upload, minWidth: 100, width: 100, sortDescFirst: true },
+        { Header: t(`columns.${Columns.Download}`), accessor: Columns.Download, minWidth: 100, width: 100, sortDescFirst: true },
+        { Header: t(`columns.${Columns.Time}`), accessor: Columns.Time, minWidth: 120, width: 120, sortType(rowA, rowB) { return rowB.original.time - rowA.original.time } },
     ] as TableColumnOption<formatConnection>[], [t])
 
     useLayoutEffect(() => {
