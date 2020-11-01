@@ -241,18 +241,18 @@ export default function Connections() {
 
                     <div {...getTableBodyProps()} className="connections-body">
                         {
-                            rows.map((row, i) => {
+                            rows.map(row => {
                                 prepareRow(row)
                                 return (
-                                    <div {...row.getRowProps()} className="connections-item" key={i}>
+                                    <div {...row.getRowProps()} className="connections-item" key={row.original.id}>
                                         {
-                                            row.cells.map((cell, j) => {
+                                            row.cells.map(cell => {
                                                 const classname = classnames(
                                                     'connections-block',
                                                     { center: shouldCenter.has(cell.column.id), completed: row.original.completed }
                                                 )
                                                 return (
-                                                    <div {...cell.getCellProps()} className={classname} key={j}>
+                                                    <div {...cell.getCellProps()} className={classname} key={cell.column.id}>
                                                         { renderCell(cell)}
                                                     </div>
                                                 )
