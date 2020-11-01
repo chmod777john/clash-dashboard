@@ -14,7 +14,7 @@ import Connections from '@containers/Connections'
 import ExternalControllerModal from '@containers/ExternalControllerDrawer'
 import { getLogsStreamReader } from '@lib/request'
 
-export default function () {
+export default function App () {
     useEffect(() => {
         getLogsStreamReader()
     }, [])

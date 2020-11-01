@@ -1,4 +1,4 @@
-export default {
+const EN = {
     SideBar: {
         Proxies: 'Proxies',
         Overview: 'Overview',
@@ -102,3 +102,5 @@ export default {
         cancel: 'Cancel'
     }
 }
+
+export default EN

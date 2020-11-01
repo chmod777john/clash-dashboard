@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const fs = require('fs');
 const getPublicUrlOrPath = require('react-dev-utils/getPublicUrlOrPath');
@@ -17,6 +15,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 // like /todos/42/static/js/bundle.7289d.js. We have to know the root.
 const publicUrlOrPath = getPublicUrlOrPath(
   process.env.NODE_ENV === 'development',
+  require(resolveApp('package.json')).homepage,
   process.env.PUBLIC_URL
 );
 
@@ -63,6 +62,7 @@ module.exports = {
   testsSetup: resolveModule(resolveApp, 'src/setupTests'),
   proxySetup: resolveApp('src/setupProxy.js'),
   appNodeModules: resolveApp('node_modules'),
+  swSrc: resolveModule(resolveApp, 'src/service-worker'),
   publicUrlOrPath,
 };
 

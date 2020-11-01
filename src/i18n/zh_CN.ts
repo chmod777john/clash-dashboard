@@ -1,4 +1,4 @@
-export default {
+const CN = {
     SideBar: {
         Proxies: '代理',
         Overview: '总览',
@@ -102,3 +102,5 @@ export default {
         cancel: '取 消'
     }
 }
+
+export default CN
