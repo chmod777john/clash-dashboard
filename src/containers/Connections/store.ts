@@ -1,10 +1,10 @@
 import * as API from '@lib/request'
 import { useState, useMemo, useRef, useCallback } from 'react'
 
-type Connections = API.Connections & { completed?: boolean, speed: { upload: number, download: number } }
+export type Connection = API.Connections & { completed?: boolean, uploadSpeed: number, downloadSpeed: number }
 
 class Store {
-    protected connections = new Map<string, Connections>()
+    protected connections = new Map<string, Connection>()
     protected saveDisconnection = false
 
     appendToSet (connections: API.Connections[]) {
@@ -20,7 +20,8 @@ class Store {
                     const connection = this.connections.get(id)
                     if (connection) {
                         connection.completed = true
-                        connection.speed = { upload: 0, download: 0 }
+                        connection.uploadSpeed = 0
+                        connection.downloadSpeed = 0
                     }
                 }
             }
@@ -28,13 +29,13 @@ class Store {
 
         for (const id of mapping.keys()) {
             if (!this.connections.has(id)) {
-                this.connections.set(id, { ...mapping.get(id)!, speed: { upload: 0, download: 0 } })
+                this.connections.set(id, { ...mapping.get(id)!, uploadSpeed: 0, downloadSpeed: 0 })
                 continue
             }
 
             const c = this.connections.get(id)!
             const n = mapping.get(id)!
-            this.connections?.set(id, { ...n, speed: { upload: n.upload - c.upload, download: n.download - c.download } })
+            this.connections?.set(id, { ...n, uploadSpeed: n.upload - c.upload, downloadSpeed: n.download - c.download })
         }
     }
 
@@ -61,7 +62,7 @@ class Store {
 export function useConnections () {
     const store = useMemo(() => new Store(), [])
     const shouldFlush = useRef(true)
-    const [connections, setConnections] = useState<Connections[]>([])
+    const [connections, setConnections] = useState<Connection[]>([])
     const [save, setSave] = useState<boolean>(false)
 
     const feed = useCallback(function (connections: API.Connections[]) {

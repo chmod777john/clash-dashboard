@@ -34,6 +34,10 @@
         font-size: 14px;
         cursor: pointer;
         user-select: none;
+
+        &.resizing .connections-resizer {
+            opacity: 1;
+        }
     }
 
     .connections-resizer {
@@ -50,6 +54,7 @@
         z-index: 10;
         font-size: 14px;
         font-weight: 300;
+        touch-action: none;
 
         &::before {
             content: '';
