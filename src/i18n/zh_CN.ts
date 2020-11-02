@@ -69,7 +69,8 @@ const CN = {
             time: '连接时间',
             speed: '速率',
             upload: '上传',
-            download: '下载'
+            download: '下载',
+            sourceIP: '来源 IP'
         }
     },
     Proxies: {

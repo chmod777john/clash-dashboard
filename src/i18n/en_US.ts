@@ -69,7 +69,8 @@ const EN = {
             time: 'Time',
             speed: 'Speed',
             upload: 'Upload',
-            download: 'Download'
+            download: 'Download',
+            sourceIP: 'Source IP'
         }
     },
     Proxies: {

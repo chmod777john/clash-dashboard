@@ -38,6 +38,12 @@
         &.resizing .connections-resizer {
             opacity: 1;
         }
+
+        &.fixed {
+            position: sticky !important;
+            left: 0;
+            z-index: 99;
+        }
     }
 
     .connections-resizer {
@@ -71,6 +77,7 @@
     .connections-header {
         position: sticky;
         top: 0;
+        z-index: 9999;
         white-space: nowrap;
 
         &:hover .connections-resizer {
@@ -100,6 +107,14 @@
         &.completed {
             background-color: darken(#f3f6f9, 3%);
             color: rgba($color-primary-darken, 50%);
+        }
+
+        &.fixed {
+            position: sticky;
+            left: 0;
+            z-index: 999;
+            background-color: $color-white;
+            box-shadow: 2px 8px 8px 0px rgba(0, 0, 0, 0.2);
         }
     }
 }
