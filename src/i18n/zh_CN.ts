@@ -60,6 +60,9 @@ const CN = {
             title: '警告',
             content: '将会关闭所有连接'
         },
+        filter: {
+            all: '全部'
+        },
         columns: {
             host: '域名',
             network: '网络',

@@ -60,6 +60,9 @@ const EN = {
             title: 'Warning',
             content: 'This would close all connections'
         },
+        filter: {
+            all: 'All'
+        },
         columns: {
             host: 'Host',
             network: 'Network',
