@@ -1,0 +1,21 @@
+@import '~@styles/variables';
+
+.connections-devices {
+    display: flex;
+    padding: 12px 0;
+}
+
+.connections-devices-item {
+    padding: 4px 10px;
+    margin-right: 12px;
+    font-size: 14px;
+    color: $color-gray-darken;
+    background-color: $color-gray-light;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: color .3s ease;
+
+    &.selected {
+        color: $color-primary-dark;
+    }
+}

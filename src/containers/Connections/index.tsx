@@ -1,7 +1,8 @@
-import React, { useMemo, useLayoutEffect, useCallback, useRef } from 'react'
-import { Cell, Column, ColumnInstance, TableOptions, useBlockLayout, useResizeColumns, UseResizeColumnsColumnProps, UseResizeColumnsOptions, useSortBy, UseSortByColumnOptions, UseSortByColumnProps, UseSortByOptions, useTable } from 'react-table'
+import React, { useMemo, useLayoutEffect, useCallback, useRef, useState } from 'react'
+import { Cell, Column, ColumnInstance, TableInstance, TableOptions, useBlockLayout, useFilters, UseFiltersInstanceProps, UseFiltersOptions, useResizeColumns, UseResizeColumnsColumnProps, UseResizeColumnsOptions, useSortBy, UseSortByColumnOptions, UseSortByColumnProps, UseSortByOptions, useTable } from 'react-table'
 import classnames from 'classnames'
 import { useScroll } from 'react-use'
+import { groupBy } from 'lodash'
 import { Header, Card, Checkbox, Modal, Icon } from '@components'
 import { useI18n } from '@stores'
 import * as API from '@lib/request'
@@ -9,6 +10,7 @@ import { StreamReader } from '@lib/streamer'
 import { useObject, useVisible } from '@lib/hook'
 import { fromNow } from '@lib/date'
 import { RuleType } from '@models'
+import { Devices } from './Devices'
 import { useConnections } from './store'
 import './style.scss'
 
@@ -39,7 +41,12 @@ type TableColumnOption<D extends object = {}> =
 
 interface ITableOptions<D extends object = {}> extends
     TableOptions<D>,
-    UseSortByOptions<D> {}
+    UseSortByOptions<D>,
+    UseFiltersOptions<D> {}
+
+interface ITableInstance<D extends object = {}> extends
+    TableInstance<D>,
+    UseFiltersInstanceProps<D> {}
 
 function formatTraffic(num: number) {
     const s = ['B', 'KB', 'MB', 'GB', 'TB']
@@ -117,6 +124,10 @@ export default function Connections() {
             completed: !!c.completed
         })
     ), [connections])
+    const devices = useMemo(() => {
+        const gb = groupBy(connections, 'metadata.sourceIP')
+        return Object.keys(gb).map(key => ({ label: key, number: gb[key].length }))
+    }, [connections])
 
     // table
     const tableRef = useRef<HTMLDivElement>(null)
@@ -181,18 +192,21 @@ export default function Connections() {
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow
+        prepareRow,
+        setFilter
     } = useTable(
         {
             columns,
             data,
             autoResetSortBy: false,
+            autoResetFilters: false,
             initialState: { sortBy: [{ id: Columns.Time, desc: false }] }
         } as ITableOptions<formatConnection>,
         useResizeColumns,
         useBlockLayout,
+        useFilters,
         useSortBy
-    )
+    ) as ITableInstance<formatConnection>
     const headerGroup = useMemo(() => headerGroups[0], [headerGroups])
     const renderCell = useCallback(function (cell: Cell<formatConnection>) {
         switch (cell.column.id) {
@@ -208,6 +222,13 @@ export default function Connections() {
         }
     }, [lang])
 
+    // filter
+    const [device, setDevice] = useState('')
+    function handleDeviceSelected (label: string) {
+        setDevice(label)
+        setFilter?.(Columns.SourceIP, label)
+    }
+
     return (
         <div className="page">
             <Header title={t('title')}>
@@ -217,6 +238,7 @@ export default function Connections() {
                 <Checkbox className="connections-filter" checked={save} onChange={toggleSave}>{t('keepClosed')}</Checkbox>
                 <Icon className="connections-filter dangerous" onClick={show} type="close-all" size={20} />
             </Header>
+            { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card className="connections-card">
                 <div {...getTableProps()} className="connections" ref={tableRef}>
                     <div {...headerGroup.getHeaderGroupProps()} className="connections-header">

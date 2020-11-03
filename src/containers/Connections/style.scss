@@ -27,7 +27,7 @@
         position: relative;
         text-align: center;
         color: $color-gray-darken;
-        background: #f3f6f9;
+        background: $color-gray-light;
         height: $height;
         line-height: $height;
         font-weight: 500;
@@ -105,7 +105,7 @@
         }
 
         &.completed {
-            background-color: darken(#f3f6f9, 3%);
+            background-color: darken($color-gray-light, 3%);
             color: rgba($color-primary-darken, 50%);
         }
 
