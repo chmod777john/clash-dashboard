@@ -126,7 +126,7 @@ export default function Connections() {
     ), [connections])
     const devices = useMemo(() => {
         const gb = groupBy(connections, 'metadata.sourceIP')
-        return Object.keys(gb).map(key => ({ label: key, number: gb[key].length }))
+        return Object.keys(gb).map(key => ({ label: key, number: gb[key].length })).sort((a, b) => a.label.localeCompare(b.label))
     }, [connections])
 
     // table
