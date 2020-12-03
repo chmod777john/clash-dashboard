@@ -282,7 +282,7 @@ export default function Connections() {
                                                 const classname = classnames(
                                                     'connections-block',
                                                     { center: shouldCenter.has(cell.column.id), completed: row.original.completed },
-                                                    { fixed: scrollX !== 0 && cell.column.id === Columns.Host }
+                                                    { fixed: scrollX > 0 && cell.column.id === Columns.Host }
                                                 )
                                                 return (
                                                     <div {...cell.getCellProps()} className={classname} key={cell.column.id}>
