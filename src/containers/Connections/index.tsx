@@ -251,7 +251,7 @@ export default function Connections() {
                                         {...realColumn.getHeaderProps()}
                                         className={classnames('connections-th', {
                                             resizing: realColumn.isResizing,
-                                            fixed: scrollX !== 0 && realColumn.id === Columns.Host
+                                            fixed: scrollX > 0 && realColumn.id === Columns.Host
                                         })}
                                         key={id}>
                                         <div {...realColumn.getSortByToggleProps()}>
