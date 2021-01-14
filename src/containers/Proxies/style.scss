@@ -1,5 +1,3 @@
-@import '~@styles/variables';
-
 .proxies-list {
     --item-width: calc(100% / (var(--columns) + 1));
     --gap: calc(var(--item-width) / var(--columns));

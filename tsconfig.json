@@ -36,7 +36,8 @@
             "@models/*": ["src/models/*"],
             "@styles": ["src/styles"],
             "@styles/*": ["src/styles/*"]
-        }
+        },
+        "types": ["vite/client"]
     },
     "include": [
         "src"

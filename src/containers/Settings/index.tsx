@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import classnames from 'classnames'
-import capitalize from 'lodash/capitalize'
+import { capitalize } from 'lodash-es'
 import { Header, Card, Row, Col, Switch, ButtonSelect, ButtonSelectOptions, Input, Icon } from '@components'
 import { useI18n, useClashXData, useAPIInfo, useGeneral, useIdentity, useVersion } from '@stores'
 import { updateConfig } from '@lib/request'

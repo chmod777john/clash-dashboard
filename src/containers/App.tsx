@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import classnames from 'classnames'
 import { isClashX } from '@lib/jsBridge'
-import './App.scss'
 
 // import Overview from '@containers/Overview'
 import Proxies from '@containers/Proxies'
@@ -13,6 +12,9 @@ import SlideBar from '@containers/Sidebar'
 import Connections from '@containers/Connections'
 import ExternalControllerModal from '@containers/ExternalControllerDrawer'
 import { getLogsStreamReader } from '@lib/request'
+
+import '../styles/common.scss'
+import '../styles/iconfont.scss'
 
 export default function App () {
     useEffect(() => {

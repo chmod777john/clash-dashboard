@@ -1,5 +1,3 @@
-@import '~@styles/variables';
-
 $length: 18px;
 $padding: 26px;
 
@@ -34,9 +32,12 @@ $padding: 26px;
     position: absolute;
     left: 0;
     top: 50%;
-    color: $color-white;
     line-height: $length;
     transform: translateY(-$length / 2) scale(0.6);
     text-shadow: none;
     font-weight: bold;
+
+    &.checkbox-icon {
+        color: $color-white;
+    }
 }

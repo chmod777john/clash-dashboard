@@ -9,20 +9,24 @@ jobs:
     - name: Checkout Dashboard code
       uses: actions/checkout@v2
     - name: Setup Nodejs
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: '15.x'
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
     - name: Reuse Cache
       uses: actions/cache@v2
+      id: yarn-cache
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-node-
+          ${{ runner.os }}-yarn-
     - name: Install package
       run: |
-        npm ci
-        npm run build
+        yarn
+        yarn build
     - name: Deploy
       uses: crazy-max/ghaction-github-pages@v2
       with:

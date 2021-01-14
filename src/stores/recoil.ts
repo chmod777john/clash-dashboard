@@ -1,5 +1,5 @@
 import { atom, useRecoilState, selector } from 'recoil'
-import get from 'lodash/get'
+import { get } from 'lodash-es'
 import { useCallback, useEffect } from 'react'
 import { AxiosError } from 'axios'
 import swr from 'swr'
