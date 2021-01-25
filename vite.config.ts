@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
     plugins: [reactRefresh(), tsConfigPath()],
+    base: './',
     optimizeDeps: {
         include: [
             "dayjs/plugin/relativeTime",
@@ -14,18 +15,6 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 additionalData: '@import "src/styles/variables.scss";'
-            }
-        }
-    },
-    build: {
-        base: './',
-        rollupOptions: {
-            output: {
-                manualChunks(id) {
-                    if (id.includes('node_modules')) {
-                      return 'vendor';
-                    }
-                }
             }
         }
     }

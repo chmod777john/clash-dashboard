@@ -749,10 +749,10 @@ damerau-levenshtein@^1.0.6:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.6.tgz#143c1641cb3d85c60c32329e26899adea8701791"
   integrity sha512-JVrozIeElnj3QzfUIt8tB8YMluBJom4Vw9qTPpjGYQ9fYlB3D/rb6OordUxf3xeFB35LKWs0xqcO5U6ySvBtug==
 
-dayjs@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.3.tgz#cf3357c8e7f508432826371672ebf376cb7d619b"
-  integrity sha512-/2fdLN987N8Ki7Id8BUN2nhuiRyxTLumQnSQf9CNncFCyqFsSKb9TNhzRYcC8K8eJSJOKvbvkImo/MKKhNi4iw==
+dayjs@^1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
+  integrity sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==
 
 debug@^2.6.9:
   version "2.6.9"
@@ -889,10 +889,10 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild@^0.8.26:
-  version "0.8.32"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.32.tgz#d3d679ea417925f7afaab37555e52070df317355"
-  integrity sha512-5IzQapMW/wFy5oxziHCJzawk26K3xeyrIAQPnPN3c0Q84hqRw6IfGDGfGWOdJNw5tAx77yvwqZ4r1QMpo6emJA==
+esbuild@^0.8.34:
+  version "0.8.34"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.34.tgz#16b4ac58f74c821d2c5a8c2f0585ca96a38ab4e6"
+  integrity sha512-tnr0V1ooakYr1aRLXQLzCn2GVG1kBTW3FWpRyC+NgrR3ntsouVpJOlTOV0BS4YLATx3/c+x3h/uBq9lWJlUAtQ==
 
 escape-string-regexp@^1.0.5:
   version "1.0.5"
@@ -2466,20 +2466,20 @@ value-equal@^1.0.1:
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
 
-vite-tsconfig-paths@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/vite-tsconfig-paths/-/vite-tsconfig-paths-2.0.0.tgz#1bf370791dfba00554071f23cb55268a81fc5609"
-  integrity sha512-zkTBf0IhS5I+iAXkx5fVBXlG1gXf/sEFL0kKqoRhpVGAR5kSJRP3oyS4O4aDPSHhOXIdnP6xB7tls3msmCjBaA==
+vite-tsconfig-paths@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vite-tsconfig-paths/-/vite-tsconfig-paths-2.0.1.tgz#efd52c35435f16c715fb62d50482db786dc50e42"
+  integrity sha512-x3GyXin5WBvjP51rkYgM2RmMBuR1FuILNJWkhDk9Lju6zEvXoTq+0eBV4fPSSYlmUL9Zz4E3VsVM3RQiHh4VAA==
   dependencies:
     debug "^4.1.1"
     tsconfig-paths "^3.9.0"
 
-vite@^2.0.0-beta.36:
-  version "2.0.0-beta.36"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.0.0-beta.36.tgz#ccecac854ded0b7c0fe14c52c0460e1c23a9c70b"
-  integrity sha512-+Q/Twq1/tpNQIZl0HSFTqiEuP7lXj+6H/f9q63+s5I2K/sqgSUajL3PL7W9uUUIv9dYpJ1eLqkO42ppH9w9Ldw==
+vite@^2.0.0-beta.47:
+  version "2.0.0-beta.47"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.0.0-beta.47.tgz#9fb583f731e88001396164ff603df0a0f83279f1"
+  integrity sha512-SkrdOVHj2T7ZlMhnCBjuPWK3qAMEkM/hz3L8vgOJHTuoRXtwAvh6bjRmLuNszP5ORmN+1sYrgz7MsUNVMxEJLg==
   dependencies:
-    esbuild "^0.8.26"
+    esbuild "^0.8.34"
     postcss "^8.2.1"
     resolve "^1.19.0"
     rollup "^2.35.1"
