@@ -3,7 +3,14 @@ import tsConfigPath from 'vite-tsconfig-paths'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-    plugins: [reactRefresh(), tsConfigPath()],
+    plugins: [
+        reactRefresh({
+            parserPlugins: [
+                'classProperties',
+            ]
+        }),
+        tsConfigPath()
+    ],
     base: './',
     optimizeDeps: {
         include: [
