@@ -29,6 +29,7 @@ export function Devices (props: DevicesProps) {
                 props.devices.map(
                     device => (
                         <div
+                            key={device.label}
                             className={classnames('connections-devices-item', { selected: props.selected === device.label })}
                             onClick={() => handleSelected(device.label)}>
                             { device.label } ({ device.number })
