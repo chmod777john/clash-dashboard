@@ -4,20 +4,10 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
     plugins: [
-        reactRefresh({
-            parserPlugins: [
-                'classProperties',
-            ]
-        }),
+        reactRefresh(),
         tsConfigPath()
     ],
     base: './',
-    optimizeDeps: {
-        include: [
-            "dayjs/plugin/relativeTime",
-            "dayjs/locale/zh-cn"
-        ]
-    },
     css: {
         preprocessorOptions: {
             scss: {
