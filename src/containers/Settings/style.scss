@@ -1,15 +1,6 @@
 .settings-card {
     margin-top: 10px;
-    padding: 20px 0;
-
-    .column {
-        font-weight: bold;
-        align-items: center;
-    }
-
-    .value-column {
-        justify-content: flex-end;
-    }
+    padding: 0.75rem 0;
 
     .label {
         font-size: 14px;
@@ -24,7 +15,7 @@
         font-weight: normal;
         line-height: 17px;
 
-        .modify-btn {
+        &.modify-btn {
             color: $color-primary-dark;
             cursor: pointer;
         }
@@ -77,16 +68,8 @@
 
 @media (max-width: 768px) {
     .settings-card {
-        // hack <Row />
-        .row {
-            flex-direction: column;
-            padding-top: 0;
-            padding-bottom: 0;
-
-            > .column {
-                width: 100%;
-                margin: 10px 0;
-            }
+        .flex .flex.w-1\/2  {
+            width: 100%;
         }
     }
 }

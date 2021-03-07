@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Card, Row, Col } from '@components'
+import { Header, Card } from '@components'
 import { useI18n, useRule, useRuleProviders } from '@stores'
 import { FixedSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -42,17 +42,11 @@ export default function Rules () {
         const rule = rules[index]
         return (
             <li className="rule-item" style={style}>
-                <Row className="rule-item-row" gutter={24} align="middle">
-                    <Col className="rule-type" span={6} offset={1}>
-                        { rule.type }
-                    </Col>
-                    <Col className="payload" span={11}>
-                        { rule.payload }
-                    </Col>
-                    <Col className="rule-proxy" span={6}>
-                        { rule.proxy }
-                    </Col>
-                </Row>
+                <div className="rule-item-row flex">
+                    <div className="rule-type w-40 text-center">{ rule.type }</div>
+                    <div className="payload flex-1 text-center">{ rule.payload }</div>
+                    <div className="rule-proxy w-40 text-center">{ rule.proxy }</div>
+                </div>
             </li>
         )
     }

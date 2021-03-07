@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useObject } from '@lib/hook'
-import { Modal, Input, Row, Col, Alert } from '@components'
+import { Modal, Input, Alert } from '@components'
 import { useI18n, useAPIInfo, useIdentity } from '@stores'
 import './style.scss'
 
@@ -39,39 +39,36 @@ export default function ExternalController () {
             <Alert type="info" inside={true}>
                 <p>{t('externalControllerSetting.note')}</p>
             </Alert>
-            <Row gutter={24} align="middle">
-                <Col span={4} className="title">{t('externalControllerSetting.host')}</Col>
-                <Col span={20} className="form">
-                    <Input
-                        align="left"
-                        inside={true}
-                        value={value.hostname}
-                        onChange={hostname => set('hostname', hostname)}
-                    />
-                </Col>
-            </Row>
-            <Row gutter={24} align="middle">
-                <Col span={4} className="title">{t('externalControllerSetting.port')}</Col>
-                <Col span={20} className="form">
-                    <Input
-                        align="left"
-                        inside={true}
-                        value={value.port}
-                        onChange={port => set('port', port)}
-                    />
-                </Col>
-            </Row>
-            <Row gutter={24} align="middle">
-                <Col span={4} className="title">{t('externalControllerSetting.secret')}</Col>
-                <Col span={20} className="form">
-                    <Input
-                        align="left"
-                        inside={true}
-                        value={value.secret}
-                        onChange={secret => set('secret', secret)}
-                    />
-                </Col>
-            </Row>
+            <div className="flex items-center">
+                <span className="title w-14">{t('externalControllerSetting.host')}</span>
+                <Input
+                    className="form flex-1"
+                    align="left"
+                    inside={true}
+                    value={value.hostname}
+                    onChange={hostname => set('hostname', hostname)}
+                />
+            </div>
+            <div className="flex items-center">
+                <div className="title w-14">{t('externalControllerSetting.port')}</div>
+                <Input
+                    className="form flex-1"
+                    align="left"
+                    inside={true}
+                    value={value.port}
+                    onChange={port => set('port', port)}
+                />
+            </div>
+            <div className="flex items-center">
+                <div className="title w-14">{t('externalControllerSetting.secret')}</div>
+                <Input
+                    className="form flex-1"
+                    align="left"
+                    inside={true}
+                    value={value.secret}
+                    onChange={secret => set('secret', secret)}
+                />
+            </div>
         </Modal>
     )
 }
