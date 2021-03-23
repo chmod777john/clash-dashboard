@@ -1,9 +1,8 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es2017",
         "lib": [
             "dom",
-            "dom.iterable",
             "esnext"
         ],
         "skipLibCheck": true,
@@ -13,10 +12,8 @@
         "forceConsistentCasingInFileNames": true,
         "module": "esnext",
         "moduleResolution": "node",
-        "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "downlevelIteration": true,
         "jsx": "react",
         "baseUrl": ".",
         "paths": {
@@ -36,8 +33,7 @@
             "@models/*": ["src/models/*"],
             "@styles": ["src/styles"],
             "@styles/*": ["src/styles/*"]
-        },
-        "types": ["vite/client"]
+        }
     },
     "include": [
         "src"

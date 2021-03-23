@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import App from '@containers/App'
-import 'windi.css'
+import 'virtual:windi.css'
 
 export default function renderApp () {
     const rootEl = document.getElementById('root')

@@ -15,10 +15,10 @@
 
 ## Features
 
-- All ClashX configurations
-- Manage Proxies
-- Manage Proxy Groups
-- Realtime Log
+  - All ClashX configurations
+  - Manage Proxies
+  - Manage Proxy Groups
+  - Realtime Log
 
 ## Progress
 
