@@ -90,5 +90,6 @@ input {
     .page {
         padding: 0 0 20px;
         height: 100%;
+        min-height: unset;
     }
 }
