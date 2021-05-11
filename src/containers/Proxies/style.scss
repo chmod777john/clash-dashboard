@@ -46,16 +46,8 @@
     }
 }
 
-.proxies-group-list {
-    list-style: none;
-}
-
 .proxies-group-card {
     margin: 20px 0;
-}
-
-.proxies-container .proxies-action-icon {
-    margin-left: 10px;
 }
 
 .proxies-speed-test {
@@ -64,14 +56,6 @@
     color: $color-primary-dark;
     text-shadow: 0 2px 6px rgba($color: $color-primary-dark, $alpha: 0.4);
     cursor: pointer;
-}
-
-.proxies-providers-item {
-    margin: 20px 0;
-}
-
-.proxies-providers-list {
-    list-style: none;
 }
 
 @media (max-width: 768px) {

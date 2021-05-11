@@ -51,7 +51,7 @@ function ProxyGroups () {
                     </Checkbox>
                 </Header>
                 <Card className="proxies-group-card">
-                    <ul className="proxies-group-list">
+                    <ul className="list-none">
                         {
                             list.map(p => (
                                 <li className="proxies-group-item" key={p.name}>
@@ -76,10 +76,10 @@ function ProxyProviders () {
             providers.length !== 0 &&
             <div className="proxies-container">
                 <Header title={t('providerTitle')} />
-                <ul className="proxies-providers-list">
+                <ul className="list-none">
                     {
                         providers.map(p => (
-                            <li className="proxies-providers-item" key={p.name}>
+                            <li className="my-5" key={p.name}>
                                 <Provider provider={p} />
                             </li>
                         ))
@@ -119,8 +119,8 @@ function Proxies () {
             sortedProxies.length !== 0 &&
             <div className="proxies-container">
                 <Header title={t('title')}>
-                    <Icon className="proxies-action-icon" type={sortMap[sort]} onClick={handleSort} size={20} />
-                    <Icon className="proxies-action-icon" type="speed" size={20} />
+                    <Icon className="ml-3" type={sortMap[sort]} onClick={handleSort} size={20} />
+                    <Icon className="ml-3" type="speed" size={20} />
                     <span className="proxies-speed-test" onClick={handleNotitySpeedTest}>{t('speedTestText')}</span>
                 </Header>
                 <ul className="proxies-list">

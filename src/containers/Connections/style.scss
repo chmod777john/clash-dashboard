@@ -6,19 +6,6 @@
     padding: 0;
     overflow: hidden;
 
-    .connections {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        flex-grow: 1;
-        flex-basis: 0;
-        overflow: auto;
-    }
-
-    .connections-body {
-        flex: 1 0 auto;
-    }
-
     .connections-th {
         $height: 30px;
 
@@ -84,10 +71,6 @@
         }
     }
 
-    .connetions-item {
-        height: 36px;
-    }
-
     .connections-block {
         display: flex;
         align-items: center;
@@ -98,10 +81,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-
-        &.center {
-            text-align: center;
-        }
 
         &.completed {
             background-color: darken($color-gray-light, 3%);

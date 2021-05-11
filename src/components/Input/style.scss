@@ -19,21 +19,3 @@ $height: 30px;
         box-shadow: 0 2px 5px rgba($color: $color-primary, $alpha: 0.5);
     }
 }
-
-.input-align-left {
-    text-align: left;
-}
-
-.input-align-center {
-    text-align: center;
-}
-
-.input-align-right {
-    text-align: right;
-}
-
-.input-inside {
-    &:focus {
-        box-shadow: none;
-    }
-}

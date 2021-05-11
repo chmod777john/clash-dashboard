@@ -45,7 +45,7 @@ export function Tags (props: TagsProps) {
         })
 
     return (
-        <div className={classnames('tags-container', className)} style={{ height: rowHeight }}>
+        <div className={classnames('flex items-start overflow-y-hidden', className)} style={{ height: rowHeight }}>
             <ul ref={ulRef} className={classnames('tags', { expand })}>
                 { tags }
             </ul>

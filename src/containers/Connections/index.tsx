@@ -240,7 +240,7 @@ export default function Connections() {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card className="connections-card">
-                <div {...getTableProps()} className="connections" ref={tableRef}>
+                <div {...getTableProps()} className="flex flex-col w-full flex-1 overflow-auto" ref={tableRef}>
                     <div {...headerGroup.getHeaderGroupProps()} className="connections-header">
                         {
                             headerGroup.headers.map((column, idx) => {
@@ -271,7 +271,7 @@ export default function Connections() {
                         }
                     </div>
 
-                    <div {...getTableBodyProps()} className="connections-body">
+                    <div {...getTableBodyProps()} className="flex-1">
                         {
                             rows.map(row => {
                                 prepareRow(row)
@@ -281,7 +281,7 @@ export default function Connections() {
                                             row.cells.map(cell => {
                                                 const classname = classnames(
                                                     'connections-block',
-                                                    { center: shouldCenter.has(cell.column.id), completed: row.original.completed },
+                                                    { 'text-center': shouldCenter.has(cell.column.id), completed: row.original.completed },
                                                     { fixed: scrollX > 0 && cell.column.id === Columns.Host }
                                                 )
                                                 return (

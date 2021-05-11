@@ -16,16 +16,3 @@
         line-height: 32px;
     }
 }
-
-.operations {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-@media (max-width: 768px) {
-    .header > h1 {
-        font-size: 20px;
-    }
-}

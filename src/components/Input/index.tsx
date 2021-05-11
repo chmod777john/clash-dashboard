@@ -28,7 +28,7 @@ export function Input (props: InputProps) {
         onChange = noop,
         onBlur = noop
     } = props
-    const classname = classnames('input', `input-align-${align}`, { 'input-inside': inside }, className)
+    const classname = classnames('input', `text-${align}`, { 'focus:shadow-none': inside }, className)
 
     return (
         <input

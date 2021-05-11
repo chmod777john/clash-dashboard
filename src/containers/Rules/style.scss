@@ -8,10 +8,6 @@
     &:focus {
         outline: none;
     }
-
-    .rules {
-        flex: 1 0 auto;
-    }
 }
 
 .rule-item {
@@ -22,10 +18,6 @@
     list-style: none;
     user-select: none;
     border-bottom: 1px solid rgba($color: $color-primary-lightly, $alpha: 0.5);
-
-    .rule-item-row {
-        padding: 5px 0;
-    }
 
     .drag-handler {
         cursor: row-resize;
@@ -79,29 +71,5 @@
         .delete-btn {
             opacity: 1;
         }
-    }
-}
-
-.rule-proxy-option {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-
-    .label {
-        margin-right: 5px;
-        height: 20px;
-        line-height: 20px;
-        padding: 0 8px;
-        font-size: 10px;
-        border-radius: 10px;
-        color: $color-white;
-        background: $color-gray-dark;
-    }
-
-    .value {
-        line-height: 20px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 }

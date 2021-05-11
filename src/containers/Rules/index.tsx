@@ -42,7 +42,7 @@ export default function Rules () {
         const rule = rules[index]
         return (
             <li className="rule-item" style={style}>
-                <div className="rule-item-row flex">
+                <div className="py-1 flex">
                     <div className="rule-type w-40 text-center">{ rule.type }</div>
                     <div className="payload flex-1 text-center">{ rule.payload }</div>
                     <div className="rule-proxy w-40 text-center">{ rule.proxy }</div>

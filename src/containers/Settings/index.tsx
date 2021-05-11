@@ -178,7 +178,7 @@ export default function Settings () {
                     <div className="w-1/2 px-8"></div>
                 </div>
             </Card>
-            <Card className="clash-version" style={{ display: 'none' }}>
+            <Card className="clash-version hidden">
                 <span className="check-icon">
                     <Icon type="check" size={20} />
                 </span>
