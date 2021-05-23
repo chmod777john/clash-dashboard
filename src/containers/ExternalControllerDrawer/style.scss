@@ -2,29 +2,10 @@
     .alert {
         margin: 10px 0;
     }
-
-    .title,
-    .form {
-        margin: 15px 0;
-    }
-
-    .title {
-        margin-top: 15px;
-        font-size: 14px;
-        font-weight: bold;
-    }
 }
 
 @media (max-width: 768px) {
     .external-controller {
-        .title {
-            margin: 5px 0;
-        }
-
-        .form {
-            margin: 5px 0;
-        }
-
         // hack <Alert />
         .alert {
             display: none;

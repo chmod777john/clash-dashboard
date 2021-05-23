@@ -55,7 +55,7 @@ export default function Rules () {
         <div className="page">
             <RuleProviders />
             <Header title={t('title')} />
-            <Card className="rules-card">
+            <Card className="flex flex-col flex-1 mt-3 p-0 focus:outline-none">
                 <AutoSizer className="rules">
                     {
                         ({ height, width }) => (

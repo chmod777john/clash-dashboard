@@ -50,7 +50,7 @@ function ProxyGroups () {
                         {t('breakConnectionsText')}
                     </Checkbox>
                 </Header>
-                <Card className="proxies-group-card">
+                <Card className="my-3 md:my-5 p-0">
                     <ul className="list-none">
                         {
                             list.map(p => (

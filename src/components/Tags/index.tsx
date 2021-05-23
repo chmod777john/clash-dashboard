@@ -36,7 +36,7 @@ export function Tags (props: TagsProps) {
 
     const tags = data
         .map(t => {
-            const tagClass = classnames({ 'tags-selected': select === t, 'can-click': canClick, error: errSet?.has(t) })
+            const tagClass = classnames({ 'tags-selected': select === t, 'cursor-pointer': canClick, error: errSet?.has(t) })
             return (
                 <li className={tagClass} key={t} onClick={() => handleClick(t)}>
                     { t }
@@ -51,7 +51,7 @@ export function Tags (props: TagsProps) {
             </ul>
             {
                 showExtend &&
-                <span className="tags-expand" onClick={toggleExtend}>{ expand ? t('collapseText') : t('expandText') }</span>
+                <span className="h-7 px-5 select-none cursor-pointer leading-7" onClick={toggleExtend}>{ expand ? t('collapseText') : t('expandText') }</span>
             }
         </div>
     )

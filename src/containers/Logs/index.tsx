@@ -47,8 +47,8 @@ export default function Logs () {
                     {
                         logs.map(
                             (log, index) => (
-                                <li key={index}>
-                                    <span className="logs-panel-time">{ dayjs(log.time).format('YYYY-MM-DD HH:mm:ss') }</span>
+                                <li className="leading-5 inline-block" key={index}>
+                                    <span className="mr-4 text-gray-400 text-opacity-90">{ dayjs(log.time).format('YYYY-MM-DD HH:mm:ss') }</span>
                                     <span>[{ log.type }] { log.payload }</span>
                                 </li>
                             )

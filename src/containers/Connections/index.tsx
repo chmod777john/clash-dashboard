@@ -232,7 +232,7 @@ export default function Connections() {
     return (
         <div className="page">
             <Header title={t('title')}>
-                <span className="connections-filter total">
+                <span className="connections-filter flex-1 cursor-default">
                     {`(${t('total.text')}: ${t('total.upload')} ${formatTraffic(traffic.uploadTotal)} ${t('total.download')} ${formatTraffic(traffic.downloadTotal)})`}
                 </span>
                 <Checkbox className="connections-filter" checked={save} onChange={toggleSave}>{t('keepClosed')}</Checkbox>
@@ -240,7 +240,7 @@ export default function Connections() {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card className="connections-card">
-                <div {...getTableProps()} className="flex flex-col w-full flex-1 overflow-auto" ref={tableRef}>
+                <div {...getTableProps()} className="flex flex-col w-full flex-1 overflow-auto" style={{ flexBasis: 0 }} ref={tableRef}>
                     <div {...headerGroup.getHeaderGroupProps()} className="connections-header">
                         {
                             headerGroup.headers.map((column, idx) => {

@@ -18,7 +18,7 @@ $padding: 26px;
         height: $length;
         border-radius: 3px;
         transition: background-color 0.3s ease;
-        transform: translateY(-$length / 2);
+        transform: translateY(math.div(-$length, 2));
         background-color: $color-white;
         border: 1px solid $color-primary-lightly;
     }
@@ -33,7 +33,7 @@ $padding: 26px;
     left: 0;
     top: 50%;
     line-height: $length;
-    transform: translateY(-$length / 2) scale(0.6);
+    transform: translateY(math.div(-$length, 2)) scale(0.6);
     text-shadow: none;
     font-weight: bold;
 

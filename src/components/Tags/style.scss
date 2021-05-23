@@ -16,15 +16,10 @@ $height: 22px;
         border: 1px solid $color-primary-dark;
         color: $color-primary-darken;
         height: $height;
-        border-radius: $height / 2;
+        border-radius: math.div($height, 2);
         padding: 0 6px;
         margin: 3px 4px;
         font-size: 10px;
-        cursor: default;
-    }
-
-    li.can-click {
-        cursor: pointer;
     }
 
     li.error {
@@ -44,12 +39,4 @@ $height: 22px;
         background-color: $color-primary-dark;
         color: #fff;
     }
-}
-
-.tags-expand {
-    height: 30px;
-    line-height: 30px;
-    padding: 0 20px;
-    user-select: none;
-    cursor: pointer;
 }

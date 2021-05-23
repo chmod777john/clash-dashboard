@@ -38,7 +38,7 @@
 
         position: absolute;
         opacity: 0;
-        right: $width / -2;
+        right: math.div($width, 2);
         top: $padding;
         bottom: $padding;
         width: $width;
@@ -52,7 +52,7 @@
             content: '';
             display: block;
             position: absolute;
-            left: $width / 2;
+            left: math.div($width, 2);
             transform: translateX(-2px);
             width: 2px;
             height: 100%;
@@ -108,10 +108,5 @@
     &.dangerous {
         color: $color-red;
         text-shadow: 0 0 6px rgba($color: $color-primary, $alpha: 0.2);
-    }
-
-    &.total {
-        flex: 1;
-        cursor: unset;
     }
 }
