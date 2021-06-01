@@ -1,9 +1,8 @@
 {
     "compilerOptions": {
-        "target": "es2017",
+        "target": "es2020",
         "lib": [
             "dom",
-            "esnext"
         ],
         "skipLibCheck": true,
         "esModuleInterop": true,

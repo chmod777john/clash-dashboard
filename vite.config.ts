@@ -16,5 +16,8 @@ export default defineConfig({
                 additionalData: '@use "sass:math"; @import "src/styles/variables.scss";'
             }
         }
+    },
+    build: {
+        minify: 'esbuild'
     }
 })

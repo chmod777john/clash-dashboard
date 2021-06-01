@@ -44,7 +44,7 @@ function ProxyGroups () {
             <div className="proxies-container">
                 <Header title={t('groupTitle')}>
                     <Checkbox
-                        className="connections-filter"
+                        className="text-primary-600 text-sm text-shadow-primary cursor-pointer"
                         checked={config.breakConnections}
                         onChange={value => setConfig('breakConnections', value)}>
                         {t('breakConnectionsText')}

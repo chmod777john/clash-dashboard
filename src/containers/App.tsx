@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router-dom'
 import classnames from 'classnames'
 import { isClashX } from '@lib/jsBridge'
 
@@ -34,12 +34,14 @@ export default function App () {
         <div className={classnames('app', { 'not-clashx': !isClashX() })}>
             <SlideBar routes={routes} />
             <div className="page-container">
-                <Route exact path="/" component={() => <Redirect to="/proxies"/>}/>
-                {
-                    routes.map(
-                        route => <Route exact={false} path={route.path} key={route.path} component={route.component}/>
-                    )
-                }
+                <Switch>
+                    <Route exact path="/" component={() => <Redirect to="/proxies"/>} />
+                    {
+                        routes.map(
+                            route => <Route exact={false} path={route.path} key={route.path} component={route.component} />
+                        )
+                    }
+                </Switch>
             </div>
             <ExternalControllerModal />
         </div>
