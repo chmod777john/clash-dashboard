@@ -194,6 +194,9 @@ export function useProxy () {
 
     const markProxySelected = useCallback((name: string, selected: string) => {
         set(draft => {
+            if (name === 'GLOBAL') {
+                draft.global.now = selected
+            }
             for (const group of draft.groups) {
                 if (group.name === name) {
                     group.now = selected
