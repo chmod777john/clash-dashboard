@@ -16,19 +16,6 @@ export function getSearchParam(key: string) {
     return new URLSearchParams(window.location.search).get(key)
 }
 
-/**
- * to return Promise<[T, Error]>
- * @param {Promise<T>} promise
- */
-export async function to <T, E = Error> (promise: Promise<T>): Promise<[T, E]> {
-    try {
-        const ret = await promise
-        return [ret, null as unknown as E]
-    } catch (e) {
-        return [null as unknown as T, e]
-    }
-}
-
 export function partition<T> (arr: T[], fn: (arg: T) => boolean): [T[], T[]] {
     const left: T[] = []
     const right: T[] = []

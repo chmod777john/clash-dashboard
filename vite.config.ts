@@ -7,7 +7,17 @@ export default defineConfig({
     plugins: [
         reactRefresh(),
         tsConfigPath(),
-        windiCSS()
+        windiCSS(),
+        // https://github.com/vitejs/vite/issues/2144
+        {
+            name: 'remove-css-in-js',
+            enforce: 'post',
+            transform(_, id) {
+                if (id.endsWith('.scss') || id.endsWith('.css')) {
+                    return ''
+                }
+            },
+        }
     ],
     base: './',
     css: {

@@ -1,49 +1,47 @@
-import { atom, useRecoilState, selector } from 'recoil'
-import { get } from 'lodash-es'
-import { useCallback, useEffect } from 'react'
+import { ResultAsync } from 'neverthrow'
 import { AxiosError } from 'axios'
-import swr from 'swr'
+import { atom, useAtom } from 'jotai'
+import { atomWithImmer } from 'jotai/immer'
+import { useCallback, useEffect } from 'react'
+import { get } from 'lodash-es'
+import useSWR from 'swr'
 
-import { getLanguage, setLanguage, Lang, locales, Language } from '@i18n'
-import { useRecoilObjectWithImmer } from '@lib/recoil'
+import { getLanguage, Language, setLanguage, locales, Lang } from '@i18n'
+import { useWarpImmerSetter } from '@lib/jotai'
 import * as API from '@lib/request'
-import { setLocalStorageItem, partition, to } from '@lib/helper'
-import { jsBridge, isClashX } from '@lib/jsBridge'
 import * as Models from '@models'
+import { partition, setLocalStorageItem } from '@lib/helper'
+import { isClashX, jsBridge } from '@lib/jsBridge'
 
-const identity = atom({
-    key: 'identity',
-    default: true
-})
+const identity = atom(true)
 
 type AsyncFunction<A, O> = (...args: A[]) => Promise<O>
 
 export function useIdentity () {
-    const [id, set] = useRecoilState(identity)
+    const [id, set] = useAtom(identity)
 
     function wrapFetcher<A, O> (fn: AsyncFunction<A, O>) {
         return async function (...args: A[]) {
-            const [resp, err] = await to(fn(...args))
-            const rErr = err as AxiosError
-            if (rErr && (!rErr.response || rErr.response.status === 401)) {
-                set(false)
-                throw err
+            const result = await ResultAsync.fromPromise(fn(...args), e => e as AxiosError)
+            if (result.isErr()) {
+                if (result.error.response?.status === 401) {
+                    set(false)
+                }
+                throw result.error
             }
+
             set(true)
-            return resp
+            return result.value
         }
     }
 
     return { identity: id, wrapFetcher, set }
 }
 
-const language = atom({
-    key: 'i18n',
-    default: getLanguage()
-})
+const language = atom(getLanguage())
 
 export function useI18n () {
-    const [lang, set] = useRecoilState(language)
+    const [lang, set] = useAtom(language)
 
     function setLang (lang: Lang) {
         set(lang)
@@ -64,69 +62,32 @@ export function useI18n () {
 }
 
 export const version = atom({
-    key: 'version',
-    default: {
-        version: '',
-        premium: false
-    }
+    version: '',
+    premium: false
 })
 
 export function useVersion () {
-    const [data, set] = useRecoilState(version)
+    const [data, set] = useAtom(version)
     const { set: setIdentity } = useIdentity()
 
     async function update () {
-        const [resp, err] = await to(API.getVersion())
-        setIdentity(!err)
+        const result = await ResultAsync.fromPromise(API.getVersion(), e => e as AxiosError)
+        setIdentity(result.isOk())
 
         set(
-            err
+            result.isErr()
                 ? { version: '', premium: false }
-                : { version: resp.data.version, premium: !!resp.data.premium }
+                : { version: result.value.data.version, premium: !!result.value.data.premium }
         )
     }
 
     return { version: data.version, premium: data.premium, update }
 }
 
-export const config = atom({
-    key: 'config',
-    default: {
-        breakConnections: false
-    }
-})
-
-export function useConfig () {
-    const [data, set] = useRecoilObjectWithImmer(config)
-
-    return { data, set }
-}
-
-export const proxyProvider = atom({
-    key: 'proxyProvider',
-    default: [] as API.Provider[]
-})
-
-export function useProxyProviders () {
-    const [providers, set] = useRecoilState(proxyProvider)
-
-    const { data, mutate } = swr('/providers/proxy', async () => {
-        const proxyProviders = await API.getProxyProviders()
-
-        return Object.keys(proxyProviders.data.providers)
-            .map<API.Provider>(name => proxyProviders.data.providers[name])
-            .filter(pd => pd.name !== 'default')
-            .filter(pd => pd.vehicleType !== 'Compatible')
-    })
-
-    useEffect(() => set(data ?? []), [data, set])
-    return { providers, update: mutate }
-}
-
 export function useRuleProviders () {
-    const [{ premium }] = useRecoilState(version)
+    const [{ premium }] = useAtom(version)
 
-    const { data, mutate } = swr('/providers/rule', async () => {
+    const { data, mutate } = useSWR('/providers/rule', async () => {
         if (!premium) {
             return []
         }
@@ -140,8 +101,36 @@ export function useRuleProviders () {
     return { providers: data ?? [], update: mutate }
 }
 
+export const config = atomWithImmer({
+    breakConnections: false
+})
+
+export function useConfig () {
+    const [data, set] = useAtom(config)
+
+    return { data, set: useWarpImmerSetter(set) }
+}
+
+export const proxyProvider = atom([] as API.Provider[])
+
+export function useProxyProviders () {
+    const [providers, set] = useAtom(proxyProvider)
+
+    const { data, mutate } = useSWR('/providers/proxy', async () => {
+        const proxyProviders = await API.getProxyProviders()
+
+        return Object.keys(proxyProviders.data.providers)
+            .map<API.Provider>(name => proxyProviders.data.providers[name])
+            .filter(pd => pd.name !== 'default')
+            .filter(pd => pd.vehicleType !== 'Compatible')
+    })
+
+    useEffect(() => set(data ?? []), [data, set])
+    return { providers, update: mutate }
+}
+
 export function useGeneral () {
-    const { data, mutate } = swr('/config', async () => {
+    const { data, mutate } = useSWR('/config', async () => {
         const resp = await API.getConfig()
         const data = resp.data
         return {
@@ -158,25 +147,23 @@ export function useGeneral () {
     return { general: data ?? {} as Models.Data['general'], update: mutate }
 }
 
-export const proxies = atom({
-    key: 'proxies',
-    default: {
-        proxies: [] as API.Proxy[],
-        groups: [] as API.Group[],
-        global: {
-            name: 'GLOBAL',
-            type: 'Selector',
-            now: '',
-            history: [],
-            all: []
-        } as API.Group
-    }
+export const proxies = atomWithImmer({
+    proxies: [] as API.Proxy[],
+    groups: [] as API.Group[],
+    global: {
+        name: 'GLOBAL',
+        type: 'Selector',
+        now: '',
+        history: [],
+        all: []
+    } as API.Group
 })
 
 export function useProxy () {
-    const [allProxy, set] = useRecoilObjectWithImmer(proxies)
+    const [allProxy, rawSet] = useAtom(proxies)
+    const set = useWarpImmerSetter(rawSet)
 
-    const { mutate } = swr('/proxies', async () => {
+    const { mutate } = useSWR('/proxies', async () => {
         const allProxies = await API.getProxies()
 
         const global = allProxies.data.proxies.GLOBAL as API.Group
@@ -215,28 +202,25 @@ export function useProxy () {
     }
 }
 
-export const proxyMapping = selector({
-    key: 'proxyMapping',
-    get: ({ get }) => {
-        const ps = get(proxies)
-        const providers = get(proxyProvider)
-        const proxyMap = new Map<string, API.Proxy>()
-        for (const p of ps.proxies) {
+export const proxyMapping = atom((get) => {
+    const ps = get(proxies)
+    const providers = get(proxyProvider)
+    const proxyMap = new Map<string, API.Proxy>()
+    for (const p of ps.proxies) {
+        proxyMap.set(p.name, p as API.Proxy)
+    }
+
+    for (const provider of providers) {
+        for (const p of provider.proxies) {
             proxyMap.set(p.name, p as API.Proxy)
         }
-
-        for (const provider of providers) {
-            for (const p of provider.proxies) {
-                proxyMap.set(p.name, p as API.Proxy)
-            }
-        }
-
-        return proxyMap
     }
+
+    return proxyMap
 })
 
 export function useClashXData () {
-    const { data, mutate } = swr('/clashx', async () => {
+    const { data, mutate } = useSWR('/clashx', async () => {
         if (!isClashX()) {
             return {
                 isClashX: false,
@@ -255,16 +239,13 @@ export function useClashXData () {
 }
 
 export const apiData = atom({
-    key: 'apiData',
-    default: {
-        hostname: '127.0.0.1',
-        port: '9090',
-        secret: ''
-    }
+    hostname: '127.0.0.1',
+    port: '9090',
+    secret: ''
 })
 
 export function useAPIInfo () {
-    const [data, set] = useRecoilState(apiData)
+    const [data, set] = useAtom(apiData)
 
     const fetch = useCallback(async function fetch () {
         const info = await API.getExternalControllerConfig()
@@ -282,13 +263,11 @@ export function useAPIInfo () {
     return { data, fetch, update }
 }
 
-export const rules = atom({
-    key: 'rules',
-    default: [] as API.Rule[]
-})
+export const rules = atomWithImmer([] as API.Rule[])
 
 export function useRule () {
-    const [data, set] = useRecoilObjectWithImmer(rules)
+    const [data, rawSet] = useAtom(rules)
+    const set = useWarpImmerSetter(rawSet)
 
     async function update () {
         const resp = await API.getRules()
@@ -297,3 +276,4 @@ export function useRule () {
 
     return { rules: data, update }
 }
+

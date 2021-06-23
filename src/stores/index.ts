@@ -1,1 +1,1 @@
-export * from './recoil'
+export * from './jotai'

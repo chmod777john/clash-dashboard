@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3'
 import { SetRequired } from 'type-fest'
+import { ResultAsync } from 'neverthrow'
 import { to } from '@lib/helper'
 
 export interface Config {
@@ -56,32 +57,35 @@ export class StreamReader<T> {
     }
 
     protected async loop () {
-        const [resp, err] = await to(fetch(
+        const result = await ResultAsync.fromPromise(fetch(
             this.config.url,
             {
                 mode: 'cors',
                 headers: this.config.token ? { Authorization: `Bearer ${this.config.token}` } : {}
             }
-        ))
-        if (err || !resp.body) {
-            this.retry(err)
+        ), e => e as Error)
+        if (result.isErr()) {
+            this.retry(result.error)
+            return
+        } else if (!result.value.body) {
+            this.retry(new Error('fetch body error'))
             return
         }
 
-        const reader = resp.body.getReader()
+        const reader = result.value.body.getReader()
         const decoder = new TextDecoder()
         while (true) {
             if (this.isClose) {
                 break
             }
 
-            const [{ value }, err] = await to(reader?.read())
-            if (err) {
-                this.retry(err)
+            const result = await ResultAsync.fromPromise(reader?.read(), e => e as Error)
+            if (result.isErr()) {
+                this.retry(result.error)
                 break
             }
 
-            const lines = decoder.decode(value).trim().split('\n')
+            const lines = decoder.decode(result.value.value).trim().split('\n')
             const data = lines.map(l => JSON.parse(l))
             this.EE.emit('data', data)
             if (this.config.bufferLength! > 0) {

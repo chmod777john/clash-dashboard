@@ -41,7 +41,7 @@ function ProxyGroups () {
     return <>
         {
             list.length !== 0 &&
-            <div className="proxies-container">
+            <div className="flex flex-col">
                 <Header title={t('groupTitle')}>
                     <Checkbox
                         className="text-primary-600 text-sm text-shadow-primary cursor-pointer"
@@ -50,7 +50,7 @@ function ProxyGroups () {
                         {t('breakConnectionsText')}
                     </Checkbox>
                 </Header>
-                <Card className="my-3 md:my-5 p-0">
+                <Card className="my-2.5 md:my-4 p-0">
                     <ul className="list-none">
                         {
                             list.map(p => (
@@ -74,12 +74,12 @@ function ProxyProviders () {
     return <>
         {
             providers.length !== 0 &&
-            <div className="proxies-container">
+            <div className="flex flex-col">
                 <Header title={t('providerTitle')} />
                 <ul className="list-none">
                     {
                         providers.map(p => (
-                            <li className="my-5" key={p.name}>
+                            <li className="my-2.5 md:my-4" key={p.name}>
                                 <Provider provider={p} />
                             </li>
                         ))
@@ -117,7 +117,7 @@ function Proxies () {
     return <>
         {
             sortedProxies.length !== 0 &&
-            <div className="proxies-container">
+            <div className="flex flex-col">
                 <Header title={t('title')}>
                     <Icon className="ml-3" type={sortMap[sort]} onClick={handleSort} size={20} />
                     <Icon className="ml-3" type="speed" size={20} />

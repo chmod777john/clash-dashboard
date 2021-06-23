@@ -42,7 +42,7 @@ export default function Logs () {
     return (
         <div className="page">
             <Header title={ t('title') } />
-            <Card className="flex flex-col flex-1 mt-3">
+            <Card className="flex flex-col flex-1 mt-2.5 md:mt-4">
                 <ul className="logs-panel" ref={listRef}>
                     {
                         logs.map(

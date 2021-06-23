@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useAtom } from 'jotai'
 import { useProxy, useConfig, proxyMapping } from '@stores'
 import { changeProxySelected, Group as IGroup, getConnections, closeConnection } from '@lib/request'
 import { Tags, Tag } from '@components'
@@ -11,7 +11,7 @@ interface GroupProps {
 
 export function Group (props: GroupProps) {
     const { markProxySelected } = useProxy()
-    const proxyMap = useRecoilValue(proxyMapping)
+    const [proxyMap] = useAtom(proxyMapping)
     const { data: Config } = useConfig()
     const { config } = props
 

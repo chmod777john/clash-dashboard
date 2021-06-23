@@ -1,11 +1,13 @@
 import React, { useMemo, useLayoutEffect, useCallback } from 'react'
+import { ResultAsync } from 'neverthrow'
+import type{ AxiosError } from 'axios'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models'
 import { useProxy } from '@stores'
 import { getProxyDelay, Proxy as IProxy } from '@lib/request'
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { to } from '@lib/helper'
+
 import './style.scss'
 
 interface ProxyProps extends BaseComponentProps {
@@ -34,9 +36,9 @@ export function Proxy (props: ProxyProps) {
     const { set } = useProxy()
 
     const speedTest = useCallback(async function () {
-        const [delay, err] = await to(getDelay(config.name))
+        const result = await ResultAsync.fromPromise(getDelay(config.name), e => e as AxiosError)
 
-        const validDelay = err ? 0 : delay
+        const validDelay = result.isErr() ? 0 : result.value
         set(draft => {
             const proxy = draft.proxies.find(p => p.name === config.name)
             if (proxy) {

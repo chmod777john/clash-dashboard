@@ -15,7 +15,7 @@ function RuleProviders () {
     return <>
         {
             providers.length !== 0 &&
-            <div className="proxies-container">
+            <div className="flex flex-col">
                 <Header title={t('providerTitle')} />
                 <ul className="proxies-providers-list">
                     {
@@ -55,7 +55,7 @@ export default function Rules () {
         <div className="page">
             <RuleProviders />
             <Header title={t('title')} />
-            <Card className="flex flex-col flex-1 mt-3 p-0 focus:outline-none">
+            <Card className="flex flex-col flex-1 mt-2.5 md:mt-4 p-0 focus:outline-none">
                 <AutoSizer className="rules">
                     {
                         ({ height, width }) => (

@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
+import { ResultAsync } from 'neverthrow'
 import { getLocalStorageItem, getSearchParam, to } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { createAsyncSingleton } from '@lib/asyncSingleton'
@@ -250,8 +251,8 @@ export async function changeProxySelected (name: string, select: string) {
 export const getLogsStreamReader = createAsyncSingleton(async function () {
     const externalController = await getExternalControllerConfig()
     const { data: config } = await getConfig()
-    const [data, err] = await to(getVersion())
-    const version = err ? 'unkonwn version' : data.data.version
+    const result = await ResultAsync.fromPromise(getVersion(), err => err as AxiosError)
+    const version = result.isErr() ? 'unkonwn version' : result.value.data.version
     const useWebsocket = !!version || true
 
     const logUrl = `${externalController.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
@@ -260,8 +261,8 @@ export const getLogsStreamReader = createAsyncSingleton(async function () {
 
 export const getConnectionStreamReader = createAsyncSingleton(async function () {
     const externalController = await getExternalControllerConfig()
-    const [data, err] = await to(getVersion())
-    const version = err ? 'unkonwn version' : data.data.version
+    const result = await ResultAsync.fromPromise(getVersion(), err => err as AxiosError)
+    const version = result.isErr() ? 'unkonwn version' : result.value.data.version
 
     const useWebsocket = !!version || true
     const logUrl = `${externalController.protocol}//${externalController.hostname}:${externalController.port}/connections`
