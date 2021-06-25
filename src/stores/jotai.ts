@@ -6,9 +6,10 @@ import { atomWithImmer } from 'jotai/immer'
 import { useCallback, useEffect, useMemo } from 'react'
 import { get } from 'lodash-es'
 import useSWR from 'swr'
+import produce from 'immer'
 
 import { Language, locales, Lang, getDefaultLanguage } from '@i18n'
-import { useWarpImmerSetter } from '@lib/jotai'
+import { useWarpImmerSetter, WritableDraft } from '@lib/jotai'
 import * as API from '@lib/request'
 import * as Models from '@models'
 import { partition, setLocalStorageItem } from '@lib/helper'
@@ -98,14 +99,18 @@ export function useRuleProviders () {
     return { providers: data ?? [], update: mutate }
 }
 
-export const config = atomWithImmer({
+export const configAtom = atomWithStorage('profile', {
     breakConnections: false
 })
 
 export function useConfig () {
-    const [data, set] = useAtom(config)
+    const [data, set] = useAtom(configAtom)
 
-    return { data, set: useWarpImmerSetter(set) }
+    const setter = useCallback((f: WritableDraft<typeof data>) => {
+        set(produce(data, f))
+    }, [data, set])
+
+    return { data, set: useWarpImmerSetter(setter) }
 }
 
 export const proxyProvider = atom([] as API.Provider[])

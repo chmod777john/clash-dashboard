@@ -1,7 +1,7 @@
 import produce, { Draft } from 'immer'
 import { useMemo } from 'react'
 
-type WritableDraft<T> = (draft: Draft<T>) => void
+export type WritableDraft<T> = (draft: Draft<T>) => void
 
 export function useWarpImmerSetter<T> (setter: (f: WritableDraft<T>) => void) {
     const set = useMemo(() => {
