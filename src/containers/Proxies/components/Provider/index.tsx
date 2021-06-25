@@ -1,12 +1,11 @@
-import * as React from 'react'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { Card, Tag, Icon, Loading } from '@components'
 import { useI18n, useProxyProviders } from '@stores'
 import { fromNow } from '@lib/date'
 import { Provider as IProvider, Proxy as IProxy, updateProvider, healthCheckProvider } from '@lib/request'
 import { useVisible } from '@lib/hook'
-import { Proxy } from '../Proxy'
-import { compareDesc } from '../../'
+import { compareDesc } from '@containers/Proxies'
+import { Proxy } from '@containers/Proxies/components/Proxy'
 import './style.scss'
 
 interface ProvidersProps {
@@ -39,18 +38,18 @@ export function Provider (props: ProvidersProps) {
     return (
         <Card className="proxy-provider">
             <Loading visible={visible} />
-            <div className="proxy-provider-header">
-                <div className="proxy-provider-header-part">
-                    <span className="proxy-provider-name">{ provider.name }</span>
+            <div className="flex justify-between flex-col md:flex-row md:items-center">
+                <div className="flex items-center">
+                    <span className="mr-6">{ provider.name }</span>
                     <Tag>{ provider.vehicleType }</Tag>
                 </div>
-                <div className="proxy-provider-header-part">
+                <div className="flex items-center pt-3 md:pt-0">
                     {
                         provider.updatedAt &&
-                        <span className="proxy-provider-update">{ `${t('providerUpdateTime')}: ${fromNow(new Date(provider.updatedAt), lang)}`}</span>
+                        <span className="text-sm">{ `${t('providerUpdateTime')}: ${fromNow(new Date(provider.updatedAt), lang)}`}</span>
                     }
-                    <Icon className="proxy-provider-icon healthcheck" type="healthcheck" size={18} onClick={handleHealthChech} />
-                    <Icon className="proxy-provider-icon" type="update" size={18} onClick={handleUpdate} />
+                    <Icon className="pl-5 cursor-pointer text-red" type="healthcheck" size={18} onClick={handleHealthChech} />
+                    <Icon className="pl-5 cursor-pointer" type="update" size={18} onClick={handleUpdate} />
                 </div>
             </div>
             <ul className="proxies-list">

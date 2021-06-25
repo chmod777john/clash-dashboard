@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { ResultAsync } from 'neverthrow'
-import { getLocalStorageItem, getSearchParam, to } from '@lib/helper'
+import { getLocalStorageItem, getSearchParam } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { createAsyncSingleton } from '@lib/asyncSingleton'
 import { Log } from '@models/Log'

@@ -58,7 +58,7 @@
         "dayjs": "^1.10.5",
         "eventemitter3": "^4.0.7",
         "immer": "^9.0.3",
-        "jotai": "^1.0.0",
+        "jotai": "^1.1.0",
         "lodash-es": "^4.17.21",
         "neverthrow": "^4.2.1",
         "react": "^17.0.2",
@@ -69,6 +69,6 @@
         "react-virtualized-auto-sizer": "^1.0.5",
         "react-window": "^1.8.6",
         "swr": "^0.5.6",
-        "use-immer": "^0.5.2"
+        "use-immer": "^0.6.0"
     }
 }

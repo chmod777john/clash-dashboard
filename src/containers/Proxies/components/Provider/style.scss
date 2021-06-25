@@ -7,54 +7,10 @@
     color: $color-black-light;
 }
 
-.proxy-provider-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.proxy-provider-header-part {
-    display: flex;
-    align-items: center;
-}
-
-.proxy-provider-name {
-    margin-right: 24px;
-}
-
-.proxy-provider-proxies {
-    list-style: none;
-}
-
 .proxy-provider-item {
     box-shadow: 0 0 24px 0 rgba(44, 138, 248, 0.2);
 
     &:hover {
         box-shadow: 0 0 24px 0 rgba(84, 117, 154, 0.4);
-    }
-}
-
-.proxy-provider-update {
-    line-height: 14px;
-    font-size: 14px;
-}
-
-.proxy-provider-icon {
-    margin-left: 20px;
-    cursor: pointer;
-
-    &.healthcheck {
-        color: $color-red;
-    }
-}
-
-@media (max-width: 768px) {
-    .proxy-provider-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .proxy-provider-header-part {
-        margin: 6px 0;
     }
 }

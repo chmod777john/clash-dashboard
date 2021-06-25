@@ -48,13 +48,13 @@ export function Group (props: GroupProps) {
     const canClick = config.type === 'Selector'
     return (
         <div className="proxy-group">
-            <div className="proxy-group-part">
-                <span className="proxy-group-name">{ config.name }</span>
-                <Tag className="proxy-group-type">{ config.type }</Tag>
+            <div className="w-full h-10 mt-1 flex items-center justify-between md:h-15 md:mt-0">
+                <span className="overflow-hidden overflow-ellipsis whitespace-nowrap px-5 h-6 w-35 md:w-30">{ config.name }</span>
+                <Tag className="mr-5 md:mr-0">{ config.type }</Tag>
             </div>
-            <div className="proxy-group-tags-container">
+            <div className="pt-1 pb-3 md:py-4">
                 <Tags
-                    className="proxy-group-tags"
+                    className="ml-5 md:ml-8"
                     data={config.all}
                     onClick={handleChangeProxySelected}
                     errSet={errSet}

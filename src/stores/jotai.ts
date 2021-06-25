@@ -1,12 +1,13 @@
 import { ResultAsync } from 'neverthrow'
 import { AxiosError } from 'axios'
 import { atom, useAtom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import { atomWithImmer } from 'jotai/immer'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { get } from 'lodash-es'
 import useSWR from 'swr'
 
-import { getLanguage, Language, setLanguage, locales, Lang } from '@i18n'
+import { Language, locales, Lang, getDefaultLanguage } from '@i18n'
 import { useWarpImmerSetter } from '@lib/jotai'
 import * as API from '@lib/request'
 import * as Models from '@models'
@@ -38,15 +39,11 @@ export function useIdentity () {
     return { identity: id, wrapFetcher, set }
 }
 
-const language = atom(getLanguage())
+export const languageAtom = atomWithStorage<Lang | undefined>('language', undefined)
 
 export function useI18n () {
-    const [lang, set] = useAtom(language)
-
-    function setLang (lang: Lang) {
-        set(lang)
-        setLanguage(lang)
-    }
+    const [defaultLang, setLang] = useAtom(languageAtom)
+    const lang = useMemo(() => defaultLang ?? getDefaultLanguage(), [defaultLang])
 
     const translation = useCallback(
         function (namespace: keyof typeof Language['en_US']) {

@@ -6,10 +6,6 @@ export function setLocalStorageItem (key: string, value: string) {
     return window.localStorage.setItem(key, value)
 }
 
-export function removeLocalStorageItem (key: string) {
-    return window.localStorage.removeItem(key)
-}
-
 export function noop () {}
 
 export function getSearchParam(key: string) {
