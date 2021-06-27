@@ -3,8 +3,8 @@ import { ResultAsync } from 'neverthrow'
 import type{ AxiosError } from 'axios'
 import classnames from 'classnames'
 import { BaseComponentProps } from '@models'
-import { useProxy } from '@stores'
-import { getProxyDelay, Proxy as IProxy } from '@lib/request'
+import { useClient, useProxy } from '@stores'
+import { Proxy as IProxy } from '@lib/request'
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 
@@ -21,19 +21,20 @@ const TagColors = {
     '#ff3e5e': Infinity
 }
 
-async function getDelay (name: string) {
-    if (isClashX()) {
-        const delay = await jsBridge?.getProxyDelay(name) ?? 0
-        return delay
-    }
-
-    const { data: { delay } } = await getProxyDelay(name)
-    return delay
-}
-
 export function Proxy (props: ProxyProps) {
     const { config, className } = props
     const { set } = useProxy()
+    const client = useClient()
+
+    const getDelay = useCallback(async (name: string) => {
+        if (isClashX()) {
+            const delay = await jsBridge?.getProxyDelay(name) ?? 0
+            return delay
+        }
+
+        const { data: { delay } } = await client.getProxyDelay(name)
+        return delay
+    }, [client])
 
     const speedTest = useCallback(async function () {
         const result = await ResultAsync.fromPromise(getDelay(config.name), e => e as AxiosError)
@@ -45,7 +46,7 @@ export function Proxy (props: ProxyProps) {
                 proxy.history.push({ time: Date.now().toString(), delay: validDelay })
             }
         })
-    }, [config.name, set])
+    }, [config.name, getDelay, set])
 
     const delay = useMemo(
         () => config.history?.length ? config.history.slice(-1)[0].delay : 0,

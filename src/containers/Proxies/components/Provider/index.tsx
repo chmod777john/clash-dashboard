@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { Card, Tag, Icon, Loading } from '@components'
-import { useI18n, useProxyProviders } from '@stores'
+import { useClient, useI18n, useProxyProviders } from '@stores'
 import { fromNow } from '@lib/date'
-import { Provider as IProvider, Proxy as IProxy, updateProvider, healthCheckProvider } from '@lib/request'
+import { Provider as IProvider, Proxy as IProxy } from '@lib/request'
 import { useVisible } from '@lib/hook'
 import { compareDesc } from '@containers/Proxies'
 import { Proxy } from '@containers/Proxies/components/Proxy'
@@ -15,6 +15,7 @@ interface ProvidersProps {
 export function Provider (props: ProvidersProps) {
     const { update } = useProxyProviders()
     const { translation, lang } = useI18n()
+    const client = useClient()
 
     const { provider } = props
     const { t } = translation('Proxies')
@@ -23,12 +24,12 @@ export function Provider (props: ProvidersProps) {
 
     function handleHealthChech () {
         show()
-        healthCheckProvider(provider.name).then(() => update()).finally(() => hide())
+        client.healthCheckProvider(provider.name).then(() => update()).finally(() => hide())
     }
 
     function handleUpdate () {
         show()
-        updateProvider(provider.name).then(() => update()).finally(() => hide())
+        client.updateProvider(provider.name).then(() => update()).finally(() => hide())
     }
 
     const proxies = useMemo(() => {

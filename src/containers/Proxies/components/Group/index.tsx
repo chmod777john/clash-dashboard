@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useAtom } from 'jotai'
-import { useProxy, useConfig, proxyMapping } from '@stores'
-import { changeProxySelected, Group as IGroup, getConnections, closeConnection } from '@lib/request'
+import { useProxy, useConfig, proxyMapping, useClient } from '@stores'
+import { Group as IGroup } from '@lib/request'
 import { Tags, Tag } from '@components'
 import './style.scss'
 
@@ -13,14 +13,15 @@ export function Group (props: GroupProps) {
     const { markProxySelected } = useProxy()
     const [proxyMap] = useAtom(proxyMapping)
     const { data: Config } = useConfig()
+    const client = useClient()
     const { config } = props
 
     async function handleChangeProxySelected (name: string) {
-        await changeProxySelected(props.config.name, name)
+        await client.changeProxySelected(props.config.name, name)
         markProxySelected(props.config.name, name)
         if (Config.breakConnections) {
             const list: string[] = []
-            const snapshot = await getConnections()
+            const snapshot = await client.getConnections()
             for (const connection of snapshot.data.connections) {
                 if (connection.chains.includes(props.config.name)) {
                     list.push(connection.id)
@@ -28,7 +29,7 @@ export function Group (props: GroupProps) {
             }
 
             for (const id of list) {
-                closeConnection(id)
+                client.closeConnection(id)
             }
         }
     }

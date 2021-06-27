@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import classnames from 'classnames'
 import { isClashX } from '@lib/jsBridge'
@@ -11,15 +11,13 @@ import Settings from '@containers/Settings'
 import SlideBar from '@containers/Sidebar'
 import Connections from '@containers/Connections'
 import ExternalControllerModal from '@containers/ExternalControllerDrawer'
-import { getLogsStreamReader } from '@lib/request'
+import { useLogsStreamReader } from '@stores'
 
 import '../styles/common.scss'
 import '../styles/iconfont.scss'
 
 export default function App () {
-    useEffect(() => {
-        getLogsStreamReader()
-    }, [])
+    useLogsStreamReader()
 
     const routes = [
     // { path: '/', name: 'Overview', component: Overview, exact: true },

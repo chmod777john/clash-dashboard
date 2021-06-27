@@ -1,7 +1,7 @@
 import { ResultAsync } from 'neverthrow'
 import { AxiosError } from 'axios'
 import { atom, useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import { atomWithStorage, useUpdateAtom } from 'jotai/utils'
 import { atomWithImmer } from 'jotai/immer'
 import { useCallback, useEffect, useMemo } from 'react'
 import { get } from 'lodash-es'
@@ -12,33 +12,14 @@ import { Language, locales, Lang, getDefaultLanguage } from '@i18n'
 import { useWarpImmerSetter, WritableDraft } from '@lib/jotai'
 import * as API from '@lib/request'
 import * as Models from '@models'
-import { partition, setLocalStorageItem } from '@lib/helper'
+import { partition } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
+import { useAPIInfo, useClient } from './request'
+import { StreamReader } from '@lib/streamer'
+import { Log } from '@models/Log'
+import { Snapshot } from '@lib/request'
 
-const identity = atom(true)
-
-type AsyncFunction<A, O> = (...args: A[]) => Promise<O>
-
-export function useIdentity () {
-    const [id, set] = useAtom(identity)
-
-    function wrapFetcher<A, O> (fn: AsyncFunction<A, O>) {
-        return async function (...args: A[]) {
-            const result = await ResultAsync.fromPromise(fn(...args), e => e as AxiosError)
-            if (result.isErr()) {
-                if (result.error.response?.status === 401) {
-                    set(false)
-                }
-                throw result.error
-            }
-
-            set(true)
-            return result.value
-        }
-    }
-
-    return { identity: id, wrapFetcher, set }
-}
+export const identityAtom = atom(true)
 
 export const languageAtom = atomWithStorage<Lang | undefined>('language', undefined)
 
@@ -66,10 +47,11 @@ export const version = atom({
 
 export function useVersion () {
     const [data, set] = useAtom(version)
-    const { set: setIdentity } = useIdentity()
+    const client = useClient()
+    const setIdentity = useUpdateAtom(identityAtom)
 
-    async function update () {
-        const result = await ResultAsync.fromPromise(API.getVersion(), e => e as AxiosError)
+    useSWR([client], async function () {
+        const result = await ResultAsync.fromPromise(client.getVersion(), e => e as AxiosError)
         setIdentity(result.isOk())
 
         set(
@@ -77,20 +59,21 @@ export function useVersion () {
                 ? { version: '', premium: false }
                 : { version: result.value.data.version, premium: !!result.value.data.premium }
         )
-    }
+    })
 
-    return { version: data.version, premium: data.premium, update }
+    return { version: data.version, premium: data.premium }
 }
 
 export function useRuleProviders () {
     const [{ premium }] = useAtom(version)
+    const client = useClient()
 
-    const { data, mutate } = useSWR('/providers/rule', async () => {
+    const { data, mutate } = useSWR(['/providers/rule', client], async () => {
         if (!premium) {
             return []
         }
 
-        const ruleProviders = await API.getRuleProviders()
+        const ruleProviders = await client.getRuleProviders()
 
         return Object.keys(ruleProviders.data.providers)
             .map<API.RuleProvider>(name => ruleProviders.data.providers[name])
@@ -117,9 +100,10 @@ export const proxyProvider = atom([] as API.Provider[])
 
 export function useProxyProviders () {
     const [providers, set] = useAtom(proxyProvider)
+    const client = useClient()
 
-    const { data, mutate } = useSWR('/providers/proxy', async () => {
-        const proxyProviders = await API.getProxyProviders()
+    const { data, mutate } = useSWR(['/providers/proxy', client], async () => {
+        const proxyProviders = await client.getProxyProviders()
 
         return Object.keys(proxyProviders.data.providers)
             .map<API.Provider>(name => proxyProviders.data.providers[name])
@@ -132,8 +116,10 @@ export function useProxyProviders () {
 }
 
 export function useGeneral () {
-    const { data, mutate } = useSWR('/config', async () => {
-        const resp = await API.getConfig()
+    const client = useClient()
+
+    const { data, mutate } = useSWR(['/config', client], async () => {
+        const resp = await client.getConfig()
         const data = resp.data
         return {
             port: data.port,
@@ -164,9 +150,10 @@ export const proxies = atomWithImmer({
 export function useProxy () {
     const [allProxy, rawSet] = useAtom(proxies)
     const set = useWarpImmerSetter(rawSet)
+    const client = useClient()
 
-    const { mutate } = useSWR('/proxies', async () => {
-        const allProxies = await API.getProxies()
+    const { mutate } = useSWR(['/proxies', client], async () => {
+        const allProxies = await client.getProxies()
 
         const global = allProxies.data.proxies.GLOBAL as API.Group
         // fix missing name
@@ -240,42 +227,64 @@ export function useClashXData () {
     return { data, update: mutate }
 }
 
-export const apiData = atom({
-    hostname: '127.0.0.1',
-    port: '9090',
-    secret: ''
-})
-
-export function useAPIInfo () {
-    const [data, set] = useAtom(apiData)
-
-    const fetch = useCallback(async function fetch () {
-        const info = await API.getExternalControllerConfig()
-        set({ ...info })
-    }, [set])
-
-    async function update (info: typeof data) {
-        const { hostname, port, secret } = info
-        setLocalStorageItem('externalControllerAddr', hostname)
-        setLocalStorageItem('externalControllerPort', port)
-        setLocalStorageItem('secret', secret)
-        window.location.reload()
-    }
-
-    return { data, fetch, update }
-}
-
 export const rules = atomWithImmer([] as API.Rule[])
 
 export function useRule () {
     const [data, rawSet] = useAtom(rules)
     const set = useWarpImmerSetter(rawSet)
+    const client = useClient()
 
     async function update () {
-        const resp = await API.getRules()
+        const resp = await client.getRules()
         set(resp.data.rules)
     }
 
     return { rules: data, update }
 }
 
+const logsAtom = atom({
+    key: '',
+    instance: null as StreamReader<Log> | null
+})
+
+export function useLogsStreamReader () {
+    const apiInfo = useAPIInfo()
+    const { general } = useGeneral()
+    const version = useVersion()
+    const [item, setItem] = useAtom(logsAtom)
+
+    if (!version.version) {
+        return null
+    }
+
+    const useWebsocket = !!version.version || true
+    const key = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/logs?level=${general.logLevel ?? ''}&useWebsocket=${useWebsocket}&secret=${apiInfo.secret}`
+    if (item.key === key) {
+        return item.instance!
+    }
+
+    const oldInstance = item.instance
+
+    const logUrl = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/logs?level=${general.logLevel ?? ''}`
+    const instance = new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: apiInfo.secret, useWebsocket })
+    setItem({ key, instance })
+
+    if (oldInstance) {
+        oldInstance.destory()
+    }
+
+    return instance
+}
+
+export function useConnectionStreamReader () {
+    const apiInfo = useAPIInfo()
+    const version = useVersion()
+
+    const useWebsocket = !!version.version || true
+
+    const url = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/connections`
+    return useMemo(
+        () => version.version ? new StreamReader<Snapshot>({ url, bufferLength: 200, token: apiInfo.secret, useWebsocket }) : null,
+        [apiInfo.secret, url, useWebsocket, version.version]
+    )
+}

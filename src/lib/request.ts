@@ -1,10 +1,4 @@
-import axios, { AxiosError } from 'axios'
-import { ResultAsync } from 'neverthrow'
-import { getLocalStorageItem, getSearchParam } from '@lib/helper'
-import { isClashX, jsBridge } from '@lib/jsBridge'
-import { createAsyncSingleton } from '@lib/asyncSingleton'
-import { Log } from '@models/Log'
-import { StreamReader } from './streamer'
+import axios, { AxiosInstance } from 'axios'
 
 export interface Config {
     port: number
@@ -99,172 +93,90 @@ export interface Connections {
     rulePayload: string
 }
 
-export async function getExternalControllerConfig () {
-    if (isClashX()) {
-        const info = await jsBridge!.getAPIInfo()
-
-        return {
-            hostname: info.host,
-            port: info.port,
-            secret: info.secret,
-            protocol: 'http:'
-        }
-    }
-
-    let url: URL | undefined;
-    {
-        const meta = document.querySelector<HTMLMetaElement>('meta[name="external-controller"]')
-        if (meta?.content?.match(/^https?:/)) {
-            // [protocol]://[secret]@[hostname]:[port]
-            url = new URL(meta.content)
-        }
-    }
-
-    const hostname = getSearchParam('host') ?? getLocalStorageItem('externalControllerAddr', url?.hostname ?? '127.0.0.1')
-    const port = getSearchParam('port') ?? getLocalStorageItem('externalControllerPort', url?.port ?? '9090')
-    const secret = getSearchParam('secret') ?? getLocalStorageItem('secret', url?.username ?? '')
-    const protocol = getSearchParam('protocol') ?? hostname === '127.0.0.1' ? 'http:' : (url?.protocol ?? window.location.protocol)
-
-    if (!hostname || !port) {
-        throw new Error('can\'t get hostname or port')
-    }
-
-    return { hostname, port, secret, protocol }
-}
-
-export const getInstance = createAsyncSingleton(async () => {
-    const {
-        hostname,
-        port,
-        secret,
-        protocol
-    } = await getExternalControllerConfig()
-
-    return axios.create({
-        baseURL: `${protocol}//${hostname}:${port}`,
-        headers: secret ? { Authorization: `Bearer ${secret}` } : {}
-    })
-})
-
-export async function getConfig () {
-    const req = await getInstance()
-    return req.get<Config>('configs')
-}
-
-export async function updateConfig (config: Partial<Config>) {
-    const req = await getInstance()
-    return req.patch<void>('configs', config)
-}
-
-export async function getRules () {
-    const req = await getInstance()
-    return req.get<Rules>('rules')
-}
-
-export async function updateRules () {
-    const req = await getInstance()
-    return req.put<void>('rules')
-}
-
-export async function getProxyProviders () {
-    const req = await getInstance()
-    return req.get<ProxyProviders>('providers/proxies', {
-        validateStatus (status) {
-            // compatible old version
-            return (status >= 200 && status < 300) || status === 404
-        }
-    })
-        // compatible old version
-        .then(resp => {
-            if (resp.status === 404) {
-                resp.data = { providers: {} }
-            }
-            return resp
+export class Client {
+    private axiosClient: AxiosInstance
+    constructor(url: string, secret?: string) {
+        this.axiosClient = axios.create({
+            baseURL: url,
+            headers: secret ? { Authorization: `Bearer ${secret}` } : {}
         })
-}
+    }
 
-export async function getRuleProviders () {
-    const req = await getInstance()
-    return req.get<RuleProviders>('providers/rules')
-}
+    getConfig() {
+        return this.axiosClient.get<Config>('configs')
+    }
 
-export async function updateProvider (name: string) {
-    const req = await getInstance()
-    return req.put<void>(`providers/proxies/${encodeURIComponent(name)}`)
-}
+    updateConfig(config: Partial<Config>) {
+        return this.axiosClient.patch<void>('configs', config)
+    }
 
-export async function updateRuleProvider (name: string) {
-    const req = await getInstance()
-    return req.put<void>(`providers/rules/${encodeURIComponent(name)}`)
-}
+    getRules() {
+        return this.axiosClient.get<Rules>('rules')
+    }
 
-export async function healthCheckProvider (name: string) {
-    const req = await getInstance()
-    return req.get<void>(`providers/proxies/${encodeURIComponent(name)}/healthcheck`)
-}
-
-export async function getProxies () {
-    const req = await getInstance()
-    return req.get<Proxies>('proxies')
-}
-
-export async function getProxy (name: string) {
-    const req = await getInstance()
-    return req.get<Proxy>(`proxies/${encodeURIComponent(name)}`)
-}
-
-export async function getVersion () {
-    const req = await getInstance()
-    return req.get<{ version: string, premium?: boolean }>('version')
-}
-
-export async function getProxyDelay (name: string) {
-    const req = await getInstance()
-    return req.get<{ delay: number }>(`proxies/${encodeURIComponent(name)}/delay`, {
-        params: {
-            timeout: 5000,
-            url: 'http://www.gstatic.com/generate_204'
+    async getProxyProviders () {
+        const resp = await this.axiosClient.get<ProxyProviders>('providers/proxies', {
+            validateStatus(status) {
+                // compatible old version
+                return (status >= 200 && status < 300) || status === 404
+            }
+        })
+        if (resp.status === 404) {
+            resp.data = { providers: {} }
         }
-    })
+        return resp
+    }
+
+    getRuleProviders () {
+        return this.axiosClient.get<RuleProviders>('providers/rules')
+    }
+
+    updateProvider (name: string) {
+        return this.axiosClient.put<void>(`providers/proxies/${encodeURIComponent(name)}`)
+    }
+
+    updateRuleProvider (name: string) {
+        return this.axiosClient.put<void>(`providers/rules/${encodeURIComponent(name)}`)
+    }
+
+    healthCheckProvider (name: string) {
+        return this.axiosClient.get<void>(`providers/proxies/${encodeURIComponent(name)}/healthcheck`)
+    }
+
+    getProxies () {
+        return this.axiosClient.get<Proxies>('proxies')
+    }
+
+    getProxy (name: string) {
+        return this.axiosClient.get<Proxy>(`proxies/${encodeURIComponent(name)}`)
+    }
+
+    getVersion () {
+        return this.axiosClient.get<{ version: string, premium?: boolean }>('version')
+    }
+
+    getProxyDelay (name: string) {
+        return this.axiosClient.get<{ delay: number }>(`proxies/${encodeURIComponent(name)}/delay`, {
+            params: {
+                timeout: 5000,
+                url: 'http://www.gstatic.com/generate_204'
+            }
+        })
+    }
+
+    closeAllConnections () {
+        return this.axiosClient.delete('connections')
+    }
+
+    closeConnection (id: string) {
+        return this.axiosClient.delete(`connections/${id}`)
+    }
+
+    getConnections () {
+        return this.axiosClient.get<Snapshot>('connections')
+    }
+
+    changeProxySelected (name: string, select: string) {
+        return this.axiosClient.put<void>(`proxies/${encodeURIComponent(name)}`, { name: select })
+    }
 }
-
-export async function closeAllConnections () {
-    const req = await getInstance()
-    return req.delete('connections')
-}
-
-export async function closeConnection (id: string) {
-    const req = await getInstance()
-    return req.delete(`connections/${id}`)
-}
-
-export async function getConnections () {
-    const req = await getInstance()
-    return req.get<Snapshot>('connections')
-}
-
-export async function changeProxySelected (name: string, select: string) {
-    const req = await getInstance()
-    return req.put<void>(`proxies/${encodeURIComponent(name)}`, { name: select })
-}
-
-export const getLogsStreamReader = createAsyncSingleton(async function () {
-    const externalController = await getExternalControllerConfig()
-    const { data: config } = await getConfig()
-    const result = await ResultAsync.fromPromise(getVersion(), err => err as AxiosError)
-    const version = result.isErr() ? 'unkonwn version' : result.value.data.version
-    const useWebsocket = !!version || true
-
-    const logUrl = `${externalController.protocol}//${externalController.hostname}:${externalController.port}/logs?level=${config['log-level']}`
-    return new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
-})
-
-export const getConnectionStreamReader = createAsyncSingleton(async function () {
-    const externalController = await getExternalControllerConfig()
-    const result = await ResultAsync.fromPromise(getVersion(), err => err as AxiosError)
-    const version = result.isErr() ? 'unkonwn version' : result.value.data.version
-
-    const useWebsocket = !!version || true
-    const logUrl = `${externalController.protocol}//${externalController.hostname}:${externalController.port}/connections`
-    return new StreamReader<Snapshot>({ url: logUrl, bufferLength: 200, token: externalController.secret, useWebsocket })
-})

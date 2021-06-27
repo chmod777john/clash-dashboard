@@ -4,9 +4,8 @@ import classnames from 'classnames'
 import { useScroll } from 'react-use'
 import { groupBy } from 'lodash-es'
 import { Header, Card, Checkbox, Modal, Icon } from '@components'
-import { useI18n } from '@stores'
+import { useClient, useConnectionStreamReader, useI18n } from '@stores'
 import * as API from '@lib/request'
-import { StreamReader } from '@lib/streamer'
 import { useObject, useVisible } from '@lib/hook'
 import { fromNow } from '@lib/date'
 import { RuleType } from '@models'
@@ -93,6 +92,8 @@ interface formatConnection {
 export default function Connections() {
     const { translation, lang } = useI18n()
     const t = useMemo(() => translation('Connections').t, [translation])
+    const connStreamReader = useConnectionStreamReader()
+    const client = useClient()
 
     // total
     const [traffic, setTraffic] = useObject({
@@ -103,7 +104,7 @@ export default function Connections() {
     // close all connections
     const { visible, show, hide } = useVisible()
     function handleCloseConnections() {
-        API.closeAllConnections().finally(() => hide())
+        client.closeAllConnections().finally(() => hide())
     }
 
     // connections
@@ -161,8 +162,6 @@ export default function Connections() {
     ] as TableColumnOption<formatConnection>[], [t])
 
     useLayoutEffect(() => {
-        let streamReader: StreamReader<API.Snapshot> | null = null
-
         function handleConnection(snapshots: API.Snapshot[]) {
             for (const snapshot of snapshots) {
                 setTraffic({
@@ -174,18 +173,12 @@ export default function Connections() {
             }
         }
 
-        (async function () {
-            streamReader = await API.getConnectionStreamReader()
-            streamReader.subscribe('data', handleConnection)
-        }())
-
+        connStreamReader?.subscribe('data', handleConnection)
         return () => {
-            if (streamReader) {
-                streamReader.unsubscribe('data', handleConnection)
-                streamReader.destory()
-            }
+            connStreamReader?.unsubscribe('data', handleConnection)
+            connStreamReader?.destory()
         }
-    }, [feed, setTraffic])
+    }, [connStreamReader, feed, setTraffic])
 
     const {
         getTableProps,

@@ -3,9 +3,8 @@ import { NavLink } from 'react-router-dom'
 import classnames from 'classnames'
 import { useI18n, useVersion, useClashXData } from '@stores'
 
-import './style.scss'
 import logo from '@assets/logo.png'
-import useSWR from 'swr'
+import './style.scss'
 
 interface SidebarProps {
     routes: {
@@ -19,11 +18,9 @@ interface SidebarProps {
 export default function Sidebar (props: SidebarProps) {
     const { routes } = props
     const { translation } = useI18n()
-    const { version, premium, update } = useVersion()
+    const { version, premium } = useVersion()
     const { data } = useClashXData()
     const { t } = translation('SideBar')
-
-    useSWR('version', update)
 
     const navlinks = routes.map(
         ({ path, name, exact, noMobile }) => (

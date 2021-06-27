@@ -1,9 +1,9 @@
 import * as React from 'react'
 import classnames from 'classnames'
 import { Card, Tag, Icon } from '@components'
-import { useI18n, useRuleProviders } from '@stores'
+import { useClient, useI18n, useRuleProviders } from '@stores'
 import { fromNow } from '@lib/date'
-import { RuleProvider, updateRuleProvider } from '@lib/request'
+import { RuleProvider } from '@lib/request'
 import { useVisible } from '@lib/hook'
 import './style.scss'
 
@@ -14,6 +14,7 @@ interface ProvidersProps {
 export function Provider (props: ProvidersProps) {
     const { update } = useRuleProviders()
     const { translation, lang } = useI18n()
+    const client = useClient()
 
     const { provider } = props
     const { t } = translation('Rules')
@@ -22,7 +23,7 @@ export function Provider (props: ProvidersProps) {
 
     function handleUpdate () {
         show()
-        updateRuleProvider(provider.name).then(() => update()).finally(() => hide())
+        client.updateRuleProvider(provider.name).then(() => update()).finally(() => hide())
     }
 
     const updateClassnames = classnames('rule-provider-icon', { 'rule-provider-loading': visible })
