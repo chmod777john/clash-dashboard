@@ -15,7 +15,7 @@ export default function Logs () {
 
     useLayoutEffect(() => {
         const ul = listRef.current
-        if (ul) {
+        if (ul != null) {
             ul.scrollTop = ul.scrollHeight
         }
     })
@@ -26,7 +26,7 @@ export default function Logs () {
             setLogs(logsRef.current)
         }
 
-        if (logsStreamReader) {
+        if (logsStreamReader != null) {
             logsStreamReader.subscribe('data', handleLog)
             logsRef.current = logsStreamReader.buffer()
             setLogs(logsRef.current)
@@ -47,7 +47,7 @@ export default function Logs () {
                                     <span className="mr-4 text-gray-400 text-opacity-90">{ dayjs(log.time).format('YYYY-MM-DD HH:mm:ss') }</span>
                                     <span>[{ log.type }] { log.payload }</span>
                                 </li>
-                            )
+                            ),
                         )
                     }
                 </ul>

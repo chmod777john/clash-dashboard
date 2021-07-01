@@ -23,7 +23,7 @@ export default function Settings () {
     const [info, set] = useObject({
         socks5ProxyPort: 7891,
         httpProxyPort: 7890,
-        mixedProxyPort: 0
+        mixedProxyPort: 0,
     })
 
     useEffect(() => {
@@ -39,12 +39,12 @@ export default function Settings () {
 
     async function handleStartAtLoginChange (state: boolean) {
         await jsBridge?.setStartAtLogin(state)
-        fetchClashXData()
+        await fetchClashXData()
     }
 
     async function handleSetSystemProxy (state: boolean) {
         await jsBridge?.setSystemProxy(state)
-        fetchClashXData()
+        await fetchClashXData()
     }
 
     function changeLanguage (language: Lang) {
@@ -73,7 +73,7 @@ export default function Settings () {
 
     const {
         hostname: externalControllerHost,
-        port: externalControllerPort
+        port: externalControllerPort,
     } = apiInfo
 
     const { allowLan, mode } = general
@@ -86,7 +86,7 @@ export default function Settings () {
         const options = [
             { label: t('values.global'), value: 'Global' },
             { label: t('values.rules'), value: 'Rule' },
-            { label: t('values.direct'), value: 'Direct' }
+            { label: t('values.direct'), value: 'Direct' },
         ]
         if (premium) {
             options.push({ label: t('values.script'), value: 'Script' })

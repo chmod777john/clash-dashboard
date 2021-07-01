@@ -3,7 +3,7 @@ import zh_CN from './zh_CN'
 
 export const Language = {
     en_US,
-    zh_CN
+    zh_CN,
 }
 
 export type Lang = keyof typeof Language

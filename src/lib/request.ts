@@ -94,32 +94,32 @@ export interface Connections {
 }
 
 export class Client {
-    private axiosClient: AxiosInstance
-    constructor(url: string, secret?: string) {
+    private readonly axiosClient: AxiosInstance
+    constructor (url: string, secret?: string) {
         this.axiosClient = axios.create({
             baseURL: url,
-            headers: secret ? { Authorization: `Bearer ${secret}` } : {}
+            headers: secret ? { Authorization: `Bearer ${secret}` } : {},
         })
     }
 
-    getConfig() {
-        return this.axiosClient.get<Config>('configs')
+    async getConfig () {
+        return await this.axiosClient.get<Config>('configs')
     }
 
-    updateConfig(config: Partial<Config>) {
-        return this.axiosClient.patch<void>('configs', config)
+    async updateConfig (config: Partial<Config>) {
+        return await this.axiosClient.patch<void>('configs', config)
     }
 
-    getRules() {
-        return this.axiosClient.get<Rules>('rules')
+    async getRules () {
+        return await this.axiosClient.get<Rules>('rules')
     }
 
     async getProxyProviders () {
         const resp = await this.axiosClient.get<ProxyProviders>('providers/proxies', {
-            validateStatus(status) {
+            validateStatus (status) {
                 // compatible old version
                 return (status >= 200 && status < 300) || status === 404
-            }
+            },
         })
         if (resp.status === 404) {
             resp.data = { providers: {} }
@@ -127,56 +127,56 @@ export class Client {
         return resp
     }
 
-    getRuleProviders () {
-        return this.axiosClient.get<RuleProviders>('providers/rules')
+    async getRuleProviders () {
+        return await this.axiosClient.get<RuleProviders>('providers/rules')
     }
 
-    updateProvider (name: string) {
-        return this.axiosClient.put<void>(`providers/proxies/${encodeURIComponent(name)}`)
+    async updateProvider (name: string) {
+        return await this.axiosClient.put<void>(`providers/proxies/${encodeURIComponent(name)}`)
     }
 
-    updateRuleProvider (name: string) {
-        return this.axiosClient.put<void>(`providers/rules/${encodeURIComponent(name)}`)
+    async updateRuleProvider (name: string) {
+        return await this.axiosClient.put<void>(`providers/rules/${encodeURIComponent(name)}`)
     }
 
-    healthCheckProvider (name: string) {
-        return this.axiosClient.get<void>(`providers/proxies/${encodeURIComponent(name)}/healthcheck`)
+    async healthCheckProvider (name: string) {
+        return await this.axiosClient.get<void>(`providers/proxies/${encodeURIComponent(name)}/healthcheck`)
     }
 
-    getProxies () {
-        return this.axiosClient.get<Proxies>('proxies')
+    async getProxies () {
+        return await this.axiosClient.get<Proxies>('proxies')
     }
 
-    getProxy (name: string) {
-        return this.axiosClient.get<Proxy>(`proxies/${encodeURIComponent(name)}`)
+    async getProxy (name: string) {
+        return await this.axiosClient.get<Proxy>(`proxies/${encodeURIComponent(name)}`)
     }
 
-    getVersion () {
-        return this.axiosClient.get<{ version: string, premium?: boolean }>('version')
+    async getVersion () {
+        return await this.axiosClient.get<{ version: string, premium?: boolean }>('version')
     }
 
-    getProxyDelay (name: string) {
-        return this.axiosClient.get<{ delay: number }>(`proxies/${encodeURIComponent(name)}/delay`, {
+    async getProxyDelay (name: string) {
+        return await this.axiosClient.get<{ delay: number }>(`proxies/${encodeURIComponent(name)}/delay`, {
             params: {
                 timeout: 5000,
-                url: 'http://www.gstatic.com/generate_204'
-            }
+                url: 'http://www.gstatic.com/generate_204',
+            },
         })
     }
 
-    closeAllConnections () {
-        return this.axiosClient.delete('connections')
+    async closeAllConnections () {
+        return await this.axiosClient.delete('connections')
     }
 
-    closeConnection (id: string) {
-        return this.axiosClient.delete(`connections/${id}`)
+    async closeConnection (id: string) {
+        return await this.axiosClient.delete(`connections/${id}`)
     }
 
-    getConnections () {
-        return this.axiosClient.get<Snapshot>('connections')
+    async getConnections () {
+        return await this.axiosClient.get<Snapshot>('connections')
     }
 
-    changeProxySelected (name: string, select: string) {
-        return this.axiosClient.put<void>(`proxies/${encodeURIComponent(name)}`, { name: select })
+    async changeProxySelected (name: string, select: string) {
+        return await this.axiosClient.put<void>(`proxies/${encodeURIComponent(name)}`, { name: select })
     }
 }

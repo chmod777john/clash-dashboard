@@ -23,7 +23,7 @@ export function Provider (props: ProvidersProps) {
 
     function handleUpdate () {
         show()
-        client.updateRuleProvider(provider.name).then(() => update()).finally(() => hide())
+        client.updateRuleProvider(provider.name).then(async () => await update()).finally(() => hide())
     }
 
     const updateClassnames = classnames('rule-provider-icon', { 'rule-provider-loading': visible })

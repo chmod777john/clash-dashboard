@@ -21,9 +21,9 @@ export class StreamReader<T> {
             {
                 bufferLength: 0,
                 retryInterval: 5000,
-                headers: {}
+                headers: {},
             },
-            config
+            config,
         )
 
         this.config.useWebsocket
@@ -60,13 +60,13 @@ export class StreamReader<T> {
             this.config.url,
             {
                 mode: 'cors',
-                headers: this.config.token ? { Authorization: `Bearer ${this.config.token}` } : {}
-            }
+                headers: this.config.token ? { Authorization: `Bearer ${this.config.token}` } : {},
+            },
         ), e => e as Error)
         if (result.isErr()) {
             this.retry(result.error)
             return
-        } else if (!result.value.body) {
+        } else if (result.value.body == null) {
             this.retry(new Error('fetch body error'))
             return
         }
@@ -87,7 +87,7 @@ export class StreamReader<T> {
             const lines = decoder.decode(result.value.value).trim().split('\n')
             const data = lines.map(l => JSON.parse(l))
             this.EE.emit('data', data)
-            if (this.config.bufferLength! > 0) {
+            if (this.config.bufferLength > 0) {
                 this.innerBuffer.push(...data)
                 if (this.innerBuffer.length > this.config.bufferLength) {
                     this.innerBuffer.splice(0, this.innerBuffer.length - this.config.bufferLength)
@@ -99,7 +99,7 @@ export class StreamReader<T> {
     protected retry (err: Error) {
         if (!this.isClose) {
             this.EE.emit('error', err)
-            window.setTimeout(this.loop, this.config.retryInterval)
+            window.setTimeout(() => { this.loop() }, this.config.retryInterval)
         }
     }
 

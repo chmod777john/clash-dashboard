@@ -24,12 +24,12 @@ export function Provider (props: ProvidersProps) {
 
     function handleHealthChech () {
         show()
-        client.healthCheckProvider(provider.name).then(() => update()).finally(() => hide())
+        client.healthCheckProvider(provider.name).then(async () => await update()).finally(() => hide())
     }
 
     function handleUpdate () {
         show()
-        client.updateProvider(provider.name).then(() => update()).finally(() => hide())
+        client.updateProvider(provider.name).then(async () => await update()).finally(() => hide())
     }
 
     const proxies = useMemo(() => {

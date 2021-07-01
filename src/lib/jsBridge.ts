@@ -73,7 +73,7 @@ export class JsBridge {
     instance: JsBridgeAPI | null = null
 
     constructor (callback: () => void) {
-        if (window.WebViewJavascriptBridge) {
+        if (window.WebViewJavascriptBridge != null) {
             this.instance = window.WebViewJavascriptBridge
         }
 
@@ -97,12 +97,12 @@ export class JsBridge {
             return callback?.(null)
         }
 
-        if (window.WebViewJavascriptBridge) {
+        if (window.WebViewJavascriptBridge != null) {
             return callback(window.WebViewJavascriptBridge)
         }
 
         // setup callback
-        if (window.WVJBCallbacks) {
+        if (window.WVJBCallbacks != null) {
             return window.WVJBCallbacks.push(callback)
         }
 
@@ -115,63 +115,63 @@ export class JsBridge {
         setTimeout(() => document.documentElement.removeChild(WVJBIframe), 0)
     }
 
-    public callHandler<T> (handleName: string, data?: any) {
-        return new Promise<T>((resolve) => {
+    public async callHandler<T> (handleName: string, data?: any) {
+        return await new Promise<T>((resolve) => {
             this.instance?.callHandler(
                 handleName,
                 data,
-                resolve
+                resolve,
             )
         })
     }
 
-    public ping () {
-        return this.callHandler('ping')
+    public async ping () {
+        return await this.callHandler('ping')
     }
 
-    public readConfigString () {
-        return this.callHandler<string>('readConfigString')
+    public async readConfigString () {
+        return await this.callHandler<string>('readConfigString')
     }
 
-    public getPasteboard () {
-        return this.callHandler<string>('getPasteboard')
+    public async getPasteboard () {
+        return await this.callHandler<string>('getPasteboard')
     }
 
-    public getAPIInfo () {
-        return this.callHandler<{ host: string, port: string, secret: string }>('apiInfo')
+    public async getAPIInfo () {
+        return await this.callHandler<{ host: string, port: string, secret: string }>('apiInfo')
     }
 
-    public setPasteboard (data: string) {
-        return this.callHandler('setPasteboard', data)
+    public async setPasteboard (data: string) {
+        return await this.callHandler('setPasteboard', data)
     }
 
-    public writeConfigWithString (data: string) {
-        return this.callHandler('writeConfigWithString', data)
+    public async writeConfigWithString (data: string) {
+        return await this.callHandler('writeConfigWithString', data)
     }
 
-    public setSystemProxy (data: boolean) {
-        return this.callHandler('setSystemProxy', data)
+    public async setSystemProxy (data: boolean) {
+        return await this.callHandler('setSystemProxy', data)
     }
 
-    public getStartAtLogin () {
-        return this.callHandler<boolean>('getStartAtLogin')
+    public async getStartAtLogin () {
+        return await this.callHandler<boolean>('getStartAtLogin')
     }
 
-    public getProxyDelay (name: string) {
-        return this.callHandler<number>('speedTest', name)
+    public async getProxyDelay (name: string) {
+        return await this.callHandler<number>('speedTest', name)
     }
 
-    public setStartAtLogin (data: boolean) {
-        return this.callHandler<boolean>('setStartAtLogin', data)
+    public async setStartAtLogin (data: boolean) {
+        return await this.callHandler<boolean>('setStartAtLogin', data)
     }
 
-    public isSystemProxySet () {
-        return this.callHandler<boolean>('isSystemProxySet')
+    public async isSystemProxySet () {
+        return await this.callHandler<boolean>('isSystemProxySet')
     }
 }
 
 export function setupJsBridge (callback: () => void) {
-    if (jsBridge) {
+    if (jsBridge != null) {
         callback()
         return
     }

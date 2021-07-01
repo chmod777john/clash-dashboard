@@ -45,7 +45,7 @@ export function Modal (props: ModalProps) {
         bodyStyle,
         className,
         style,
-        children
+        children,
     } = props
 
     const { translation } = useI18n()

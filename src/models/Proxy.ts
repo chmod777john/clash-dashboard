@@ -5,13 +5,13 @@
 export const ProxyType = {
     Shadowsocks: 'ss',
     Vmess: 'vmess',
-    Socks5: 'socks5'
+    Socks5: 'socks5',
 }
 
 export type Proxy = ShadowsocksProxy & VmessProxy & Socks5Proxy
 
 export const SsProxyConfigList = [
-    'name', 'type', 'server', 'port', 'cipher', 'password', 'obfs', 'obfs-host'
+    'name', 'type', 'server', 'port', 'cipher', 'password', 'obfs', 'obfs-host',
 ]
 export interface ShadowsocksProxy {
     name?: string
@@ -32,7 +32,7 @@ export interface ShadowsocksProxy {
 }
 
 export const VmessProxyConfigList = [
-    'name', 'type', 'server', 'port', 'uuid', 'alterid', 'cipher', 'tls'
+    'name', 'type', 'server', 'port', 'uuid', 'alterid', 'cipher', 'tls',
 ]
 export interface VmessProxy {
     name?: string

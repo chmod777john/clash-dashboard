@@ -18,7 +18,7 @@ const TagColors = {
     '#909399': 0,
     '#00c520': 260,
     '#ff9a28': 600,
-    '#ff3e5e': Infinity
+    '#ff3e5e': Infinity,
 }
 
 export function Proxy (props: ProxyProps) {
@@ -42,7 +42,7 @@ export function Proxy (props: ProxyProps) {
         const validDelay = result.isErr() ? 0 : result.value
         set(draft => {
             const proxy = draft.proxies.find(p => p.name === config.name)
-            if (proxy) {
+            if (proxy != null) {
                 proxy.history.push({ time: Date.now().toString(), delay: validDelay })
             }
         })
@@ -50,20 +50,21 @@ export function Proxy (props: ProxyProps) {
 
     const delay = useMemo(
         () => config.history?.length ? config.history.slice(-1)[0].delay : 0,
-        [config]
+        [config],
     )
 
     useLayoutEffect(() => {
-        EE.subscribe(Action.SPEED_NOTIFY, speedTest)
-        return () => EE.unsubscribe(Action.SPEED_NOTIFY, speedTest)
+        const handler = () => { speedTest() }
+        EE.subscribe(Action.SPEED_NOTIFY, handler)
+        return () => EE.unsubscribe(Action.SPEED_NOTIFY, handler)
     }, [speedTest])
 
     const hasError = useMemo(() => delay === 0, [delay])
-    const color = useMemo(() =>
-        Object.keys(TagColors).find(
-            threshold => delay <= TagColors[threshold as keyof typeof TagColors]
+    const color = useMemo(
+        () => Object.keys(TagColors).find(
+            threshold => delay <= TagColors[threshold as keyof typeof TagColors],
         ),
-        [delay]
+        [delay],
     )
 
     const backgroundColor = hasError ? undefined : color

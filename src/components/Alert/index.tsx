@@ -14,7 +14,7 @@ const iconMap = {
     success: 'check',
     info: 'info',
     warning: 'info',
-    error: 'close'
+    error: 'close',
 }
 
 export function Alert (props: AlertProps) {

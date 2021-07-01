@@ -9,10 +9,10 @@ export default function Overview () {
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
-            opacity: 0.3
+            opacity: 0.3,
         }}>
             <img src={logo} alt="Logo" style={{
-                width: 200
+                width: 200,
             }}/>
 
             <h1 style={{ color: '#54759A', marginTop: 20 }}>Coming Soon...</h1>

@@ -6,7 +6,7 @@ const CN = {
         Rules: '规则',
         Settings: '设置',
         Connections: '连接',
-        Version: '版本'
+        Version: '版本',
     },
     Settings: {
         title: '设置',
@@ -19,7 +19,7 @@ const CN = {
             socks5ProxyPort: 'Socks5 代理端口',
             httpProxyPort: 'HTTP 代理端口',
             mixedProxyPort: '混合代理端口',
-            externalController: '外部控制设置'
+            externalController: '外部控制设置',
         },
         values: {
             cn: '中文',
@@ -27,7 +27,7 @@ const CN = {
             global: '全局',
             rules: '规则',
             direct: '直连',
-            script: '脚本'
+            script: '脚本',
         },
         versionString: '当前 ClashX 已是最新版本：{{version}}',
         checkUpdate: '检查更新',
@@ -36,17 +36,17 @@ const CN = {
             note: '请注意，修改该配置项并不会修改你的 Clash 配置文件，请确认修改后的外部控制地址和 Clash 配置文件内的地址一致，否则会导致 Dashboard 无法连接。',
             host: 'Host',
             port: '端口',
-            secret: '密钥'
-        }
+            secret: '密钥',
+        },
     },
     Logs: {
-        title: '日志'
+        title: '日志',
     },
     Rules: {
         title: '规则',
         providerTitle: '规则集',
         providerUpdateTime: '最后更新于',
-        ruleCount: '规则条数'
+        ruleCount: '规则条数',
     },
     Connections: {
         title: '连接',
@@ -54,14 +54,14 @@ const CN = {
         total: {
             text: '总量',
             upload: '上传',
-            download: '下载'
+            download: '下载',
         },
         closeAll: {
             title: '警告',
-            content: '将会关闭所有连接'
+            content: '将会关闭所有连接',
         },
         filter: {
-            all: '全部'
+            all: '全部',
         },
         columns: {
             host: '域名',
@@ -73,8 +73,8 @@ const CN = {
             speed: '速率',
             upload: '上传',
             download: '下载',
-            sourceIP: '来源 IP'
-        }
+            sourceIP: '来源 IP',
+        },
     },
     Proxies: {
         title: '代理',
@@ -91,7 +91,7 @@ const CN = {
             'obfs-host': 'Obfs-host',
             uuid: 'UUID',
             alterId: 'AlterId',
-            tls: 'TLS'
+            tls: 'TLS',
         },
         groupTitle: '策略组',
         providerTitle: '代理集',
@@ -99,12 +99,12 @@ const CN = {
         expandText: '展开',
         collapseText: '收起',
         speedTestText: '测速',
-        breakConnectionsText: '切换时打断包含策略组的连接'
+        breakConnectionsText: '切换时打断包含策略组的连接',
     },
     Modal: {
         ok: '确 定',
-        cancel: '取 消'
-    }
+        cancel: '取 消',
+    },
 }
 
 export default CN

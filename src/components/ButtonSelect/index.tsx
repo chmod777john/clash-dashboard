@@ -10,7 +10,7 @@ export interface ButtonSelectOptions<T = string> {
 
 export interface ButtonSelectProps<T = string> extends BaseComponentProps {
     // options
-    options: ButtonSelectOptions<T>[]
+    options: Array<ButtonSelectOptions<T>>
 
     // active value
     value: T

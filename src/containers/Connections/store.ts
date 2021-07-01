@@ -9,7 +9,7 @@ class Store {
 
     appendToSet (connections: API.Connections[]) {
         const mapping = connections.reduce(
-            (map, c) => map.set(c.id, c), new Map<string, API.Connections>()
+            (map, c) => map.set(c.id, c), new Map<string, API.Connections>(),
         )
 
         for (const id of this.connections.keys()) {
@@ -18,7 +18,7 @@ class Store {
                     this.connections.delete(id)
                 } else {
                     const connection = this.connections.get(id)
-                    if (connection) {
+                    if (connection != null) {
                         connection.completed = true
                         connection.uploadSpeed = 0
                         connection.downloadSpeed = 0

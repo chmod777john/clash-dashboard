@@ -34,7 +34,7 @@ export function useI18n () {
             }
             return { t }
         },
-        [lang]
+        [lang],
     )
 
     return { lang, locales, setLang, translation }
@@ -42,7 +42,7 @@ export function useI18n () {
 
 export const version = atom({
     version: '',
-    premium: false
+    premium: false,
 })
 
 export function useVersion () {
@@ -57,7 +57,7 @@ export function useVersion () {
         set(
             result.isErr()
                 ? { version: '', premium: false }
-                : { version: result.value.data.version, premium: !!result.value.data.premium }
+                : { version: result.value.data.version, premium: !!result.value.data.premium },
         )
     })
 
@@ -83,7 +83,7 @@ export function useRuleProviders () {
 }
 
 export const configAtom = atomWithStorage('profile', {
-    breakConnections: false
+    breakConnections: false,
 })
 
 export function useConfig () {
@@ -128,7 +128,7 @@ export function useGeneral () {
             redirPort: data['redir-port'],
             mode: data.mode.toLowerCase() as Models.Data['general']['mode'],
             logLevel: data['log-level'],
-            allowLan: data['allow-lan']
+            allowLan: data['allow-lan'],
         } as Models.Data['general']
     })
 
@@ -143,8 +143,8 @@ export const proxies = atomWithImmer({
         type: 'Selector',
         now: '',
         history: [],
-        all: []
-    } as API.Group
+        all: [],
+    } as API.Group,
 })
 
 export function useProxy () {
@@ -187,7 +187,7 @@ export function useProxy () {
         global: allProxy.global,
         update: mutate,
         markProxySelected,
-        set
+        set,
     }
 }
 
@@ -196,7 +196,7 @@ export const proxyMapping = atom((get) => {
     const providers = get(proxyProvider)
     const proxyMap = new Map<string, API.Proxy>()
     for (const p of ps.proxies) {
-        proxyMap.set(p.name, p as API.Proxy)
+        proxyMap.set(p.name, p)
     }
 
     for (const provider of providers) {
@@ -214,7 +214,7 @@ export function useClashXData () {
             return {
                 isClashX: false,
                 startAtLogin: false,
-                systemProxy: false
+                systemProxy: false,
             }
         }
 
@@ -244,7 +244,7 @@ export function useRule () {
 
 const logsAtom = atom({
     key: '',
-    instance: null as StreamReader<Log> | null
+    instance: null as StreamReader<Log> | null,
 })
 
 export function useLogsStreamReader () {
@@ -269,7 +269,7 @@ export function useLogsStreamReader () {
     const instance = new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: apiInfo.secret, useWebsocket })
     setItem({ key, instance })
 
-    if (oldInstance) {
+    if (oldInstance != null) {
         oldInstance.destory()
     }
 
@@ -285,6 +285,6 @@ export function useConnectionStreamReader () {
     const url = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/connections`
     return useMemo(
         () => version.version ? new StreamReader<Snapshot>({ url, bufferLength: 200, token: apiInfo.secret, useWebsocket }) : null,
-        [apiInfo.secret, url, useWebsocket, version.version]
+        [apiInfo.secret, url, useWebsocket, version.version],
     )
 }

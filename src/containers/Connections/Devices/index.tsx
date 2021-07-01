@@ -34,7 +34,7 @@ export function Devices (props: DevicesProps) {
                             onClick={() => handleSelected(device.label)}>
                             { device.label } ({ device.number })
                         </div>
-                    )
+                    ),
                 )
             }
         </div>

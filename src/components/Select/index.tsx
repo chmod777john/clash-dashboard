@@ -23,18 +23,18 @@ interface SelectProps extends BaseComponentProps {
 export function Select (props: SelectProps) {
     const { value, onSelect, children, className: cn, style } = props
 
-    const portalRef = useRef<HTMLDivElement>()
+    const portalRef = useRef<HTMLDivElement>(document.createElement('div'))
     const attachmentRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
 
     const [showDropDownList, setShowDropDownList] = useState(false)
     const [hasCreateDropList, setHasCreateDropList] = useState(false)
     const dropdownListStyles = useMemo(() => {
-        if (targetRef.current) {
+        if (targetRef.current != null) {
             const targetRectInfo = targetRef.current.getBoundingClientRect()
             return {
                 top: Math.floor(targetRectInfo.top) - 10,
-                left: Math.floor(targetRectInfo.left) - 10
+                left: Math.floor(targetRectInfo.left) - 10,
             }
         }
         return {}
@@ -49,23 +49,17 @@ export function Select (props: SelectProps) {
     }
 
     useLayoutEffect(() => {
+        const current = portalRef.current
+        document.body.appendChild(current)
         document.addEventListener('click', handleGlobalClick, true)
         return () => {
             document.addEventListener('click', handleGlobalClick, true)
-            if (portalRef.current) {
-                document.body.removeChild(portalRef.current)
-            }
+            document.body.removeChild(current)
         }
     }, [])
 
     function handleShowDropList () {
         if (!hasCreateDropList) {
-            if (!portalRef.current) {
-                // create container element
-                const container = document.createElement('div')
-                document.body.appendChild(container)
-                portalRef.current = container
-            }
             setHasCreateDropList(true)
         }
         setShowDropDownList(true)
@@ -100,9 +94,9 @@ export function Select (props: SelectProps) {
                 onClick: (e: React.MouseEvent<HTMLLIElement>) => {
                     onSelect?.(child.props.value, e)
                     setShowDropDownList(false)
-                    rawOnClickEvent && rawOnClickEvent(e)
+                    rawOnClickEvent?.(e)
                 },
-                className
+                className,
             }))
         })
     }, [children, value, onSelect])
@@ -131,7 +125,7 @@ export function Select (props: SelectProps) {
                 <Icon type="triangle-down" />
             </div>
             {
-                hasCreateDropList && createPortal(dropDownList, portalRef?.current!)
+                hasCreateDropList && createPortal(dropDownList, portalRef.current)
             }
         </>
     )

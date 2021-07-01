@@ -1,8 +1,8 @@
-import { atom, useAtom } from "jotai";
-import { isClashX, jsBridge } from "@lib/jsBridge";
-import { atomWithStorage, useAtomValue } from "jotai/utils";
-import { useLocation } from "react-use";
-import { Client } from "@lib/request";
+import { atom, useAtom } from 'jotai'
+import { isClashX, jsBridge } from '@lib/jsBridge'
+import { atomWithStorage, useAtomValue } from 'jotai/utils'
+import { useLocation } from 'react-use'
+import { Client } from '@lib/request'
 
 const clashxConfigAtom = atom(async () => {
     if (!isClashX()) {
@@ -14,29 +14,29 @@ const clashxConfigAtom = atom(async () => {
         hostname: info.host,
         port: info.port,
         secret: info.secret,
-        protocol: 'http:'
+        protocol: 'http:',
     }
 })
 
-export const localStorageAtom = atomWithStorage<{
-    hostname: string;
-    port: string;
-    secret: string;
-}[]>('externalControllers', [])
+export const localStorageAtom = atomWithStorage<Array<{
+    hostname: string
+    port: string
+    secret: string
+}>>('externalControllers', [])
 
-export function useAPIInfo() {
+export function useAPIInfo () {
     const clashx = useAtomValue(clashxConfigAtom)
     const location = useLocation()
     const localStorage = useAtomValue(localStorageAtom)
 
-    if (clashx) {
+    if (clashx != null) {
         return clashx
     }
 
-    let url: URL | undefined;
+    let url: URL | undefined
     {
         const meta = document.querySelector<HTMLMetaElement>('meta[name="external-controller"]')
-        if (meta?.content?.match(/^https?:/)) {
+        if ((meta?.content?.match(/^https?:/)) != null) {
             // [protocol]://[secret]@[hostname]:[port]
             url = new URL(meta.content)
         }
@@ -54,15 +54,15 @@ export function useAPIInfo() {
 
 const clientAtom = atom({
     key: '',
-    instance: null as Client | null
+    instance: null as Client | null,
 })
 
-export function useClient() {
+export function useClient () {
     const {
         hostname,
         port,
         secret,
-        protocol
+        protocol,
     } = useAPIInfo()
 
     const [item, setItem] = useAtom(clientAtom)

@@ -6,7 +6,7 @@ const EN = {
         Rules: 'Rules',
         Settings: 'Setting',
         Connections: 'Connections',
-        Version: 'Version'
+        Version: 'Version',
     },
     Settings: {
         title: 'Settings',
@@ -19,7 +19,7 @@ const EN = {
             socks5ProxyPort: 'Socks5 proxy port',
             httpProxyPort: 'HTTP proxy port',
             mixedProxyPort: 'Mixed proxy port',
-            externalController: 'External controller'
+            externalController: 'External controller',
         },
         values: {
             cn: '中文',
@@ -27,7 +27,7 @@ const EN = {
             global: 'Global',
             rules: 'Rules',
             direct: 'Direct',
-            script: 'Script'
+            script: 'Script',
         },
         versionString: 'Current ClashX is the latest version：{{version}}',
         checkUpdate: 'Check Update',
@@ -36,17 +36,17 @@ const EN = {
             note: 'Please note that modifying this configuration will only configure Dashboard. Will not modify your Clash configuration file. Please make sure that the external controller address matches the address in the Clash configuration file, otherwise, Dashboard will not be able to connect to Clash.',
             host: 'Host',
             port: 'Port',
-            secret: 'Secret'
-        }
+            secret: 'Secret',
+        },
     },
     Logs: {
-        title: 'Logs'
+        title: 'Logs',
     },
     Rules: {
         title: 'Rules',
         providerTitle: 'Providers',
         providerUpdateTime: 'Last updated at',
-        ruleCount: 'Rule count'
+        ruleCount: 'Rule count',
     },
     Connections: {
         title: 'Connections',
@@ -54,14 +54,14 @@ const EN = {
         total: {
             text: 'total',
             upload: 'upload',
-            download: 'download'
+            download: 'download',
         },
         closeAll: {
             title: 'Warning',
-            content: 'This would close all connections'
+            content: 'This would close all connections',
         },
         filter: {
-            all: 'All'
+            all: 'All',
         },
         columns: {
             host: 'Host',
@@ -73,8 +73,8 @@ const EN = {
             speed: 'Speed',
             upload: 'Upload',
             download: 'Download',
-            sourceIP: 'Source IP'
-        }
+            sourceIP: 'Source IP',
+        },
     },
     Proxies: {
         title: 'Proxies',
@@ -91,7 +91,7 @@ const EN = {
             'obfs-host': 'Obfs-host',
             uuid: 'UUID',
             alterId: 'AlterId',
-            tls: 'TLS'
+            tls: 'TLS',
         },
         groupTitle: 'Policy Group',
         providerTitle: 'Providers',
@@ -99,12 +99,12 @@ const EN = {
         expandText: 'Expand',
         collapseText: 'Collapse',
         speedTestText: 'Speed Test',
-        breakConnectionsText: 'Close connections which include the group'
+        breakConnectionsText: 'Close connections which include the group',
     },
     Modal: {
         ok: 'Ok',
-        cancel: 'Cancel'
-    }
+        cancel: 'Cancel',
+    },
 }
 
 export default EN

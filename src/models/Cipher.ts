@@ -20,7 +20,7 @@ export const SsCipher = [
     'AES-256-CFB',
     'CHACHA20',
     'CHACHA20-IETF',
-    'XCHACHA20'
+    'XCHACHA20',
 ]
 
 /**
@@ -31,7 +31,7 @@ export const VmessCipher = [
     'auto',
     'none',
     'aes-128-gcm',
-    'chacha20-poly1305'
+    'chacha20-poly1305',
 ]
 
 /**
@@ -41,17 +41,17 @@ export function pickCipherWithAlias (c: string) {
     const cipher = c.toUpperCase()
 
     switch (cipher) {
-    case 'CHACHA20-IETF-POLY1305':
-        return 'AEAD_CHACHA20_POLY1305'
-    case 'XCHACHA20-IETF-POLY1305':
-        return 'AEAD_XCHACHA20_POLY1305'
-    case 'AES-128-GCM':
-        return 'AEAD_AES_128_GCM'
-    case 'AES-196-GCM':
-        return 'AEAD_AES_196_GCM'
-    case 'AES-256-GCM':
-        return 'AEAD_AES_256_GCM'
+        case 'CHACHA20-IETF-POLY1305':
+            return 'AEAD_CHACHA20_POLY1305'
+        case 'XCHACHA20-IETF-POLY1305':
+            return 'AEAD_XCHACHA20_POLY1305'
+        case 'AES-128-GCM':
+            return 'AEAD_AES_128_GCM'
+        case 'AES-196-GCM':
+            return 'AEAD_AES_196_GCM'
+        case 'AES-256-GCM':
+            return 'AEAD_AES_256_GCM'
     }
 
-    return SsCipher.find(c => c === cipher) || ''
+    return SsCipher.find(c => c === cipher) ?? ''
 }

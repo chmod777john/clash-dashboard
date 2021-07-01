@@ -25,7 +25,7 @@ export default function App () {
         { path: '/logs', name: 'Logs', component: Logs },
         { path: '/rules', name: 'Rules', component: Rules, noMobile: true },
         { path: '/connections', name: 'Connections', component: Connections, noMobile: true },
-        { path: '/settings', name: 'Settings', component: Settings }
+        { path: '/settings', name: 'Settings', component: Settings },
     ]
 
     return (
@@ -36,7 +36,7 @@ export default function App () {
                     <Route exact path="/" component={() => <Redirect to="/proxies"/>} />
                     {
                         routes.map(
-                            route => <Route exact={false} path={route.path} key={route.path} component={route.component} />
+                            route => <Route exact={false} path={route.path} key={route.path} component={route.component} />,
                         )
                     }
                 </Switch>

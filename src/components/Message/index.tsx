@@ -10,7 +10,7 @@ const TYPE_ICON_MAP = {
     info: 'info',
     success: 'check',
     warning: 'info-o',
-    error: 'close'
+    error: 'close',
 }
 
 type NoticeType = 'success' | 'info' | 'warning' | 'error'
@@ -38,7 +38,7 @@ export function Message (props: MessageProps) {
         icon = <Icon type="info" size={16} />,
         content = '',
         type = 'info',
-        duration = 1500
+        duration = 1500,
     } = props
 
     const { visible, show, hide } = useVisible()
@@ -85,7 +85,7 @@ export function showMessage (args: ArgsProps) {
         content,
         removeComponent,
         duration,
-        onClose
+        onClose,
     }
 
     render(<Message {...props} />, container)
@@ -94,23 +94,23 @@ export function showMessage (args: ArgsProps) {
 export const info = (
     content: string,
     duration?: number,
-    onClose?: typeof noop
+    onClose?: typeof noop,
 ) => showMessage({ type: 'info', content, duration, onClose })
 
 export const success = (
     content: string,
     duration?: number,
-    onClose?: typeof noop
+    onClose?: typeof noop,
 ) => showMessage({ type: 'success', content, duration, onClose })
 
 export const warning = (
     content: string,
     duration?: number,
-    onClose?: typeof noop
+    onClose?: typeof noop,
 ) => showMessage({ type: 'warning', content, duration, onClose })
 
 export const error = (
     content: string,
     duration?: number,
-    onClose?: typeof noop
+    onClose?: typeof noop,
 ) => showMessage({ type: 'error', content, duration, onClose })

@@ -7,12 +7,12 @@ import logo from '@assets/logo.png'
 import './style.scss'
 
 interface SidebarProps {
-    routes: {
+    routes: Array<{
         path: string
         name: string
         noMobile?: boolean
         exact?: boolean
-    }[]
+    }>
 }
 
 export default function Sidebar (props: SidebarProps) {
@@ -27,7 +27,7 @@ export default function Sidebar (props: SidebarProps) {
             <li className={classnames('item', { 'no-mobile': noMobile })} key={name}>
                 <NavLink to={path} activeClassName="active" exact={!!exact}>{ t(name) }</NavLink>
             </li>
-        )
+        ),
     )
 
     return (

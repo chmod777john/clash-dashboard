@@ -15,7 +15,7 @@ export default function ExternalController () {
     const [value, set] = useObject({
         hostname: '',
         port: '',
-        secret: ''
+        secret: '',
     })
 
     useEffect(() => {

@@ -28,9 +28,7 @@ export function Group (props: GroupProps) {
                 }
             }
 
-            for (const id of list) {
-                client.closeConnection(id)
-            }
+            await Promise.all(list.map(id => client.closeConnection(id)))
         }
     }
 
