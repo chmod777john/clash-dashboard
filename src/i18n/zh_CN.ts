@@ -75,6 +75,25 @@ const CN = {
             download: '下载',
             sourceIP: '来源 IP',
         },
+        info: {
+            title: '连接信息',
+            id: 'ID',
+            host: '域名',
+            hostEmpty: '空',
+            dstIP: 'IP',
+            dstIPEmpty: '空',
+            srcIP: '来源',
+            upload: '上传',
+            download: '下载',
+            network: '网络',
+            inbound: '入口',
+            rule: '规则',
+            chains: '代理',
+            status: '状态',
+            opening: '连接中',
+            closed: '已关闭',
+            closeConnection: '关闭连接',
+        },
     },
     Proxies: {
         title: '代理',
@@ -105,6 +124,6 @@ const CN = {
         ok: '确 定',
         cancel: '取 消',
     },
-}
+} as const
 
 export default CN

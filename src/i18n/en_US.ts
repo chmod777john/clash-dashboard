@@ -75,6 +75,25 @@ const EN = {
             download: 'Download',
             sourceIP: 'Source IP',
         },
+        info: {
+            title: 'Connection',
+            id: 'ID',
+            host: 'Host',
+            hostEmpty: 'Empty',
+            dstIP: 'IP',
+            dstIPEmpty: 'Empty',
+            srcIP: 'Source',
+            upload: 'Upload',
+            download: 'Download',
+            network: 'Network',
+            inbound: 'Inbound',
+            rule: 'Rule',
+            chains: 'Chains',
+            status: 'Status',
+            opening: 'Open',
+            closed: 'Closed',
+            closeConnection: 'Close',
+        },
     },
     Proxies: {
         title: 'Proxies',
@@ -105,6 +124,6 @@ const EN = {
         ok: 'Ok',
         cancel: 'Cancel',
     },
-}
+} as const
 
 export default EN

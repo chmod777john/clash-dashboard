@@ -63,7 +63,7 @@
     .connections-header {
         position: sticky;
         top: 0;
-        z-index: 9999;
+        z-index: 999;
         white-space: nowrap;
 
         &:hover .connections-resizer {
@@ -90,7 +90,7 @@
         &.fixed {
             position: sticky;
             left: 0;
-            z-index: 999;
+            z-index: 998;
             background-color: $color-white;
             box-shadow: inset -9px 0 8px -14px $color-black;
         }

@@ -7,6 +7,10 @@
     font-size: 14px;
     cursor: pointer;
     transition: all 150ms ease;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .button-primary {
@@ -82,5 +86,16 @@
 
     &:active {
         box-shadow: 0 0 2px rgba($color: darken($color-orange, 5%), $alpha: 0.5);
+    }
+}
+
+.button.button-disabled {
+    color: $color-gray-dark;
+    background: linear-gradient(135deg, $color-gray-light, darken($color-gray-light, 5%));
+    box-shadow: 0 2px 8px rgba($color: darken($color-gray-light, 5%), $alpha: 0.5);
+    cursor: not-allowed;
+
+    &:active {
+        box-shadow: 0 0 2px rgba($color: darken($color-gray-light, 5%), $alpha: 0.5);
     }
 }

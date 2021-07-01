@@ -8,3 +8,14 @@ export function partition<T> (arr: T[], fn: (arg: T) => boolean): [T[], T[]] {
     }
     return [left, right]
 }
+
+export function formatTraffic (num: number) {
+    const s = ['B', 'KB', 'MB', 'GB', 'TB']
+    let idx = 0
+    while (~~(num / 1024) && idx < s.length) {
+        num /= 1024
+        idx++
+    }
+
+    return `${idx === 0 ? num : num.toFixed(2)} ${s[idx]}`
+}

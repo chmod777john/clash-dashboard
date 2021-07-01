@@ -87,7 +87,7 @@ export default function Settings () {
             { label: t('values.global'), value: 'Global' },
             { label: t('values.rules'), value: 'Rule' },
             { label: t('values.direct'), value: 'Direct' },
-        ]
+        ] as Array<{ label: string, value: string }>
         if (premium) {
             options.push({ label: t('values.script'), value: 'Script' })
         }

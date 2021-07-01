@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { get } from 'lodash-es'
 import useSWR from 'swr'
 import produce from 'immer'
+import { Get } from 'type-fest'
 
 import { Language, locales, Lang, getDefaultLanguage } from '@i18n'
 import { useWarpImmerSetter, WritableDraft } from '@lib/jotai'
@@ -14,10 +15,10 @@ import * as API from '@lib/request'
 import * as Models from '@models'
 import { partition } from '@lib/helper'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { useAPIInfo, useClient } from './request'
 import { StreamReader } from '@lib/streamer'
 import { Log } from '@models/Log'
 import { Snapshot } from '@lib/request'
+import { useAPIInfo, useClient } from './request'
 
 export const identityAtom = atom(true)
 
@@ -28,9 +29,9 @@ export function useI18n () {
     const lang = useMemo(() => defaultLang ?? getDefaultLanguage(), [defaultLang])
 
     const translation = useCallback(
-        function (namespace: keyof typeof Language['en_US']) {
-            function t (path: string) {
-                return get(Language[lang][namespace], path) as string
+        function <Namespace extends keyof typeof Language['en_US']>(namespace: Namespace) {
+            function t<Path extends string> (path: Path): Get<typeof Language['en_US'][Namespace], Path> {
+                return get(Language[lang][namespace], path)
             }
             return { t }
         },

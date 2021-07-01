@@ -3,6 +3,25 @@ import { useState, useMemo, useRef, useCallback } from 'react'
 
 export type Connection = API.Connections & { completed?: boolean, uploadSpeed: number, downloadSpeed: number }
 
+export interface FormatConnection {
+    id: string
+    host: string
+    chains: string
+    rule: string
+    time: number
+    upload: number
+    download: number
+    type: string
+    network: string
+    sourceIP: string
+    speed: {
+        upload: number
+        download: number
+    }
+    completed: boolean
+    original: Connection
+}
+
 class Store {
     protected connections = new Map<string, Connection>()
     protected saveDisconnection = false
