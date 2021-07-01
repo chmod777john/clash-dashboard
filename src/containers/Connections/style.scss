@@ -38,7 +38,7 @@
 
         position: absolute;
         opacity: 0;
-        right: math.div($width, 2);
+        right: math.div($width, -2);
         top: $padding;
         bottom: $padding;
         width: $width;
@@ -53,7 +53,7 @@
             display: block;
             position: absolute;
             left: math.div($width, 2);
-            transform: translateX(-2px);
+            transform: translateX(-1px);
             width: 2px;
             height: 100%;
             background-color: rgba($color-gray-darken, 60%);
