@@ -61,7 +61,7 @@ export function useVersion () {
         )
     })
 
-    return { version: data.version, premium: data.premium }
+    return data
 }
 
 export function useRuleProviders () {
@@ -253,7 +253,7 @@ export function useLogsStreamReader () {
     const version = useVersion()
     const [item, setItem] = useAtom(logsAtom)
 
-    if (!version.version) {
+    if (!version.version || !general.logLevel) {
         return null
     }
 
