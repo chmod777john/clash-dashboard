@@ -69,7 +69,7 @@ export function useRuleProviders () {
     const [{ premium }] = useAtom(version)
     const client = useClient()
 
-    const { data, mutate } = useSWR(['/providers/rule', client], async () => {
+    const { data, mutate } = useSWR(['/providers/rule', client, premium], async () => {
         if (!premium) {
             return []
         }

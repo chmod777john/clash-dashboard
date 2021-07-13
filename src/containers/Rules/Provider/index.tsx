@@ -29,7 +29,7 @@ export function Provider (props: ProvidersProps) {
     const updateClassnames = classnames('rule-provider-icon', { 'rule-provider-loading': visible })
 
     return (
-        <Card className="rule-provider">
+        <div className="rule-provider">
             <div className="rule-provider-header">
                 <div className="rule-provider-header-part">
                     <span className="rule-provider-name">{ provider.name }</span>
@@ -45,6 +45,6 @@ export function Provider (props: ProvidersProps) {
                     <Icon className={updateClassnames} type="update" size={18} onClick={handleUpdate} />
                 </div>
             </div>
-        </Card>
+        </div>
     )
 }

@@ -12,22 +12,22 @@ export default defineConfig({
         {
             name: 'remove-css-in-js',
             enforce: 'post',
-            transform(_, id) {
+            transform (_, id) {
                 if (id.endsWith('.scss') || id.endsWith('.css')) {
                     return ''
                 }
             },
-        }
+        },
     ],
     base: './',
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: '@use "sass:math"; @import "src/styles/variables.scss";'
-            }
-        }
+                additionalData: '@use "sass:math"; @import "src/styles/variables.scss";',
+            },
+        },
     },
     build: {
-        minify: 'esbuild'
-    }
+        minify: 'esbuild',
+    },
 })

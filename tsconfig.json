@@ -35,6 +35,8 @@
         }
     },
     "include": [
-        "src"
+        "src",
+        "windi.config.ts",
+        "vite.config.ts"
     ]
 }
