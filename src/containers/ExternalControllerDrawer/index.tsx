@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { useObject } from '@lib/hook'
+import React, { useEffect } from 'react'
+
 import { Modal, Input, Alert } from '@components'
+import { useObject } from '@lib/hook'
 import { useI18n, useAPIInfo, identityAtom } from '@stores'
 import { localStorageAtom } from '@stores/request'
 import './style.scss'

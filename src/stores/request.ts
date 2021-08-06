@@ -1,7 +1,8 @@
 import { atom, useAtom } from 'jotai'
-import { isClashX, jsBridge } from '@lib/jsBridge'
 import { atomWithStorage, useAtomValue } from 'jotai/utils'
 import { useLocation } from 'react-use'
+
+import { isClashX, jsBridge } from '@lib/jsBridge'
 import { Client } from '@lib/request'
 
 const clashxConfigAtom = atom(async () => {

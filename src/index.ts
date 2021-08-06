@@ -1,5 +1,6 @@
-import renderApp from './render'
 import { isClashX, setupJsBridge } from '@lib/jsBridge'
+
+import renderApp from './render'
 // import * as OfflinePluginRuntime from 'offline-plugin/runtime'
 
 /**

@@ -1,9 +1,11 @@
 import React from 'react'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import { FixedSizeList as List } from 'react-window'
+import useSWR from 'swr'
+
 import { Header, Card } from '@components'
 import { useI18n, useRule, useRuleProviders } from '@stores'
-import { FixedSizeList as List } from 'react-window'
-import AutoSizer from 'react-virtualized-auto-sizer'
-import useSWR from 'swr'
+
 import { Provider } from './Provider'
 import './style.scss'
 

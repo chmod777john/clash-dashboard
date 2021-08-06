@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
+
+import { Card, Header, Icon, Checkbox } from '@components'
 import EE from '@lib/event'
 import { useRound } from '@lib/hook'
-import { Card, Header, Icon, Checkbox } from '@components'
-import { useI18n, useConfig, useProxy, useProxyProviders, useGeneral } from '@stores'
 import * as API from '@lib/request'
+import { useI18n, useConfig, useProxy, useProxyProviders, useGeneral } from '@stores'
 
 import { Proxy, Group, Provider } from './components'
 import './style.scss'

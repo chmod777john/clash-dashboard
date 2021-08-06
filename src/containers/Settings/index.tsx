@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
 import classnames from 'classnames'
 import { useUpdateAtom } from 'jotai/utils'
 import { capitalize } from 'lodash-es'
+import React, { useEffect, useMemo } from 'react'
+
 import { Header, Card, Switch, ButtonSelect, ButtonSelectOptions, Input } from '@components'
-import { useI18n, useClashXData, useAPIInfo, useGeneral, useVersion, useClient, identityAtom } from '@stores'
+import { Lang } from '@i18n'
 import { useObject } from '@lib/hook'
 import { jsBridge } from '@lib/jsBridge'
-import { Lang } from '@i18n'
+import { useI18n, useClashXData, useAPIInfo, useGeneral, useVersion, useClient, identityAtom } from '@stores'
 import './style.scss'
 
 const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]

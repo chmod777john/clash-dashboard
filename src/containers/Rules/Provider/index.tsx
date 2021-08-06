@@ -1,10 +1,11 @@
-import * as React from 'react'
 import classnames from 'classnames'
-import { Card, Tag, Icon } from '@components'
-import { useClient, useI18n, useRuleProviders } from '@stores'
+import * as React from 'react'
+
+import { Tag, Icon } from '@components'
 import { fromNow } from '@lib/date'
-import { RuleProvider } from '@lib/request'
 import { useVisible } from '@lib/hook'
+import { RuleProvider } from '@lib/request'
+import { useClient, useI18n, useRuleProviders } from '@stores'
 import './style.scss'
 
 interface ProvidersProps {

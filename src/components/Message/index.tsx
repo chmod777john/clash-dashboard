@@ -1,6 +1,7 @@
-import React, { useLayoutEffect } from 'react'
 import classnames from 'classnames'
+import React, { useLayoutEffect } from 'react'
 import { unmountComponentAtNode, render } from 'react-dom'
+
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
 import { useVisible } from '@lib/hook'

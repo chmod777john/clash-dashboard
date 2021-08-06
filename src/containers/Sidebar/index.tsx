@@ -1,9 +1,9 @@
+import classnames from 'classnames'
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
-import classnames from 'classnames'
-import { useI18n, useVersion, useClashXData } from '@stores'
 
 import logo from '@assets/logo.png'
+import { useI18n, useVersion, useClashXData } from '@stores'
 import './style.scss'
 
 interface SidebarProps {

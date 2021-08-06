@@ -1,9 +1,10 @@
-import React, { useRef, useLayoutEffect, useState, useMemo, ReactElement } from 'react'
 import classnames from 'classnames'
-import { Icon } from '@components'
-import { BaseComponentProps } from '@models'
-import { noop } from '@lib/helper'
+import React, { useRef, useLayoutEffect, useState, useMemo, ReactElement } from 'react'
 import { createPortal } from 'react-dom'
+
+import { Icon } from '@components'
+import { noop } from '@lib/helper'
+import { BaseComponentProps } from '@models'
 import './style.scss'
 
 type OptionValue = string | number

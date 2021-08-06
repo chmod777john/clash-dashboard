@@ -4,8 +4,19 @@ extends:
 parser: '@typescript-eslint/parser'
 parserOptions:
   project: './tsconfig.json'
+settings:
+  import/parsers:
+    '@typescript-eslint/parser': [.ts, .tsx]
+  import/resolver:
+    typescript:
+      alwaysTryTypes: true
 rules:
   comma-dangle: [error, always-multiline]
+  import/order: [error, {
+    groups: [builtin, external, internal, [parent, sibling, index, object]],
+    newlines-between: always,
+    alphabetize: { order: asc }
+  }]
   '@typescript-eslint/indent': [error, 4]
   '@typescript-eslint/explicit-function-return-type': off
   '@typescript-eslint/restrict-template-expressions': off

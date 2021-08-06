@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react'
 import classnames from 'classnames'
-import { useI18n } from '@stores'
+import React, { useMemo } from 'react'
+
 import { formatTraffic } from '@lib/helper'
 import { BaseComponentProps } from '@models'
+import { useI18n } from '@stores'
+
 import { Connection } from '../store'
 
 interface ConnectionsInfoProps extends BaseComponentProps {

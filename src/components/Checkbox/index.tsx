@@ -1,8 +1,9 @@
+import classnames from 'classnames'
 import * as React from 'react'
-import { BaseComponentProps } from '@models/BaseProps'
+
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
-import classnames from 'classnames'
+import { BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface CheckboxProps extends BaseComponentProps {

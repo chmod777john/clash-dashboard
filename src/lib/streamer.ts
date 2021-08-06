@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3'
-import { SetRequired } from 'type-fest'
 import { ResultAsync } from 'neverthrow'
+import { SetRequired } from 'type-fest'
 
 export interface Config {
     url: string

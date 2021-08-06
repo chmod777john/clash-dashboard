@@ -1,8 +1,9 @@
-import React from 'react'
 import classnames from 'classnames'
-import { BaseComponentProps } from '@models/BaseProps'
-import { Spinner } from './Spinner'
+import React from 'react'
 
+import { BaseComponentProps } from '@models/BaseProps'
+
+import { Spinner } from './Spinner'
 import './style.scss'
 
 interface LoadingProps extends BaseComponentProps {

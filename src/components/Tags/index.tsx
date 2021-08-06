@@ -1,8 +1,9 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
-import { useI18n } from '@stores'
-import { BaseComponentProps } from '@models'
-import { noop } from '@lib/helper'
 import classnames from 'classnames'
+import React, { useState, useRef, useLayoutEffect } from 'react'
+
+import { noop } from '@lib/helper'
+import { BaseComponentProps } from '@models'
+import { useI18n } from '@stores'
 import './style.scss'
 
 interface TagsProps extends BaseComponentProps {

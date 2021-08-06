@@ -1,6 +1,7 @@
-import * as React from 'react'
-import { BaseComponentProps } from '@models/BaseProps'
 import classnames from 'classnames'
+import * as React from 'react'
+
+import { BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface HeaderProps extends BaseComponentProps {

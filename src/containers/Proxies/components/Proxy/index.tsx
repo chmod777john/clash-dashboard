@@ -1,12 +1,13 @@
-import React, { useMemo, useLayoutEffect, useCallback } from 'react'
-import { ResultAsync } from 'neverthrow'
 import type{ AxiosError } from 'axios'
 import classnames from 'classnames'
-import { BaseComponentProps } from '@models'
-import { useClient, useProxy } from '@stores'
-import { Proxy as IProxy } from '@lib/request'
+import { ResultAsync } from 'neverthrow'
+import React, { useMemo, useLayoutEffect, useCallback } from 'react'
+
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
+import { Proxy as IProxy } from '@lib/request'
+import { BaseComponentProps } from '@models'
+import { useClient, useProxy } from '@stores'
 
 import './style.scss'
 

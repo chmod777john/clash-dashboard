@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react'
 import { useAtom } from 'jotai'
-import { useProxy, useConfig, proxyMapping, useClient } from '@stores'
-import { Group as IGroup } from '@lib/request'
+import React, { useMemo } from 'react'
+
 import { Tags, Tag } from '@components'
+import { Group as IGroup } from '@lib/request'
+import { useProxy, useConfig, proxyMapping, useClient } from '@stores'
+
 import './style.scss'
 
 interface GroupProps {

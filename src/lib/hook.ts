@@ -1,7 +1,7 @@
 /* eslint-disable no-redeclare */
 import { Draft } from 'immer'
-import { useImmer } from 'use-immer'
 import { useRef, useEffect, useState, useMemo } from 'react'
+import { useImmer } from 'use-immer'
 
 import { noop } from '@lib/helper'
 

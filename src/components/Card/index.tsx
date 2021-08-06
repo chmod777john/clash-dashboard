@@ -1,6 +1,7 @@
-import React, { forwardRef } from 'react'
-import { BaseComponentProps } from '@models/BaseProps'
 import classnames from 'classnames'
+import React, { forwardRef } from 'react'
+
+import { BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface CardProps extends BaseComponentProps {
