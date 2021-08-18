@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { groupBy } from 'lodash-es'
 import React, { useMemo, useLayoutEffect, useCallback, useRef, useState, useEffect } from 'react'
-import { Cell, Column, ColumnInstance, TableInstance, TableOptions, useBlockLayout, useFilters, UseFiltersInstanceProps, UseFiltersOptions, useResizeColumns, UseResizeColumnsColumnProps, UseResizeColumnsOptions, useSortBy, UseSortByColumnOptions, UseSortByColumnProps, UseSortByOptions, useTable } from 'react-table'
+import { Cell, Column, ColumnInstance, TableInstance, TableOptions, useBlockLayout, useFilters, UseFiltersColumnOptions, UseFiltersInstanceProps, UseFiltersOptions, useResizeColumns, UseResizeColumnsColumnProps, UseResizeColumnsOptions, useSortBy, UseSortByColumnOptions, UseSortByColumnProps, UseSortByOptions, useTable } from 'react-table'
 import { useLatest, useScroll } from 'react-use'
 
 import { Header, Checkbox, Modal, Icon, Drawer, Card, Button } from '@components'
@@ -40,6 +40,7 @@ interface TableColumn<D extends object = {}> extends
 type TableColumnOption<D extends object = {}> =
     Column<D> &
     UseResizeColumnsOptions<D> &
+    UseFiltersColumnOptions<D> &
     UseSortByColumnOptions<D>
 
 interface ITableOptions<D extends object = {}> extends
@@ -104,7 +105,9 @@ export default function Connections () {
     ), [connections])
     const devices = useMemo(() => {
         const gb = groupBy(connections, 'metadata.sourceIP')
-        return Object.keys(gb).map(key => ({ label: key, number: gb[key].length })).sort((a, b) => a.label.localeCompare(b.label))
+        return Object.keys(gb)
+            .map(key => ({ label: key, number: gb[key].length }))
+            .sort((a, b) => a.label.localeCompare(b.label))
     }, [connections])
 
     // table
@@ -135,7 +138,7 @@ export default function Connections () {
         },
         { Header: t(`columns.${Columns.Upload}`), accessor: Columns.Upload, minWidth: 100, width: 100, sortDescFirst: true },
         { Header: t(`columns.${Columns.Download}`), accessor: Columns.Download, minWidth: 100, width: 100, sortDescFirst: true },
-        { Header: t(`columns.${Columns.SourceIP}`), accessor: Columns.SourceIP, minWidth: 140, width: 140 },
+        { Header: t(`columns.${Columns.SourceIP}`), accessor: Columns.SourceIP, minWidth: 140, width: 140, filter: 'equals' },
         { Header: t(`columns.${Columns.Time}`), accessor: Columns.Time, minWidth: 120, width: 120, sortType (rowA, rowB) { return rowB.original.time - rowA.original.time } },
     ] as Array<TableColumnOption<FormatConnection>>, [t])
 
