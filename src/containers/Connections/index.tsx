@@ -200,7 +200,7 @@ export default function Connections () {
     const [device, setDevice] = useState('')
     function handleDeviceSelected (label: string) {
         setDevice(label)
-        setFilter?.(Columns.SourceIP, label)
+        setFilter?.(Columns.SourceIP, label || undefined)
     }
 
     // click item
