@@ -10,6 +10,17 @@ export default defineConfig({
         tsConfigPath(),
         windiCSS(),
         VitePWA({
+            injectRegister: 'inline',
+            manifest: {
+                icons: [{
+                    src: '//cdn.jsdelivr.net/gh/Dreamacro/clash-dashboard/src/assets/Icon.png',
+                    sizes: '512x512',
+                    type: 'image/png',
+                }],
+                start_url: '/',
+                short_name: 'Clash Dashboard',
+                name: 'Clash Dashboard',
+            },
             workbox: {
                 sourcemap: false,
             },
