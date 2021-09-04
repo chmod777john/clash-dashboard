@@ -21,9 +21,6 @@ export default defineConfig({
                 short_name: 'Clash Dashboard',
                 name: 'Clash Dashboard',
             },
-            workbox: {
-                sourcemap: false,
-            },
         }),
         // https://github.com/vitejs/vite/issues/2144
         {
