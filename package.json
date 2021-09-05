@@ -58,7 +58,7 @@
         "windicss": "^3.1.7"
     },
     "dependencies": {
-        "axios": "^0.21.2",
+        "axios": "^0.21.3",
         "classnames": "^2.3.1",
         "dayjs": "^1.10.6",
         "eventemitter3": "^4.0.7",

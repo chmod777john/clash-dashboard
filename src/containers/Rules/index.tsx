@@ -56,7 +56,7 @@ export default function Rules () {
             <RuleProviders />
             <Header className="not-first:mt-7.5" title={t('title')} />
             <Card className="flex flex-col flex-1 mt-2.5 md:mt-4 p-0 focus:outline-none">
-                <AutoSizer className="rules">
+                <AutoSizer className="min-h-120">
                     {
                         ({ height, width }) => (
                             <List
