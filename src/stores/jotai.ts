@@ -113,7 +113,7 @@ export function useProxyProviders () {
             .filter(pd => pd.vehicleType !== 'Compatible')
     })
 
-    useEffect(() => set(data ?? []), [data, set])
+    useEffect(() => { set(data ?? []) }, [data, set])
     return { providers, update: mutate }
 }
 

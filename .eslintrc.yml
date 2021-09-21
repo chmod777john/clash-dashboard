@@ -26,3 +26,4 @@ rules:
   '@typescript-eslint/promise-function-async': off
   '@typescript-eslint/no-floating-promises': off
   '@typescript-eslint/no-invalid-void-type': off
+  '@typescript-eslint/no-misused-promises': off
