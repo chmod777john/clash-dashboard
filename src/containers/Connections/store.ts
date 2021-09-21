@@ -37,7 +37,7 @@ class Store {
                 if (!this.saveDisconnection) {
                     this.connections.delete(id)
                 } else {
-                    const connection = this.connections.get(id)
+                    let connection = this.connections.get(id)
                     if (connection != null) {
                         connection.completed = true
                         connection.uploadSpeed = 0
