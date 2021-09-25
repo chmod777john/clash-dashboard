@@ -1,3 +1,4 @@
+import produce from 'immer'
 import { useState, useMemo, useRef, useCallback } from 'react'
 
 import * as API from '@lib/request'
@@ -39,9 +40,11 @@ class Store {
                 } else {
                     const connection = this.connections.get(id)
                     if (connection != null) {
-                        connection.completed = true
-                        connection.uploadSpeed = 0
-                        connection.downloadSpeed = 0
+                        this.connections.set(id, produce(connection, draft => {
+                            draft.completed = true
+                            draft.uploadSpeed = 0
+                            draft.downloadSpeed = 0
+                        }))
                     }
                 }
             }

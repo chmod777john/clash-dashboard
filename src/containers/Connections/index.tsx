@@ -224,7 +224,7 @@ export default function Connections () {
         const conn = data.find(c => c.id === drawerState.selectedID)?.original
         if (conn) {
             setDrawerState(d => {
-                d.connection = conn
+                d.connection = { ...conn }
                 if (drawerState.selectedID === latestConntion.current.id) {
                     d.connection.completed = latestConntion.current.completed
                 }
