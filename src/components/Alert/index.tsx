@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import React from 'react'
 
 import { Icon } from '@components'
 import { BaseComponentProps } from '@models'

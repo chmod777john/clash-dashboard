@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { Modal, Input, Alert } from '@components'
 import { useObject } from '@lib/hook'

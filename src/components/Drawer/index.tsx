@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useLayoutEffect, useRef, RefObject } from 'react'
+import { useLayoutEffect, useRef, RefObject } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Card } from '@components'

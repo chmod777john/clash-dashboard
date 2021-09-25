@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useRef, useLayoutEffect, useState, useMemo, ReactElement } from 'react'
+import { useRef, useLayoutEffect, useState, useMemo, ReactElement, Children, cloneElement } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Icon } from '@components'
@@ -69,7 +69,7 @@ export function Select (props: SelectProps) {
     const matchChild = useMemo(() => {
         let matchChild: React.ReactElement | null = null
 
-        React.Children.forEach(children, (child) => {
+        Children.forEach(children, (child) => {
             if (child?.props?.value === value) {
                 matchChild = child
             }
@@ -79,7 +79,7 @@ export function Select (props: SelectProps) {
     }, [value, children])
 
     const hookedChildren = useMemo(() => {
-        return React.Children.map(children ?? [], (child: React.ReactElement<any>) => {
+        return Children.map(children ?? [], (child: React.ReactElement<any>) => {
             if (!child.props || !child.type) {
                 return child
             }
@@ -91,7 +91,7 @@ export function Select (props: SelectProps) {
 
             // hook element onclick event
             const rawOnClickEvent = child.props.onClick
-            return React.cloneElement(child, Object.assign({}, child.props, {
+            return cloneElement(child, Object.assign({}, child.props, {
                 onClick: (e: React.MouseEvent<HTMLLIElement>) => {
                     onSelect?.(child.props.value, e)
                     setShowDropDownList(false)

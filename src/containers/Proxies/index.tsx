@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Card, Header, Icon, Checkbox } from '@components'
 import EE from '@lib/event'

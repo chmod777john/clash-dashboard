@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { unmountComponentAtNode, render } from 'react-dom'
 
 import { Icon } from '@components'

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { render } from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 

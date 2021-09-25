@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { formatTraffic } from '@lib/helper'
 import { BaseComponentProps } from '@models'

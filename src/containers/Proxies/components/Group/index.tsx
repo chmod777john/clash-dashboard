@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Tags, Tag } from '@components'
 import { Group as IGroup } from '@lib/request'

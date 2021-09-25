@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { useUpdateAtom } from 'jotai/utils'
 import { capitalize } from 'lodash-es'
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Header, Card, Switch, ButtonSelect, ButtonSelectOptions, Input } from '@components'
 import { Lang } from '@i18n'

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Card, Tag, Icon, Loading } from '@components'
 import { compareDesc } from '@containers/Proxies'

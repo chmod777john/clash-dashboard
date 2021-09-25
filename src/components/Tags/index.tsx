@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import { useState, useRef, useLayoutEffect } from 'react'
 
 import { noop } from '@lib/helper'
 import { BaseComponentProps } from '@models'

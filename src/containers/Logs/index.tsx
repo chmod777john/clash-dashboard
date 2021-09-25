@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { useLayoutEffect, useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 
 import { Card, Header } from '@components'
 import { Log } from '@models/Log'

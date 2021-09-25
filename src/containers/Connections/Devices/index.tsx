@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { BaseComponentProps } from '@models'
 import { useI18n } from '@stores'

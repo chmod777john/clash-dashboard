@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { groupBy } from 'lodash-es'
-import React, { useMemo, useLayoutEffect, useCallback, useRef, useState, useEffect } from 'react'
+import { useMemo, useLayoutEffect, useCallback, useRef, useState, useEffect } from 'react'
 import { Cell, Column, ColumnInstance, TableInstance, TableOptions, useBlockLayout, useFilters, UseFiltersColumnOptions, UseFiltersInstanceProps, UseFiltersOptions, useResizeColumns, UseResizeColumnsColumnProps, UseResizeColumnsOptions, useSortBy, UseSortByColumnOptions, UseSortByColumnProps, UseSortByOptions, useTable } from 'react-table'
 import { useLatest, useScroll } from 'react-use'
 

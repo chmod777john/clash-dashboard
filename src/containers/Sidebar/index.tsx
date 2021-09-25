@@ -3,6 +3,7 @@ import * as React from 'react'
 import { NavLink } from 'react-router-dom'
 
 import logo from '@assets/logo.png'
+import { Lang, Language } from '@i18n'
 import { useI18n, useVersion, useClashXData } from '@stores'
 import './style.scss'
 
@@ -25,7 +26,9 @@ export default function Sidebar (props: SidebarProps) {
     const navlinks = routes.map(
         ({ path, name, exact, noMobile }) => (
             <li className={classnames('item', { 'no-mobile': noMobile })} key={name}>
-                <NavLink to={path} activeClassName="active" exact={!!exact}>{ t(name) }</NavLink>
+                <NavLink to={path} activeClassName="active" exact={!!exact}>
+                    { t(name as keyof typeof Language[Lang]['SideBar']) }
+                </NavLink>
             </li>
         ),
     )

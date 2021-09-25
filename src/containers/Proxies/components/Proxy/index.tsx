@@ -1,7 +1,7 @@
 import type{ AxiosError } from 'axios'
 import classnames from 'classnames'
 import { ResultAsync } from 'neverthrow'
-import React, { useMemo, useLayoutEffect, useCallback } from 'react'
+import { useMemo, useLayoutEffect, useCallback } from 'react'
 
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'

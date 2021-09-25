@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useRef, useLayoutEffect, MouseEvent } from 'react'
+import { useRef, useLayoutEffect, MouseEvent } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Button } from '@components'

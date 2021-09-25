@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { MouseEventHandler } from 'react'
+import { MouseEventHandler } from 'react'
 
 import { noop } from '@lib/helper'
 import { BaseComponentProps } from '@models'
