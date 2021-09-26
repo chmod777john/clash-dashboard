@@ -6,7 +6,7 @@ import tsConfigPath from 'vite-tsconfig-paths'
 
 export default defineConfig({
     plugins: [
-        react(),
+        react({ babel: { compact: false } }),
         tsConfigPath(),
         windiCSS(),
         VitePWA({
@@ -31,4 +31,5 @@ export default defineConfig({
             },
         },
     },
+    build: { reportCompressedSize: false },
 })
