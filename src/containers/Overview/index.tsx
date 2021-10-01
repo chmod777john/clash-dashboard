@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import logo from '@assets/logo-fixing.svg'
 
 export default function Overview () {

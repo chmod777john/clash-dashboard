@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import * as React from 'react'
 
 import { noop } from '@lib/helper'
 import { BaseComponentProps } from '@models/BaseProps'

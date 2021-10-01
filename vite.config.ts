@@ -34,5 +34,8 @@ export default defineConfig(
             },
         },
         build: { reportCompressedSize: false },
+        esbuild: {
+            jsxInject: "import React from 'react'",
+        },
     }),
 )

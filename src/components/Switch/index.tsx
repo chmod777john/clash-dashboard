@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import * as React from 'react'
 
 import { Icon } from '@components'
 import { noop } from '@lib/helper'

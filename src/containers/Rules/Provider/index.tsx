@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import * as React from 'react'
 
 import { Tag, Icon } from '@components'
 import { fromNow } from '@lib/date'
