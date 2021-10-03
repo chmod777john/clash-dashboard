@@ -14,12 +14,14 @@ export default function Logs () {
     const { translation } = useI18n()
     const { t } = translation('Logs')
     const logsStreamReader = useLogsStreamReader()
+    const scrollHeightRef = useRef(listRef.current?.scrollHeight ?? 0)
 
     useLayoutEffect(() => {
         const ul = listRef.current
-        if (ul != null) {
-            ul.scrollTop = ul.scrollHeight
+        if (ul != null && scrollHeightRef.current === (ul.scrollTop + ul.clientHeight)) {
+            ul.scrollTop = ul.scrollHeight - ul.clientHeight
         }
+        scrollHeightRef.current = ul?.scrollHeight ?? 0
     })
 
     useEffect(() => {
