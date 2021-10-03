@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { KeyboardEvent, FocusEvent, ChangeEvent } from 'react'
 
 import { noop } from '@lib/helper'
 import { BaseComponentProps } from '@models/BaseProps'
@@ -11,8 +12,9 @@ interface InputProps extends BaseComponentProps {
     autoFocus?: boolean
     type?: string
     disabled?: boolean
-    onChange?: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void
-    onBlur?: (event?: React.FocusEvent<HTMLInputElement>) => void
+    onChange?: (value: string, event?: ChangeEvent<HTMLInputElement>) => void
+    onEnter?: (event?: KeyboardEvent<HTMLInputElement>) => void
+    onBlur?: (event?: FocusEvent<HTMLInputElement>) => void
 }
 
 export function Input (props: InputProps) {
@@ -27,8 +29,15 @@ export function Input (props: InputProps) {
         disabled = false,
         onChange = noop,
         onBlur = noop,
+        onEnter = noop,
     } = props
     const classname = classnames('input', `text-${align}`, { 'focus:shadow-none': inside }, className)
+
+    function handleKeyDown (e: KeyboardEvent<HTMLInputElement>) {
+        if (e.code === 'Enter') {
+            onEnter(e)
+        }
+    }
 
     return (
         <input
@@ -40,6 +49,7 @@ export function Input (props: InputProps) {
             type={type}
             onChange={event => onChange(event.target.value, event)}
             onBlur={onBlur}
+            onKeyDown={handleKeyDown}
         />
     )
 }

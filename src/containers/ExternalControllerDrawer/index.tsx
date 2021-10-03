@@ -49,6 +49,7 @@ export default function ExternalController () {
                     inside={true}
                     value={value.hostname}
                     onChange={hostname => set('hostname', hostname)}
+                    onEnter={handleOk}
                 />
             </div>
             <div className="flex items-center">
@@ -59,6 +60,7 @@ export default function ExternalController () {
                     inside={true}
                     value={value.port}
                     onChange={port => set('port', port)}
+                    onEnter={handleOk}
                 />
             </div>
             <div className="flex items-center">
@@ -69,6 +71,7 @@ export default function ExternalController () {
                     inside={true}
                     value={value.secret}
                     onChange={secret => set('secret', secret)}
+                    onEnter={handleOk}
                 />
             </div>
         </Modal>
