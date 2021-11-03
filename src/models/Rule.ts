@@ -8,15 +8,13 @@ export enum RuleType {
     SrcPort = 'SrcPort',
     DstPort = 'DstPort',
     MATCH = 'MATCH',
-    RuleSet = 'RuleSet'
+    RuleSet = 'RuleSet',
 }
 
 export interface Rule {
-
     type?: RuleType
 
     payload?: string
 
     proxy?: string // proxy or proxy group name
-
 }

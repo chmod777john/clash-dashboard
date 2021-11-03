@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop () {}
 
 export function partition<T> (arr: T[], fn: (arg: T) => boolean): [T[], T[]] {

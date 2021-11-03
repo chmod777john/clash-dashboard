@@ -8,7 +8,7 @@ export function useWarpImmerSetter<T> (setter: (f: WritableDraft<T>) => void) {
         function set<K extends keyof Draft<T>> (key: K, value: Draft<T>[K]): void
         function set (data: Partial<T>): void
         function set (f: (draft: Draft<T>) => void | T): void
-        function set<K extends keyof Draft<T>> (data: any, value?: Draft<T>[K]): void {
+        function set<K extends keyof Draft<T>> (data: unknown, value?: Draft<T>[K]): void {
             if (typeof data === 'string') {
                 setter((draft: Draft<T>) => {
                     const key = data as K

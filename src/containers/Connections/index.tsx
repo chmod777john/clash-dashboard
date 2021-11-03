@@ -27,28 +27,28 @@ enum Columns {
     Upload = 'upload',
     Download = 'download',
     SourceIP = 'sourceIP',
-    Time = 'time'
+    Time = 'time',
 }
 
 const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Rule, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Time])
 
-interface TableColumn<D extends object = {}> extends
+interface TableColumn<D extends object> extends
     ColumnInstance<D>,
     UseSortByColumnProps<D>,
     UseResizeColumnsColumnProps<D> {}
 
-type TableColumnOption<D extends object = {}> =
+type TableColumnOption<D extends object> =
     Column<D> &
     UseResizeColumnsOptions<D> &
     UseFiltersColumnOptions<D> &
     UseSortByColumnOptions<D>
 
-interface ITableOptions<D extends object = {}> extends
+interface ITableOptions<D extends object> extends
     TableOptions<D>,
     UseSortByOptions<D>,
     UseFiltersOptions<D> {}
 
-interface ITableInstance<D extends object = {}> extends
+interface ITableInstance<D extends object> extends
     TableInstance<D>,
     UseFiltersInstanceProps<D> {}
 

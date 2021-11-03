@@ -12,7 +12,7 @@ import './style.scss'
 enum sortType {
     None,
     Asc,
-    Desc
+    Desc,
 }
 
 const sortMap = {

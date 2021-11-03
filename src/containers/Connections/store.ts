@@ -26,6 +26,7 @@ export interface FormatConnection {
 
 class Store {
     protected connections = new Map<string, Connection>()
+
     protected saveDisconnection = false
 
     appendToSet (connections: API.Connections[]) {

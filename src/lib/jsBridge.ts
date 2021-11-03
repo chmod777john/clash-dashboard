@@ -20,12 +20,12 @@ export interface JsBridgeAPI {
     /**
      * Register a javascript bridge event handle
      */
-    registerHandler: (eventName: string, callback?: (data: any, responseCallback: (param: any) => void) => void) => void
+    registerHandler: <D, P>(eventName: string, callback?: (data: D, responseCallback: (param: P) => void) => void) => void
 
     /**
      * Call a native handle
      */
-    callHandler: <T>(handleName: string, data?: any, responseCallback?: (responseData: T) => void) => void
+    callHandler: <T, D>(handleName: string, data?: D, responseCallback?: (responseData: T) => void) => void
 
     /**
      * Who knows
@@ -115,7 +115,7 @@ export class JsBridge {
         setTimeout(() => document.documentElement.removeChild(WVJBIframe), 0)
     }
 
-    public async callHandler<T> (handleName: string, data?: any) {
+    public async callHandler<T, D = unknown> (handleName: string, data?: D) {
         return await new Promise<T>((resolve) => {
             this.instance?.callHandler(
                 handleName,

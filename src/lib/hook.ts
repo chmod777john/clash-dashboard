@@ -12,7 +12,7 @@ export function useObject<T extends Record<string, unknown>> (initialValue: T) {
         function set (data: Partial<T>): void
         function set (f: (draft: Draft<T>) => void | T): void
         function set<K extends keyof Draft<T>> (key: K, value: Draft<T>[K]): void
-        function set<K extends keyof Draft<T>> (data: any, value?: Draft<T>[K]): void {
+        function set<K extends keyof Draft<T>> (data: unknown, value?: Draft<T>[K]): void {
             if (typeof data === 'string') {
                 rawSet(draft => {
                     const key = data as K
@@ -20,7 +20,7 @@ export function useObject<T extends Record<string, unknown>> (initialValue: T) {
                     draft[key] = v!
                 })
             } else if (typeof data === 'function') {
-                rawSet(data)
+                rawSet(data as (draft: Draft<T>) => void | T)
             } else if (typeof data === 'object') {
                 rawSet((draft: Draft<T>) => {
                     const obj = data as Draft<T>

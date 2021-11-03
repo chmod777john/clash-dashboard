@@ -12,8 +12,11 @@ export interface Config {
 
 export class StreamReader<T> {
     protected EE = new EventEmitter()
+
     protected config: SetRequired<Config, 'bufferLength' | 'retryInterval'>
+
     protected innerBuffer: T[] = []
+
     protected isClose = false
 
     constructor (config: Config) {

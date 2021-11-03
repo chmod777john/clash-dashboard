@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3'
 
 export enum Action {
-    SPEED_NOTIFY = 'speed-notify'
+    SPEED_NOTIFY = 'speed-notify',
 }
 
 class Event {

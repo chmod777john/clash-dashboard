@@ -79,7 +79,7 @@ export function Select (props: SelectProps) {
     }, [value, children])
 
     const hookedChildren = useMemo(() => {
-        return Children.map(children ?? [], (child: React.ReactElement<any>) => {
+        return Children.map(children ?? [], child => {
             if (!child.props || !child.type) {
                 return child
             }
