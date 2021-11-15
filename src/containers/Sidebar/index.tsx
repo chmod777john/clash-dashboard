@@ -11,7 +11,6 @@ interface SidebarProps {
         path: string
         name: string
         noMobile?: boolean
-        exact?: boolean
     }>
 }
 
@@ -23,9 +22,9 @@ export default function Sidebar (props: SidebarProps) {
     const { t } = translation('SideBar')
 
     const navlinks = routes.map(
-        ({ path, name, exact, noMobile }) => (
+        ({ path, name, noMobile }) => (
             <li className={classnames('item', { 'no-mobile': noMobile })} key={name}>
-                <NavLink to={path} activeClassName="active" exact={!!exact}>
+                <NavLink to={path} className={({ isActive }) => classnames({ active: isActive })}>
                     { t(name as keyof typeof Language[Lang]['SideBar']) }
                 </NavLink>
             </li>

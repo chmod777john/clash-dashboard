@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Route, Navigate, Routes } from 'react-router-dom'
 
 // import Overview from '@containers/Overview'
 import Connections from '@containers/Connections'
@@ -20,25 +20,25 @@ export default function App () {
 
     const routes = [
     // { path: '/', name: 'Overview', component: Overview, exact: true },
-        { path: '/proxies', name: 'Proxies', component: Proxies },
-        { path: '/logs', name: 'Logs', component: Logs },
-        { path: '/rules', name: 'Rules', component: Rules, noMobile: true },
-        { path: '/connections', name: 'Connections', component: Connections, noMobile: true },
-        { path: '/settings', name: 'Settings', component: Settings },
+        { path: '/proxies', name: 'Proxies', element: <Proxies /> },
+        { path: '/logs', name: 'Logs', element: <Logs /> },
+        { path: '/rules', name: 'Rules', element: <Rules />, noMobile: true },
+        { path: '/connections', name: 'Connections', element: <Connections />, noMobile: true },
+        { path: '/settings', name: 'Settings', element: <Settings /> },
     ]
 
     return (
         <div className={classnames('app', { 'not-clashx': !isClashX() })}>
             <SideBar routes={routes} />
             <div className="page-container">
-                <Switch>
-                    <Route exact path="/" component={() => <Redirect to="/proxies"/>} />
+                <Routes>
+                    <Route path="/" element={<Navigate to="/proxies" replace />} />
                     {
                         routes.map(
-                            route => <Route exact={false} path={route.path} key={route.path} component={route.component} />,
+                            route => <Route path={route.path} key={route.path} element={route.element} />,
                         )
                     }
-                </Switch>
+                </Routes>
             </div>
             <ExternalControllerModal />
         </div>
