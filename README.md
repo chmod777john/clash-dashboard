@@ -26,6 +26,8 @@ See [Projects](https://github.com/Dreamacro/clash-dashboard/projects)
 
 ### Start develop with ClashX(Dev Mode)
 
+You can setup your local development environment with [the contribution guide](CONTRIBUTION.md).
+
 ```bash
 # Enable ClashX with Dev Mode
 defaults write com.west2online.ClashX kEnableDashboard -bool YES
