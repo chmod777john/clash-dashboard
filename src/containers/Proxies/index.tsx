@@ -45,13 +45,13 @@ function ProxyGroups () {
             <div className="flex flex-col">
                 <Header title={t('groupTitle')}>
                     <Checkbox
-                        className="text-primary-600 text-sm text-shadow-primary cursor-pointer"
+                        className="cursor-pointer text-sm text-shadow-primary text-primary-600"
                         checked={config.breakConnections}
                         onChange={value => setConfig('breakConnections', value)}>
                         {t('breakConnectionsText')}
                     </Checkbox>
                 </Header>
-                <Card className="my-2.5 md:my-4 p-0">
+                <Card className="my-2.5 p-0 md:my-4">
                     <ul className="list-none">
                         {
                             list.map(p => (

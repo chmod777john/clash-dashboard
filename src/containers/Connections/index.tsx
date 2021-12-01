@@ -237,7 +237,7 @@ export default function Connections () {
     return (
         <div className="page">
             <Header title={t('title')}>
-                <span className="connections-filter flex-1 cursor-default">
+                <span className="cursor-default flex-1 connections-filter">
                     {`(${t('total.text')}: ${t('total.upload')} ${formatTraffic(traffic.uploadTotal)} ${t('total.download')} ${formatTraffic(traffic.downloadTotal)})`}
                 </span>
                 <Checkbox className="connections-filter" checked={save} onChange={toggleSave}>{t('keepClosed')}</Checkbox>
@@ -245,7 +245,7 @@ export default function Connections () {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card ref={cardRef} className="connections-card relative">
-                <div {...getTableProps()} className="flex flex-col w-full flex-1 overflow-auto" style={{ flexBasis: 0 }} ref={tableRef}>
+                <div {...getTableProps()} className="flex flex-col flex-1 w-full overflow-auto" style={{ flexBasis: 0 }} ref={tableRef}>
                     <div {...headerGroup.getHeaderGroupProps()} className="connections-header">
                         {
                             headerGroup.headers.map((column, idx) => {
@@ -283,7 +283,7 @@ export default function Connections () {
                                 return (
                                     <div
                                         {...row.getRowProps()}
-                                        className="connections-item cursor-default select-none"
+                                        className="cursor-default connections-item select-none"
                                         key={row.original.id}
                                         onClick={() => handleConnectionSelected(row.original.id)}>
                                         {
@@ -309,12 +309,12 @@ export default function Connections () {
             </Card>
             <Modal title={t('closeAll.title')} show={visible} onClose={hide} onOk={handleCloseConnections}>{t('closeAll.content')}</Modal>
             <Drawer containerRef={cardRef} visible={drawerState.visible} width={450}>
-                <div className="flex justify-between items-center h-8">
-                    <span className="pl-3 font-bold">{t('info.title')}</span>
+                <div className="flex h-8 justify-between items-center">
+                    <span className="font-bold pl-3">{t('info.title')}</span>
                     <Icon type="close" size={16} className="cursor-pointer" onClick={() => setDrawerState('visible', false)} />
                 </div>
-                <ConnectionInfo className="px-5 mt-3" connection={drawerState.connection} />
-                <div className="flex justify-end mt-3 pr-3">
+                <ConnectionInfo className="mt-3 px-5" connection={drawerState.connection} />
+                <div className="flex mt-3 pr-3 justify-end">
                     <Button type="danger" disiabled={drawerState.connection.completed} onClick={() => handleConnectionClosed()}>{ t('info.closeConnection') }</Button>
                 </div>
             </Drawer>
