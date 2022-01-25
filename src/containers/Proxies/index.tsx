@@ -35,7 +35,7 @@ function ProxyGroups () {
     const { t } = translation('Proxies')
 
     const list = useMemo(
-        () => general.mode === 'global' ? [global] : groups,
+        () => general.mode === 'global' ? [global, ...groups] : groups,
         [general, groups, global],
     )
 
@@ -52,10 +52,10 @@ function ProxyGroups () {
                     </Checkbox>
                 </Header>
                 <Card className="my-2.5 p-0 md:my-4">
-                    <ul className="list-none">
+                    <ul className="list-none divide-y divide-gray-300">
                         {
                             list.map(p => (
-                                <li className="proxies-group-item" key={p.name}>
+                                <li key={p.name}>
                                     <Group config={p} />
                                 </li>
                             ))

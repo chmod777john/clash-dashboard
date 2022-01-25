@@ -209,12 +209,6 @@ export default function Connections () {
         selectedID: '',
         connection: {} as Partial<Connection>,
     })
-    function handleConnectionSelected (id: string) {
-        setDrawerState({
-            visible: true,
-            selectedID: id,
-        })
-    }
     function handleConnectionClosed () {
         setDrawerState(d => { d.connection.completed = true })
         client.closeConnection(drawerState.selectedID)
@@ -234,6 +228,66 @@ export default function Connections () {
         }
     }, [data, drawerState.selectedID, latestConntion, setDrawerState])
 
+    const scrolled = useMemo(() => scrollX > 0, [scrollX])
+    const headers = useMemo(() => headerGroup.headers.map((column, idx) => {
+        const realColumn = column as unknown as TableColumn<FormatConnection>
+        const id = realColumn.id
+        return (
+            <div
+                {...realColumn.getHeaderProps()}
+                className={classnames('connections-th', {
+                    resizing: realColumn.isResizing,
+                    fixed: realColumn.id === Columns.Host,
+                    shadow: scrolled && realColumn.id === Columns.Host,
+                })}
+                key={id}>
+                <div {...realColumn.getSortByToggleProps()}>
+                    {column.render('Header')}
+                    {
+                        realColumn.isSorted
+                            ? realColumn.isSortedDesc ? ' ↓' : ' ↑'
+                            : null
+                    }
+                </div>
+                { idx !== headerGroup.headers.length - 1 &&
+                    <div {...realColumn.getResizerProps()} className="connections-resizer" />
+                }
+            </div>
+        )
+    }), [headerGroup.headers, scrolled])
+
+    const content = useMemo(
+        () => rows.map(row => {
+            prepareRow(row)
+            return (
+                <div
+                    {...row.getRowProps()}
+                    className="cursor-default connections-item select-none"
+                    key={row.original.id}
+                    onClick={() => setDrawerState({ visible: true, selectedID: row.original.id })}>
+                    {
+                        row.cells.map(cell => {
+                            const classname = classnames(
+                                'connections-block',
+                                { 'text-center': shouldCenter.has(cell.column.id), completed: row.original.completed },
+                                {
+                                    fixed: cell.column.id === Columns.Host,
+                                    shadow: scrollX > 0 && cell.column.id === Columns.Host,
+                                },
+                            )
+                            return (
+                                <div {...cell.getCellProps()} className={classname} key={cell.column.id}>
+                                    { renderCell(cell)}
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            )
+        }),
+        [prepareRow, renderCell, rows, scrollX, setDrawerState],
+    )
+
     return (
         <div className="page">
             <Header title={t('title')}>
@@ -247,63 +301,11 @@ export default function Connections () {
             <Card ref={cardRef} className="connections-card relative">
                 <div {...getTableProps()} className="flex flex-col flex-1 w-full overflow-auto" style={{ flexBasis: 0 }} ref={tableRef}>
                     <div {...headerGroup.getHeaderGroupProps()} className="connections-header">
-                        {
-                            headerGroup.headers.map((column, idx) => {
-                                const realColumn = column as unknown as TableColumn<FormatConnection>
-                                const id = realColumn.id
-                                return (
-                                    <div
-                                        {...realColumn.getHeaderProps()}
-                                        className={classnames('connections-th', {
-                                            resizing: realColumn.isResizing,
-                                            fixed: scrollX > 0 && realColumn.id === Columns.Host,
-                                        })}
-                                        key={id}>
-                                        <div {...realColumn.getSortByToggleProps()}>
-                                            {column.render('Header')}
-                                            {
-                                                realColumn.isSorted
-                                                    ? realColumn.isSortedDesc ? ' ↓' : ' ↑'
-                                                    : null
-                                            }
-                                        </div>
-                                        { idx !== headerGroup.headers.length - 1 &&
-                                            <div {...realColumn.getResizerProps()} className="connections-resizer" />
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
+                        { headers }
                     </div>
 
                     <div {...getTableBodyProps()} className="flex-1">
-                        {
-                            rows.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <div
-                                        {...row.getRowProps()}
-                                        className="cursor-default connections-item select-none"
-                                        key={row.original.id}
-                                        onClick={() => handleConnectionSelected(row.original.id)}>
-                                        {
-                                            row.cells.map(cell => {
-                                                const classname = classnames(
-                                                    'connections-block',
-                                                    { 'text-center': shouldCenter.has(cell.column.id), completed: row.original.completed },
-                                                    { fixed: scrollX > 0 && cell.column.id === Columns.Host },
-                                                )
-                                                return (
-                                                    <div {...cell.getCellProps()} className={classname} key={cell.column.id}>
-                                                        { renderCell(cell)}
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
+                        { content }
                     </div>
                 </div>
             </Card>

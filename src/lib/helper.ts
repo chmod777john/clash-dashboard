@@ -1,3 +1,5 @@
+import { floor } from 'lodash-es'
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop () {}
 
@@ -12,11 +14,6 @@ export function partition<T> (arr: T[], fn: (arg: T) => boolean): [T[], T[]] {
 
 export function formatTraffic (num: number) {
     const s = ['B', 'KB', 'MB', 'GB', 'TB']
-    let idx = 0
-    while (~~(num / 1024) && idx < s.length) {
-        num /= 1024
-        idx++
-    }
-
-    return `${idx === 0 ? num : num.toFixed(2)} ${s[idx]}`
+    const exp = Math.floor(Math.log(num || 1) / Math.log(1024))
+    return `${floor(num / Math.pow(1024, exp), 2).toFixed(2)} ${s?.[exp] ?? ''}`
 }

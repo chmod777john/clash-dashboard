@@ -28,7 +28,9 @@
             position: sticky !important;
             left: 0;
             z-index: 99;
-            box-shadow: inset -9px 0 8px -14px $color-black;
+            &.shadow {
+                box-shadow: inset -9px 0 8px -14px $color-black;
+            }
         }
     }
 
@@ -92,7 +94,9 @@
             left: 0;
             z-index: 998;
             background-color: $color-white;
-            box-shadow: inset -9px 0 8px -14px $color-black;
+            &.shadow {
+                box-shadow: inset -9px 0 8px -14px $color-black;
+            }
         }
     }
 }
