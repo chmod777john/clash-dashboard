@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 
 import { Loading } from '@components'
@@ -16,5 +16,6 @@ export default function renderApp () {
         </HashRouter>
     )
 
-    render(AppInstance, rootEl)
+    const root = createRoot(rootEl!)
+    root.render(AppInstance)
 }

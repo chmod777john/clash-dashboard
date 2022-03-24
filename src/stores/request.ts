@@ -1,5 +1,5 @@
-import { atom, useAtom } from 'jotai'
-import { atomWithStorage, useAtomValue } from 'jotai/utils'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import { useLocation } from 'react-use'
 
 import { isClashX, jsBridge } from '@lib/jsBridge'
