@@ -1,7 +1,9 @@
+import { columnFilterRowsFn, createTable, sortRowsFn } from '@tanstack/react-table'
+import { type ColumnSort } from '@tanstack/react-table/build/types/features/Sorting'
 import classnames from 'classnames'
+import produce from 'immer'
 import { groupBy } from 'lodash-es'
-import { useMemo, useLayoutEffect, useCallback, useRef, useState, useEffect } from 'react'
-import { Cell, Column, ColumnInstance, TableInstance, TableOptions, useBlockLayout, useFilters, UseFiltersColumnOptions, UseFiltersInstanceProps, UseFiltersOptions, useResizeColumns, UseResizeColumnsColumnProps, UseResizeColumnsOptions, useSortBy, UseSortByColumnOptions, UseSortByColumnProps, UseSortByOptions, useTable } from 'react-table'
+import { useMemo, useLayoutEffect, useRef, useState, useEffect } from 'react'
 import { useLatest, useScroll } from 'react-use'
 
 import { Header, Checkbox, Modal, Icon, Drawer, Card, Button } from '@components'
@@ -9,7 +11,7 @@ import { fromNow } from '@lib/date'
 import { formatTraffic } from '@lib/helper'
 import { useObject, useVisible } from '@lib/hook'
 import * as API from '@lib/request'
-import { RuleType } from '@models'
+import { BaseComponentProps, RuleType } from '@models'
 import { useClient, useConnectionStreamReader, useI18n } from '@stores'
 
 import { Devices } from './Devices'
@@ -32,26 +34,6 @@ enum Columns {
 
 const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Rule, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Time])
 
-interface TableColumn<D extends object> extends
-    ColumnInstance<D>,
-    UseSortByColumnProps<D>,
-    UseResizeColumnsColumnProps<D> {}
-
-type TableColumnOption<D extends object> =
-    Column<D> &
-    UseResizeColumnsOptions<D> &
-    UseFiltersColumnOptions<D> &
-    UseSortByColumnOptions<D>
-
-interface ITableOptions<D extends object> extends
-    TableOptions<D>,
-    UseSortByOptions<D>,
-    UseFiltersOptions<D> {}
-
-interface ITableInstance<D extends object> extends
-    TableInstance<D>,
-    UseFiltersInstanceProps<D> {}
-
 function formatSpeed (upload: number, download: number) {
     switch (true) {
         case upload === 0 && download === 0:
@@ -64,6 +46,8 @@ function formatSpeed (upload: number, download: number) {
             return `↓ ${formatTraffic(download)}/s`
     }
 }
+
+const table = createTable().RowType<FormatConnection>()
 
 export default function Connections () {
     const { translation, lang } = useI18n()
@@ -113,34 +97,47 @@ export default function Connections () {
     // table
     const tableRef = useRef<HTMLDivElement>(null)
     const { x: scrollX } = useScroll(tableRef)
-    const columns: Array<TableColumnOption<FormatConnection>> = useMemo(() => [
-        { Header: t(`columns.${Columns.Host}`), accessor: Columns.Host, minWidth: 260, width: 260 },
-        { Header: t(`columns.${Columns.Network}`), accessor: Columns.Network, minWidth: 80, width: 80 },
-        { Header: t(`columns.${Columns.Type}`), accessor: Columns.Type, minWidth: 120, width: 120 },
-        { Header: t(`columns.${Columns.Chains}`), accessor: Columns.Chains, minWidth: 200, width: 200 },
-        { Header: t(`columns.${Columns.Rule}`), accessor: Columns.Rule, minWidth: 140, width: 140 },
-        {
-            id: Columns.Speed,
-            Header: t(`columns.${Columns.Speed}`),
-            accessor (originalRow: FormatConnection) {
-                return [originalRow.speed.upload, originalRow.speed.download]
-            },
-            sortType (rowA, rowB) {
-                const speedA = rowA.original.speed
-                const speedB = rowB.original.speed
-                return speedA.download === speedB.download
-                    ? speedA.upload - speedB.upload
-                    : speedA.download - speedB.download
-            },
-            minWidth: 200,
-            width: 200,
-            sortDescFirst: true,
-        },
-        { Header: t(`columns.${Columns.Upload}`), accessor: Columns.Upload, minWidth: 100, width: 100, sortDescFirst: true },
-        { Header: t(`columns.${Columns.Download}`), accessor: Columns.Download, minWidth: 100, width: 100, sortDescFirst: true },
-        { Header: t(`columns.${Columns.SourceIP}`), accessor: Columns.SourceIP, minWidth: 140, width: 140, filter: 'equals' },
-        { Header: t(`columns.${Columns.Time}`), accessor: Columns.Time, minWidth: 120, width: 120, sortType (rowA, rowB) { return rowB.original.time - rowA.original.time } },
-    ] as Array<TableColumnOption<FormatConnection>>, [t])
+    const columns = useMemo(
+        () => table.createColumns([
+            table.createDataColumn(Columns.Host, { minWidth: 260, width: 260, header: t(`columns.${Columns.Host}`) }),
+            table.createDataColumn(Columns.Network, { minWidth: 80, width: 80, header: t(`columns.${Columns.Network}`) }),
+            table.createDataColumn(Columns.Type, { minWidth: 120, width: 120, header: t(`columns.${Columns.Type}`) }),
+            table.createDataColumn(Columns.Chains, { minWidth: 200, width: 200, header: t(`columns.${Columns.Chains}`) }),
+            table.createDataColumn(Columns.Rule, { minWidth: 140, width: 140, header: t(`columns.${Columns.Rule}`) }),
+            table.createDataColumn(
+                row => [row.speed.upload, row.speed.download],
+                {
+                    id: Columns.Speed,
+                    header: t(`columns.${Columns.Speed}`),
+                    minWidth: 200,
+                    width: 200,
+                    sortDescFirst: true,
+                    sortType (rowA, rowB) {
+                        const speedA = rowA.original.speed
+                        const speedB = rowB.original.speed
+                        return speedA.download === speedB.download
+                            ? speedA.upload - speedB.upload
+                            : speedA.download - speedB.download
+                    },
+                    cell: cell => formatSpeed(cell.value[0], cell.value[1]),
+                },
+            ),
+            table.createDataColumn(Columns.Upload, { minWidth: 100, width: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.value) }),
+            table.createDataColumn(Columns.Download, { minWidth: 100, width: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.value) }),
+            table.createDataColumn(Columns.SourceIP, { minWidth: 140, width: 140, header: t(`columns.${Columns.SourceIP}`), filterType: 'equals' }),
+            table.createDataColumn(
+                Columns.Time,
+                {
+                    minWidth:
+                    120,
+                    width: 120,
+                    header: t(`columns.${Columns.Time}`),
+                    cell: cell => fromNow(new Date(cell.value), lang),
+                    sortType: (rowA, rowB) => rowB.original.time - rowA.original.time,
+                }),
+        ]),
+        [lang, t],
+    )
 
     useLayoutEffect(() => {
         function handleConnection (snapshots: API.Snapshot[]) {
@@ -161,46 +158,27 @@ export default function Connections () {
         }
     }, [connStreamReader, feed, setTraffic])
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        setFilter,
-    } = useTable(
-        {
-            columns,
-            data,
-            autoResetSortBy: false,
-            autoResetFilters: false,
-            initialState: { sortBy: [{ id: Columns.Time, desc: false }] },
-        } as ITableOptions<FormatConnection>,
-        useResizeColumns,
-        useBlockLayout,
-        useFilters,
-        useSortBy,
-    ) as ITableInstance<FormatConnection>
-    const headerGroup = useMemo(() => headerGroups[0], [headerGroups])
-    const renderCell = useCallback(function (cell: Cell<FormatConnection>) {
-        switch (cell.column.id) {
-            case Columns.Speed:
-                return formatSpeed(cell.value[0], cell.value[1])
-            case Columns.Upload:
-            case Columns.Download:
-                return formatTraffic(cell.value)
-            case Columns.Time:
-                return fromNow(new Date(cell.value), lang)
-            default:
-                return cell.value
-        }
-    }, [lang])
+    const instance = table.useTable({
+        data,
+        columns,
+        sortRowsFn,
+        columnFilterRowsFn,
+        initialState: {
+            sorting: [{ id: Columns.Time, desc: true }],
+        },
+        columnResizeMode: 'onChange',
+        enableColumnResizing: true,
+        autoResetSorting: false,
+        autoResetColumnFilters: false,
+    })
+
+    const headerGroup = instance.getHeaderGroups()[0]
 
     // filter
     const [device, setDevice] = useState('')
     function handleDeviceSelected (label: string) {
         setDevice(label)
-        setFilter?.(Columns.SourceIP, label || undefined)
+        instance.setColumnFilterValue(Columns.SourceIP, label || undefined)
     }
 
     // click item
@@ -229,67 +207,76 @@ export default function Connections () {
     }, [data, drawerState.selectedID, latestConntion, setDrawerState])
 
     const scrolled = useMemo(() => scrollX > 0, [scrollX])
-    const headers = useMemo(() => headerGroup.headers.map((column, idx) => {
-        const realColumn = column as unknown as TableColumn<FormatConnection>
-        const id = realColumn.id
+    const headers = headerGroup.headers.map((header, idx) => {
+        const column = header.column // as unknown as TableColumn<FormatConnection>
+        const id = column.id
         return (
-            <div
-                {...realColumn.getHeaderProps()}
-                className={classnames('connections-th', {
-                    resizing: realColumn.isResizing,
-                    fixed: realColumn.id === Columns.Host,
-                    shadow: scrolled && realColumn.id === Columns.Host,
-                })}
+            <th
+                {...header.getHeaderProps(
+                    (props: BaseComponentProps) => produce(props, props => {
+                        props.className = classnames('connections-th', {
+                            resizing: column.getIsResizing(),
+                            fixed: column.id === Columns.Host,
+                            shadow: scrolled && column.id === Columns.Host,
+                        })
+                        !props.style && (props.style = {})
+                        props.style.width = header.getWidth()
+                    }),
+                )}
                 key={id}>
-                <div {...realColumn.getSortByToggleProps()}>
-                    {column.render('Header')}
+                <div {...column.getToggleSortingProps()}>
+                    {header.renderHeader()}
                     {
-                        realColumn.isSorted
-                            ? realColumn.isSortedDesc ? ' ↓' : ' ↑'
+                        column.getIsSorted() !== false
+                            ? column.getIsSorted() === 'desc' ? ' ↓' : ' ↑'
                             : null
                     }
                 </div>
                 { idx !== headerGroup.headers.length - 1 &&
-                    <div {...realColumn.getResizerProps()} className="connections-resizer" />
+                    <div {...column.getResizerProps()} className="connections-resizer" />
                 }
-            </div>
+            </th>
         )
-    }), [headerGroup.headers, scrolled])
+    })
 
-    const content = useMemo(
-        () => rows.map(row => {
-            prepareRow(row)
-            return (
-                <div
-                    {...row.getRowProps()}
-                    className="cursor-default connections-item select-none"
-                    key={row.original.id}
-                    onClick={() => setDrawerState({ visible: true, selectedID: row.original.id })}>
-                    {
-                        row.cells.map(cell => {
-                            const classname = classnames(
-                                'connections-block',
-                                { 'text-center': shouldCenter.has(cell.column.id), completed: row.original.completed },
-                                {
-                                    fixed: cell.column.id === Columns.Host,
-                                    shadow: scrollX > 0 && cell.column.id === Columns.Host,
-                                },
-                            )
-                            return (
-                                <div {...cell.getCellProps()} className={classname} key={cell.column.id}>
-                                    { renderCell(cell)}
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            )
-        }),
-        [prepareRow, renderCell, rows, scrollX, setDrawerState],
-    )
+    const content = instance.getRows().map(row => {
+        return (
+            <tr
+                {...row.getRowProps()}
+                className="cursor-default select-none"
+                key={row.original?.id}
+                onClick={() => setDrawerState({ visible: true, selectedID: row.original?.id })}>
+                {
+                    row.getAllCells().map(cell => {
+                        const classname = classnames(
+                            'connections-block',
+                            { 'text-center': shouldCenter.has(cell.column.id), completed: row.original?.completed },
+                            {
+                                fixed: cell.column.id === Columns.Host,
+                                shadow: scrollX > 0 && cell.column.id === Columns.Host,
+                            },
+                        )
+                        return (
+                            <td
+                                {...cell.getCellProps(
+                                    (props: BaseComponentProps) => produce(props, props => {
+                                        !props.style && (props.style = {})
+                                        props.className = classname
+                                        props.style.width = cell.column.getWidth()
+                                    }),
+                                )}
+                                key={cell.column.id}>
+                                { cell.renderCell() }
+                            </td>
+                        )
+                    })
+                }
+            </tr>
+        )
+    })
 
     return (
-        <div className="page">
+        <div className="page !h-100vh">
             <Header title={t('title')}>
                 <span className="cursor-default flex-1 connections-filter">
                     {`(${t('total.text')}: ${t('total.upload')} ${formatTraffic(traffic.uploadTotal)} ${t('total.download')} ${formatTraffic(traffic.downloadTotal)})`}
@@ -299,14 +286,18 @@ export default function Connections () {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card ref={cardRef} className="connections-card relative">
-                <div {...getTableProps()} className="flex flex-col flex-1 w-full overflow-auto" style={{ flexBasis: 0 }} ref={tableRef}>
-                    <div {...headerGroup.getHeaderGroupProps()} className="connections-header">
-                        { headers }
-                    </div>
+                <div className="overflow-auto min-h-full" ref={tableRef}>
+                    <table {...instance.getTableProps()} className="flex-1">
+                        <thead>
+                            <tr {...headerGroup.getHeaderGroupProps()} className="connections-header">
+                                { headers }
+                            </tr>
+                        </thead>
 
-                    <div {...getTableBodyProps()} className="flex-1">
-                        { content }
-                    </div>
+                        <tbody {...instance.getTableBodyProps()}>
+                            { content }
+                        </tbody>
+                    </table>
                 </div>
             </Card>
             <Modal title={t('closeAll.title')} show={visible} onClose={hide} onOk={handleCloseConnections}>{t('closeAll.content')}</Modal>
