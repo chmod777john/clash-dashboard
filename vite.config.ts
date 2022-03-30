@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import windiCSS from 'vite-plugin-windicss'
 import tsConfigPath from 'vite-tsconfig-paths'
@@ -24,6 +24,7 @@ export default defineConfig(
                     name: 'Clash Dashboard',
                 },
             }),
+            splitVendorChunkPlugin(),
         ],
         base: './',
         css: {

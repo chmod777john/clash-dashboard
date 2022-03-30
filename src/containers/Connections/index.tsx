@@ -1,10 +1,9 @@
-import { columnFilterRowsFn, createTable, sortRowsFn } from '@tanstack/react-table'
-import { type ColumnSort } from '@tanstack/react-table/build/types/features/Sorting'
+import { useIntersectionObserver, useSyncedRef } from '@react-hookz/web/esm'
+import { useTable, columnFilterRowsFn, createTable, sortRowsFn } from '@tanstack/react-table'
 import classnames from 'classnames'
 import produce from 'immer'
 import { groupBy } from 'lodash-es'
 import { useMemo, useLayoutEffect, useRef, useState, useEffect } from 'react'
-import { useLatest, useScroll } from 'react-use'
 
 import { Header, Checkbox, Modal, Icon, Drawer, Card, Button } from '@components'
 import { fromNow } from '@lib/date'
@@ -47,7 +46,7 @@ function formatSpeed (upload: number, download: number) {
     }
 }
 
-const table = createTable().RowType<FormatConnection>()
+const table = createTable<FormatConnection>()
 
 export default function Connections () {
     const { translation, lang } = useI18n()
@@ -95,8 +94,8 @@ export default function Connections () {
     }, [connections])
 
     // table
-    const tableRef = useRef<HTMLDivElement>(null)
-    const { x: scrollX } = useScroll(tableRef)
+    const pinRef = useRef<HTMLTableCellElement>(null)
+    const intersection = useIntersectionObserver(pinRef, { threshold: [1] })
     const columns = useMemo(
         () => table.createColumns([
             table.createDataColumn(Columns.Host, { minWidth: 260, width: 260, header: t(`columns.${Columns.Host}`) }),
@@ -113,28 +112,28 @@ export default function Connections () {
                     width: 200,
                     sortDescFirst: true,
                     sortType (rowA, rowB) {
-                        const speedA = rowA.original.speed
-                        const speedB = rowB.original.speed
+                        const speedA = rowA.original?.speed ?? { upload: 0, download: 0 }
+                        const speedB = rowB.original?.speed ?? { upload: 0, download: 0 }
                         return speedA.download === speedB.download
                             ? speedA.upload - speedB.upload
                             : speedA.download - speedB.download
                     },
-                    cell: cell => formatSpeed(cell.value[0], cell.value[1]),
+                    cell: (cell: { value: [number, number] }) => formatSpeed(cell.value[0], cell.value[1]),
                 },
             ),
-            table.createDataColumn(Columns.Upload, { minWidth: 100, width: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.value) }),
-            table.createDataColumn(Columns.Download, { minWidth: 100, width: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.value) }),
+            table.createDataColumn(Columns.Upload, { minWidth: 100, width: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.value as number) }),
+            table.createDataColumn(Columns.Download, { minWidth: 100, width: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.value as number) }),
             table.createDataColumn(Columns.SourceIP, { minWidth: 140, width: 140, header: t(`columns.${Columns.SourceIP}`), filterType: 'equals' }),
             table.createDataColumn(
                 Columns.Time,
                 {
-                    minWidth:
-                    120,
+                    minWidth: 120,
                     width: 120,
                     header: t(`columns.${Columns.Time}`),
-                    cell: cell => fromNow(new Date(cell.value), lang),
-                    sortType: (rowA, rowB) => rowB.original.time - rowA.original.time,
-                }),
+                    cell: cell => fromNow(new Date(cell.value as string), lang),
+                    sortType: (rowA, rowB) => (rowB.original as FormatConnection).time - (rowA.original as FormatConnection).time,
+                },
+            ),
         ]),
         [lang, t],
     )
@@ -158,7 +157,7 @@ export default function Connections () {
         }
     }, [connStreamReader, feed, setTraffic])
 
-    const instance = table.useTable({
+    const instance = useTable(table, {
         data,
         columns,
         sortRowsFn,
@@ -191,7 +190,7 @@ export default function Connections () {
         setDrawerState(d => { d.connection.completed = true })
         client.closeConnection(drawerState.selectedID)
     }
-    const latestConntion = useLatest(drawerState.connection)
+    const latestConntion = useSyncedRef(drawerState.connection)
     useEffect(() => {
         const conn = data.find(c => c.id === drawerState.selectedID)?.original
         if (conn) {
@@ -206,9 +205,9 @@ export default function Connections () {
         }
     }, [data, drawerState.selectedID, latestConntion, setDrawerState])
 
-    const scrolled = useMemo(() => scrollX > 0, [scrollX])
+    const scrolled = useMemo(() => (intersection?.intersectionRatio ?? 0) < 1, [intersection])
     const headers = headerGroup.headers.map((header, idx) => {
-        const column = header.column // as unknown as TableColumn<FormatConnection>
+        const column = header.column
         const id = column.id
         return (
             <th
@@ -223,6 +222,7 @@ export default function Connections () {
                         props.style.width = header.getWidth()
                     }),
                 )}
+                ref={column.id === Columns.Host ? pinRef : undefined}
                 key={id}>
                 <div {...column.getToggleSortingProps()}>
                     {header.renderHeader()}
@@ -233,13 +233,13 @@ export default function Connections () {
                     }
                 </div>
                 { idx !== headerGroup.headers.length - 1 &&
-                    <div {...column.getResizerProps()} className="connections-resizer" />
+                    <div {...header.getResizerProps()} className="connections-resizer" />
                 }
             </th>
         )
     })
 
-    const content = instance.getRows().map(row => {
+    const content = instance.getRowModel().rows.map(row => {
         return (
             <tr
                 {...row.getRowProps()}
@@ -253,7 +253,7 @@ export default function Connections () {
                             { 'text-center': shouldCenter.has(cell.column.id), completed: row.original?.completed },
                             {
                                 fixed: cell.column.id === Columns.Host,
-                                shadow: scrollX > 0 && cell.column.id === Columns.Host,
+                                shadow: scrolled && cell.column.id === Columns.Host,
                             },
                         )
                         return (
@@ -286,7 +286,7 @@ export default function Connections () {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card ref={cardRef} className="connections-card relative">
-                <div className="overflow-auto min-h-full" ref={tableRef}>
+                <div className="overflow-auto min-h-full">
                     <table {...instance.getTableProps()} className="flex-1">
                         <thead>
                             <tr {...headerGroup.getHeaderGroupProps()} className="connections-header">

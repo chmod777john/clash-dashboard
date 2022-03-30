@@ -1,6 +1,6 @@
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import { useLocation } from 'react-use'
+import { useLocation } from 'react-router-dom'
 
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { Client } from '@lib/request'
