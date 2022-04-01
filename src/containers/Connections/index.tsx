@@ -286,8 +286,8 @@ export default function Connections () {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card ref={cardRef} className="connections-card relative">
-                <div className="overflow-auto min-h-full">
-                    <table {...instance.getTableProps()} className="flex-1">
+                <div className="overflow-auto min-h-full min-w-full">
+                    <table {...instance.getTableProps()}>
                         <thead>
                             <tr {...headerGroup.getHeaderGroupProps()} className="connections-header">
                                 { headers }
