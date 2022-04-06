@@ -46,7 +46,7 @@ function formatSpeed (upload: number, download: number) {
     }
 }
 
-const table = createTable<FormatConnection>()
+const table = createTable<{ Row: FormatConnection }>()
 
 export default function Connections () {
     const { translation, lang } = useI18n()
@@ -118,11 +118,11 @@ export default function Connections () {
                             ? speedA.upload - speedB.upload
                             : speedA.download - speedB.download
                     },
-                    cell: (cell: { value: [number, number] }) => formatSpeed(cell.value[0], cell.value[1]),
+                    cell: cell => formatSpeed(cell.value[0], cell.value[1]),
                 },
             ),
-            table.createDataColumn(Columns.Upload, { minWidth: 100, width: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.value as number) }),
-            table.createDataColumn(Columns.Download, { minWidth: 100, width: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.value as number) }),
+            table.createDataColumn(Columns.Upload, { minWidth: 100, width: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.value) }),
+            table.createDataColumn(Columns.Download, { minWidth: 100, width: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.value) }),
             table.createDataColumn(Columns.SourceIP, { minWidth: 140, width: 140, header: t(`columns.${Columns.SourceIP}`), filterType: 'equals' }),
             table.createDataColumn(
                 Columns.Time,
@@ -130,8 +130,8 @@ export default function Connections () {
                     minWidth: 120,
                     width: 120,
                     header: t(`columns.${Columns.Time}`),
-                    cell: cell => fromNow(new Date(cell.value as string), lang),
-                    sortType: (rowA, rowB) => (rowB.original as FormatConnection).time - (rowA.original as FormatConnection).time,
+                    cell: cell => fromNow(new Date(cell.value), lang),
+                    sortType: (rowA, rowB) => (rowB.original?.time ?? 0) - (rowA.original?.time ?? 0),
                 },
             ),
         ]),
