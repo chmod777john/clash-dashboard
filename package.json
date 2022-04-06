@@ -62,7 +62,7 @@
         "dayjs": "^1.11.0",
         "eventemitter3": "^4.0.7",
         "immer": "^9.0.12",
-        "jotai": "^1.6.2",
+        "jotai": "1.6.1",
         "lodash-es": "^4.17.21",
         "neverthrow": "^4.3.1",
         "react": "^18.0.0",

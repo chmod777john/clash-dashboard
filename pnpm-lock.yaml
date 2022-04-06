@@ -28,7 +28,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.4.0
   eventemitter3: ^4.0.7
   immer: ^9.0.12
-  jotai: ^1.6.2
+  jotai: 1.6.1
   lodash-es: ^4.17.21
   neverthrow: ^4.3.1
   react: ^18.0.0
@@ -55,7 +55,7 @@ dependencies:
   dayjs: 1.11.0
   eventemitter3: 4.0.7
   immer: 9.0.12
-  jotai: 1.6.2_immer@9.0.12+react@18.0.0
+  jotai: 1.6.1_immer@9.0.12+react@18.0.0
   lodash-es: 4.17.21
   neverthrow: 4.3.1
   react: 18.0.0
@@ -3213,8 +3213,8 @@ packages:
     hasBin: true
     dev: true
 
-  /jotai/1.6.2_immer@9.0.12+react@18.0.0:
-    resolution: {integrity: sha512-WglyuXX67f8QPCOX5tDR0N9GhasOV1+IQ3piaF4owr2wBn2CV51T8zbw01ZCme/24JKJilFe6+aA29PJx+jsQw==}
+  /jotai/1.6.1_immer@9.0.12+react@18.0.0:
+    resolution: {integrity: sha512-iNKHmpKGN31KXDqxGLsplb4HLTroYtiM7oBEQ9leyoXSEGQGUZKK5IOV4kN6fUmkBSJbwb5WnmInYOYzpjIDOw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@babel/core': '*'
