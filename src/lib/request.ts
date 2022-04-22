@@ -56,7 +56,7 @@ interface History {
 
 export interface Proxy {
     name: string
-    type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Socks' | 'Http' | 'Snell'
+    type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Trojan' | 'Socks' | 'Http' | 'Snell'
     history: History[]
 }
 
@@ -80,6 +80,7 @@ export interface Connections {
         network: string
         type: string
         host: string
+        processPath?: string
         sourceIP: string
         sourcePort: string
         destinationPort: string

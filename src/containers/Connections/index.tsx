@@ -7,10 +7,10 @@ import { useMemo, useLayoutEffect, useRef, useState, useEffect } from 'react'
 
 import { Header, Checkbox, Modal, Icon, Drawer, Card, Button } from '@components'
 import { fromNow } from '@lib/date'
-import { formatTraffic } from '@lib/helper'
+import { basePath, formatTraffic } from '@lib/helper'
 import { useObject, useVisible } from '@lib/hook'
 import * as API from '@lib/request'
-import { BaseComponentProps, RuleType } from '@models'
+import { BaseComponentProps } from '@models'
 import { useClient, useConnectionStreamReader, useI18n } from '@stores'
 
 import { Devices } from './Devices'
@@ -21,6 +21,7 @@ import './style.scss'
 enum Columns {
     Host = 'host',
     Network = 'network',
+    Process = 'process',
     Type = 'type',
     Chains = 'chains',
     Rule = 'rule',
@@ -31,7 +32,7 @@ enum Columns {
     Time = 'time',
 }
 
-const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Rule, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Time])
+const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Time, Columns.Process])
 
 function formatSpeed (upload: number, download: number) {
     switch (true) {
@@ -74,13 +75,14 @@ export default function Connections () {
             id: c.id,
             host: `${c.metadata.host || c.metadata.destinationIP}:${c.metadata.destinationPort}`,
             chains: c.chains.slice().reverse().join(' / '),
-            rule: c.rule === RuleType.RuleSet ? `${c.rule}(${c.rulePayload})` : c.rule,
+            rule: c.rulePayload ? `${c.rule} :: ${c.rulePayload}` : c.rule,
             time: new Date(c.start).getTime(),
             upload: c.upload,
             download: c.download,
             sourceIP: c.metadata.sourceIP,
             type: c.metadata.type,
             network: c.metadata.network.toUpperCase(),
+            process: c.metadata.processPath,
             speed: { upload: c.uploadSpeed, download: c.downloadSpeed },
             completed: !!c.completed,
             original: c,
@@ -100,9 +102,10 @@ export default function Connections () {
         () => table.createColumns([
             table.createDataColumn(Columns.Host, { minWidth: 260, width: 260, header: t(`columns.${Columns.Host}`) }),
             table.createDataColumn(Columns.Network, { minWidth: 80, width: 80, header: t(`columns.${Columns.Network}`) }),
-            table.createDataColumn(Columns.Type, { minWidth: 120, width: 120, header: t(`columns.${Columns.Type}`) }),
+            table.createDataColumn(Columns.Type, { minWidth: 100, width: 100, header: t(`columns.${Columns.Type}`) }),
             table.createDataColumn(Columns.Chains, { minWidth: 200, width: 200, header: t(`columns.${Columns.Chains}`) }),
             table.createDataColumn(Columns.Rule, { minWidth: 140, width: 140, header: t(`columns.${Columns.Rule}`) }),
+            table.createDataColumn(Columns.Process, { minWidth: 100, width: 100, header: t(`columns.${Columns.Process}`), cell: cell => cell.value ? basePath(cell.value) : '-' }),
             table.createDataColumn(
                 row => [row.speed.upload, row.speed.download],
                 {
@@ -163,7 +166,7 @@ export default function Connections () {
         sortRowsFn,
         columnFilterRowsFn,
         initialState: {
-            sorting: [{ id: Columns.Time, desc: true }],
+            sorting: [{ id: Columns.Time, desc: false }],
         },
         columnResizeMode: 'onChange',
         enableColumnResizing: true,

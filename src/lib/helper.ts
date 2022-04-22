@@ -17,3 +17,7 @@ export function formatTraffic (num: number) {
     const exp = Math.floor(Math.log(num || 1) / Math.log(1024))
     return `${floor(num / Math.pow(1024, exp), 2).toFixed(2)} ${s?.[exp] ?? ''}`
 }
+
+export function basePath (path: string) {
+    return path.replace(/.*[/\\]/, '')
+}
