@@ -1,5 +1,5 @@
 import { useIntersectionObserver, useSyncedRef } from '@react-hookz/web/esm'
-import { useTable, columnFilterRowsFn, createTable, sortRowsFn } from '@tanstack/react-table'
+import { useTableInstance, createTable, getSortedRowModelSync, getColumnFilteredRowModelSync, getCoreRowModelSync } from '@tanstack/react-table'
 import classnames from 'classnames'
 import produce from 'immer'
 import { groupBy } from 'lodash-es'
@@ -160,11 +160,12 @@ export default function Connections () {
         }
     }, [connStreamReader, feed, setTraffic])
 
-    const instance = useTable(table, {
+    const instance = useTableInstance(table, {
         data,
         columns,
-        sortRowsFn,
-        columnFilterRowsFn,
+        getCoreRowModel: getCoreRowModelSync(),
+        getSortedRowModel: getSortedRowModelSync(),
+        getColumnFilteredRowModel: getColumnFilteredRowModelSync(),
         initialState: {
             sorting: [{ id: Columns.Time, desc: false }],
         },
