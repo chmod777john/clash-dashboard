@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 import logo from '@assets/logo.png'
 import { Lang, Language } from '@i18n'
@@ -20,11 +20,12 @@ export default function Sidebar (props: SidebarProps) {
     const { version, premium } = useVersion()
     const { data } = useClashXData()
     const { t } = translation('SideBar')
+    const location = useLocation()
 
     const navlinks = routes.map(
         ({ path, name, noMobile }) => (
             <li className={classnames('item', { 'no-mobile': noMobile })} key={name}>
-                <NavLink to={path} className={({ isActive }) => classnames({ active: isActive })}>
+                <NavLink to={{ pathname: path, search: location.search }} className={({ isActive }) => classnames({ active: isActive })}>
                     { t(name as keyof typeof Language[Lang]['SideBar']) }
                 </NavLink>
             </li>
