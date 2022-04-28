@@ -18,19 +18,19 @@ import { ConnectionInfo } from './Info'
 import { Connection, FormatConnection, useConnections } from './store'
 import './style.scss'
 
-enum Columns {
-    Host = 'host',
-    Network = 'network',
-    Process = 'process',
-    Type = 'type',
-    Chains = 'chains',
-    Rule = 'rule',
-    Speed = 'speed',
-    Upload = 'upload',
-    Download = 'download',
-    SourceIP = 'sourceIP',
-    Time = 'time',
-}
+const Columns = {
+    Host: 'host',
+    Network: 'network',
+    Process: 'process',
+    Type: 'type',
+    Chains: 'chains',
+    Rule: 'rule',
+    Speed: 'speed',
+    Upload: 'upload',
+    Download: 'download',
+    SourceIP: 'sourceIP',
+    Time: 'time',
+} as const
 
 const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Time, Columns.Process])
 
@@ -47,7 +47,7 @@ function formatSpeed (upload: number, download: number) {
     }
 }
 
-const table = createTable<{ Row: FormatConnection }>()
+const table = createTable().setRowType<FormatConnection>()
 
 export default function Connections () {
     const { translation, lang } = useI18n()
@@ -114,7 +114,7 @@ export default function Connections () {
                     minWidth: 200,
                     width: 200,
                     sortDescFirst: true,
-                    sortType (rowA, rowB) {
+                    sortingFn (rowA, rowB) {
                         const speedA = rowA.original?.speed ?? { upload: 0, download: 0 }
                         const speedB = rowB.original?.speed ?? { upload: 0, download: 0 }
                         return speedA.download === speedB.download
@@ -126,7 +126,7 @@ export default function Connections () {
             ),
             table.createDataColumn(Columns.Upload, { minWidth: 100, width: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.value) }),
             table.createDataColumn(Columns.Download, { minWidth: 100, width: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.value) }),
-            table.createDataColumn(Columns.SourceIP, { minWidth: 140, width: 140, header: t(`columns.${Columns.SourceIP}`), filterType: 'equals' }),
+            table.createDataColumn(Columns.SourceIP, { minWidth: 140, width: 140, header: t(`columns.${Columns.SourceIP}`), filterFn: 'equals' }),
             table.createDataColumn(
                 Columns.Time,
                 {
@@ -134,7 +134,7 @@ export default function Connections () {
                     width: 120,
                     header: t(`columns.${Columns.Time}`),
                     cell: cell => fromNow(new Date(cell.value), lang),
-                    sortType: (rowA, rowB) => (rowB.original?.time ?? 0) - (rowA.original?.time ?? 0),
+                    sortingFn: (rowA, rowB) => (rowB.original?.time ?? 0) - (rowA.original?.time ?? 0),
                 },
             ),
         ]),
