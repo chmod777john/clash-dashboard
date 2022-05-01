@@ -8,6 +8,7 @@ import { BaseComponentProps } from '@models/BaseProps'
 interface DrawerProps extends BaseComponentProps {
     visible?: boolean
     width?: number
+    bodyClassName?: string
     containerRef?: RefObject<HTMLElement>
 }
 
@@ -24,7 +25,7 @@ export function Drawer (props: DrawerProps) {
 
     const container = (
         <div className={classnames(props.className, 'absolute inset-0 pointer-events-none z-9999')}>
-            <Card className={classnames(cardStyle, { 'translate-x-0': props.visible })} style={{ width: props.width ?? 400 }}>{props.children}</Card>
+            <Card className={classnames(cardStyle, props.bodyClassName, { 'translate-x-0': props.visible })} style={{ width: props.width ?? 400 }}>{props.children}</Card>
         </div>
     )
 

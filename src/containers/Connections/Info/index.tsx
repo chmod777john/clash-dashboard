@@ -16,7 +16,7 @@ export function ConnectionInfo (props: ConnectionsInfoProps) {
     const t = useMemo(() => translation('Connections').t, [translation])
 
     return (
-        <div className={classnames(props.className, 'text-sm flex flex-col')}>
+        <div className={classnames(props.className, 'text-sm flex flex-col overflow-y-auto')}>
             <div className="flex my-3">
                 <span className="font-bold w-20">{t('info.id')}</span>
                 <span className="font-mono">{props.connection.id}</span>

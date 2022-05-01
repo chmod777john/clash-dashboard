@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { Route, Navigate, Routes, useLocation } from 'react-router-dom'
+import { Route, Navigate, Routes, useLocation, Outlet } from 'react-router-dom'
 
 // import Overview from '@containers/Overview'
 import Connections from '@containers/Connections'
@@ -29,20 +29,26 @@ export default function App () {
         { path: '/settings', name: 'Settings', element: <Settings /> },
     ]
 
-    return (
+    const layout = (
         <div className={classnames('app', { 'not-clashx': !isClashX() })}>
             <SideBar routes={routes} />
             <div className="page-container">
-                <Routes>
-                    <Route path="/" element={<Navigate to={{ pathname: '/proxies', search: location.search }} replace />} />
-                    {
-                        routes.map(
-                            route => <Route path={route.path} key={route.path} element={route.element} />,
-                        )
-                    }
-                </Routes>
+                <Outlet />
             </div>
             <ExternalControllerModal />
         </div>
+    )
+
+    return (
+        <Routes>
+            <Route path="/" element={layout}>
+                <Route path="/" element={<Navigate to={{ pathname: '/proxies', search: location.search }} replace />} />
+                {
+                    routes.map(
+                        route => <Route path={route.path} key={route.path} element={route.element} />,
+                    )
+                }
+            </Route>
+        </Routes>
     )
 }
