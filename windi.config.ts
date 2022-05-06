@@ -11,6 +11,11 @@ export default defineConfig({
                 red: '#f56c6c',
                 green: '#67c23a',
             },
+            textColor: {
+                primary: {
+                    darken: '#54759a',
+                },
+            },
             textShadow: {
                 primary: '0 0 6px rgb(44 138 248 / 40%)',
             },

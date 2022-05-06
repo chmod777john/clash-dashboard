@@ -1,4 +1,4 @@
-import { useIntersectionObserver, useSyncedRef } from '@react-hookz/web/esm'
+import { useIntersectionObserver, useSyncedRef, useUnmountEffect } from '@react-hookz/web/esm'
 import { useTableInstance, createTable, getSortedRowModelSync, getColumnFilteredRowModelSync, getCoreRowModelSync } from '@tanstack/react-table'
 import classnames from 'classnames'
 import produce from 'immer'
@@ -53,6 +53,7 @@ export default function Connections () {
     const { translation, lang } = useI18n()
     const t = useMemo(() => translation('Connections').t, [translation])
     const connStreamReader = useConnectionStreamReader()
+    const readerRef = useSyncedRef(connStreamReader)
     const client = useClient()
     const cardRef = useRef<HTMLDivElement>(null)
 
@@ -156,9 +157,11 @@ export default function Connections () {
         connStreamReader?.subscribe('data', handleConnection)
         return () => {
             connStreamReader?.unsubscribe('data', handleConnection)
-            connStreamReader?.destory()
         }
     }, [connStreamReader, feed, setTraffic])
+    useUnmountEffect(() => {
+        readerRef.current?.destory()
+    })
 
     const instance = useTableInstance(table, {
         data,

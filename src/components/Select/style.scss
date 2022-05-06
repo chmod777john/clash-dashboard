@@ -16,22 +16,16 @@
     position: absolute;
     max-width: 170px;
     border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba($color: $color-gray-dark, $alpha: 0.5);
-    opacity: 0.8;
     pointer-events: none;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: all 200ms linear;
+    transition: all 200ms ease;
 
     .list {
+        opacity: 0;
         max-height: 300px;
         overflow: auto;
         background: $color-white;
         padding: 5px 0;
-        transform: scaleY(2);
-        transform-origin: top;
-        transition: all 200ms linear;
+        transition: all 200ms ease;
 
         > .option {
             color: $color-primary-darken;
@@ -52,11 +46,12 @@
 }
 
 .select-list-show {
-    opacity: 1;
     pointer-events: visible;
     transform: scaleY(1);
+    box-shadow: 0 2px 5px rgba($color: $color-gray-dark, $alpha: 0.5);
 
     .list {
+        opacity: 1;
         transform: scaleY(1);
     }
 }

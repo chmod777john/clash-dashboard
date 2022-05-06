@@ -41,6 +41,7 @@ const EN = {
     },
     Logs: {
         title: 'Logs',
+        levelLabel: 'Log level',
     },
     Rules: {
         title: 'Rules',

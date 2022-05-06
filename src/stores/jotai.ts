@@ -1,11 +1,12 @@
+import { usePreviousDistinct, useSyncedRef } from '@react-hookz/web/esm'
 import { AxiosError } from 'axios'
 import produce from 'immer'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { atomWithImmer } from 'jotai/immer'
 import { atomWithStorage, useUpdateAtom } from 'jotai/utils'
 import { get } from 'lodash-es'
 import { ResultAsync } from 'neverthrow'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
 import { Get } from 'type-fest'
 
@@ -86,6 +87,7 @@ export function useRuleProviders () {
 
 export const configAtom = atomWithStorage('profile', {
     breakConnections: false,
+    logLevel: '',
 })
 
 export function useConfig () {
@@ -244,49 +246,44 @@ export function useRule () {
     return { rules: data, update }
 }
 
-const logsAtom = atom({
-    key: '',
-    instance: null as StreamReader<Log> | null,
-})
+const logsAtom = atom(new StreamReader<Log>({ bufferLength: 200 }))
 
 export function useLogsStreamReader () {
     const apiInfo = useAPIInfo()
     const { general } = useGeneral()
-    const version = useVersion()
-    const [item, setItem] = useAtom(logsAtom)
+    const { data: { logLevel } } = useConfig()
+    const item = useAtomValue(logsAtom)
 
-    if (!version.version || !general.logLevel) {
-        return null
-    }
+    const level = logLevel || general.logLevel
+    const previousKey = usePreviousDistinct(
+        `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/logs?level=${level}&secret=${apiInfo.secret}`,
+    )
 
-    const useWebsocket = !!version.version || true
-    const key = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/logs?level=${general.logLevel ?? ''}&useWebsocket=${useWebsocket}&secret=${apiInfo.secret}`
-    if (item.key === key) {
-        return item.instance!
-    }
+    const apiInfoRef = useSyncedRef(apiInfo)
 
-    const oldInstance = item.instance
+    useEffect(() => {
+        if (level) {
+            const apiInfo = apiInfoRef.current
+            const protocol = apiInfo.protocol === 'http:' ? 'ws:' : 'wss:'
+            const logUrl = `${protocol}//${apiInfo.hostname}:${apiInfo.port}/logs?level=${level}&token=${apiInfo.secret}`
+            item.connect(logUrl)
+        }
+    }, [apiInfoRef, item, level, previousKey])
 
-    const logUrl = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/logs?level=${general.logLevel ?? ''}`
-    const instance = new StreamReader<Log>({ url: logUrl, bufferLength: 200, token: apiInfo.secret, useWebsocket })
-    setItem({ key, instance })
-
-    if (oldInstance != null) {
-        oldInstance.destory()
-    }
-
-    return instance
+    return item
 }
 
 export function useConnectionStreamReader () {
     const apiInfo = useAPIInfo()
-    const version = useVersion()
 
-    const useWebsocket = !!version.version || true
+    const connection = useRef(new StreamReader<Snapshot>({ bufferLength: 200 }))
 
-    const url = `${apiInfo.protocol}//${apiInfo.hostname}:${apiInfo.port}/connections`
-    return useMemo(
-        () => version.version ? new StreamReader<Snapshot>({ url, bufferLength: 200, token: apiInfo.secret, useWebsocket }) : null,
-        [apiInfo.secret, url, useWebsocket, version.version],
-    )
+    const protocol = apiInfo.protocol === 'http:' ? 'ws:' : 'wss:'
+    const url = `${protocol}//${apiInfo.hostname}:${apiInfo.port}/connections?token=${apiInfo.secret}`
+
+    useEffect(() => {
+        connection.current.connect(url)
+    }, [url])
+
+    return connection.current
 }

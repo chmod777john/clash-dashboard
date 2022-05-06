@@ -1,115 +1,86 @@
 import classnames from 'classnames'
-import { useRef, useLayoutEffect, useState, useMemo, ReactElement, Children, cloneElement } from 'react'
+import { useRef, useState, useMemo, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
 import { BaseComponentProps } from '@models'
+
 import './style.scss'
 
-type OptionValue = string | number
+export interface SelectOptions<T extends string | number> {
+    label: string
+    value: T
+    disabled?: boolean
+    key?: React.Key
+}
 
-interface SelectProps extends BaseComponentProps {
+interface SelectProps<T extends string | number> extends BaseComponentProps {
     /**
      * selected value
      * must match one of options
      */
-    value: OptionValue
+    value: T
 
-    children?: ReactElement
+    options: Array<SelectOptions<T>>
 
-    onSelect?: (value: OptionValue, e: React.MouseEvent<HTMLLIElement>) => void
+    onSelect?: (value: T, e: React.MouseEvent<HTMLLIElement>) => void
 }
 
-export function Select (props: SelectProps) {
-    const { value, onSelect, children, className: cn, style } = props
+export function Select<T extends string | number> (props: SelectProps<T>) {
+    const { value, options, onSelect, className: cn, style } = props
 
-    const portalRef = useRef<HTMLDivElement>(document.createElement('div'))
-    const attachmentRef = useRef<HTMLDivElement>(null)
+    const portalRef = useRef(document.createElement('div'))
     const targetRef = useRef<HTMLDivElement>(null)
 
     const [showDropDownList, setShowDropDownList] = useState(false)
-    const [hasCreateDropList, setHasCreateDropList] = useState(false)
-    const dropdownListStyles = useMemo(() => {
-        if (targetRef.current != null) {
-            const targetRectInfo = targetRef.current.getBoundingClientRect()
-            return {
-                top: Math.floor(targetRectInfo.top) - 10,
-                left: Math.floor(targetRectInfo.left) - 10,
-            }
-        }
-        return {}
+    const [dropdownListStyles, setDropdownListStyles] = useState<React.CSSProperties>({})
+    useLayoutEffect(() => {
+        const targetRectInfo = targetRef.current!.getBoundingClientRect()
+        setDropdownListStyles({
+            top: Math.floor(targetRectInfo.top + targetRectInfo.height) + 6,
+            left: Math.floor(targetRectInfo.left) - 10,
+        })
     }, [])
-
-    function handleGlobalClick (e: MouseEvent) {
-        const el = attachmentRef.current
-
-        if (el?.contains(e.target as Node)) {
-            setShowDropDownList(false)
-        }
-    }
 
     useLayoutEffect(() => {
         const current = portalRef.current
         document.body.appendChild(current)
-        document.addEventListener('click', handleGlobalClick, true)
         return () => {
-            document.addEventListener('click', handleGlobalClick, true)
             document.body.removeChild(current)
         }
     }, [])
 
     function handleShowDropList () {
-        if (!hasCreateDropList) {
-            setHasCreateDropList(true)
-        }
-        setShowDropDownList(true)
+        setShowDropDownList(!showDropDownList)
     }
 
-    const matchChild = useMemo(() => {
-        let matchChild: React.ReactElement | null = null
-
-        Children.forEach(children, (child) => {
-            if (child?.props?.value === value) {
-                matchChild = child
-            }
-        })
-
-        return matchChild as React.ReactElement | null
-    }, [value, children])
-
-    const hookedChildren = useMemo(() => {
-        return Children.map(children ?? [], child => {
-            if (!child.props || !child.type) {
-                return child
-            }
-
-            // add classname for selected option
-            const className = child.props.value === value
-                ? classnames(child.props.className, 'selected')
-                : child.props.className
-
-            // hook element onclick event
-            const rawOnClickEvent = child.props.onClick
-            return cloneElement(child, Object.assign({}, child.props, {
-                onClick: (e: React.MouseEvent<HTMLLIElement>) => {
-                    onSelect?.(child.props.value, e)
-                    setShowDropDownList(false)
-                    rawOnClickEvent?.(e)
-                },
-                className,
-            }))
-        })
-    }, [children, value, onSelect])
+    const matchChild = useMemo(
+        () => options.find(o => o.value === value),
+        [value, options],
+    )
 
     const dropDownList = (
         <div
             className={classnames('select-list', { 'select-list-show': showDropDownList })}
-            ref={attachmentRef}
             style={dropdownListStyles}
         >
             <ul className="list">
-                { hookedChildren }
+                {
+                    options.map(option => (
+                        <Option
+                            className={classnames({ selected: option.value === value })}
+                            onClick={e => {
+                                onSelect?.(option.value, e)
+                                setShowDropDownList(false)
+                            }}
+                            disabled={option.disabled}
+                            key={option.key ?? option.value}
+                            value={option.value}>
+                            {option.label}
+                        </Option>
+                    ))
+                }
             </ul>
         </div>
     )
@@ -122,28 +93,25 @@ export function Select (props: SelectProps) {
                 ref={targetRef}
                 onClick={handleShowDropList}
             >
-                {matchChild?.props?.children}
+                {matchChild?.label}
                 <Icon type="triangle-down" />
             </div>
-            {
-                hasCreateDropList && createPortal(dropDownList, portalRef.current)
-            }
+            {createPortal(dropDownList, portalRef.current)}
         </>
     )
 }
 
-interface OptionProps extends BaseComponentProps {
-    key: React.Key
-    value: OptionValue
+interface OptionProps<T> extends BaseComponentProps {
+    value: T
     disabled?: boolean
     onClick?: (e: React.MouseEvent<HTMLLIElement>) => void
 }
 
-export function Option (props: OptionProps) {
-    const { className: cn, style, key, disabled = false, children, onClick = noop } = props
+function Option<T> (props: OptionProps<T>) {
+    const { className: cn, style, disabled = false, children, onClick = noop } = props
     const className = classnames('option', { disabled }, cn)
 
     return (
-        <li className={className} style={style} key={key} onClick={onClick}>{children}</li>
+        <li className={className} style={style} onClick={onClick}>{children}</li>
     )
 }
