@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@react-hookz/web': ^14.2.2
-  '@tanstack/react-table': ^8.0.0-beta.2
+  '@tanstack/react-table': 8.0.0-alpha.87
   '@types/lodash-es': ^4.17.6
   '@types/node': ^17.0.35
   '@types/react': ^18.0.9
@@ -47,7 +47,7 @@ specifiers:
 
 dependencies:
   '@react-hookz/web': 14.2.2_ef5jwxihqo6n7gxfmzogljlgcm
-  '@tanstack/react-table': 8.0.0-beta.2_ef5jwxihqo6n7gxfmzogljlgcm
+  '@tanstack/react-table': 8.0.0-alpha.87_ef5jwxihqo6n7gxfmzogljlgcm
   axios: 0.27.2
   classnames: 2.3.1
   dayjs: 1.11.2
@@ -1486,20 +1486,20 @@ packages:
       string.prototype.matchall: 4.0.7
     dev: true
 
-  /@tanstack/react-table/8.0.0-beta.2_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution: {integrity: sha512-FgYl9EkBa21JfdOn8lJeDTTgLL0qHSU5pXOqHDzGpyf1OJLWDG1pIPPLRSZHBQWAanreKCVgbQsw8avkql/FxQ==}
+  /@tanstack/react-table/8.0.0-alpha.87_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-m4PTVemBtk8i9YbvI2Q7ODcD4aCQvyQaOnTx/NWL0r8ZTJXi8BD2bq5UhIfRGuvSd/amoLLYZnVanjldVdJ2Mw==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@tanstack/table-core': 8.0.0-beta.2
+      '@tanstack/table-core': 8.0.0-alpha.87
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
     dev: false
 
-  /@tanstack/table-core/8.0.0-beta.2:
-    resolution: {integrity: sha512-97ySXP/Ace88elTzqZcFcDyhkP8YHaFnhWINI3ujci4FVsUf3ujdK+KY1F4LYshFGJn0UblVIWIbpG1wRll3cw==}
+  /@tanstack/table-core/8.0.0-alpha.87:
+    resolution: {integrity: sha512-6oFjMqlx37E4oYQGkZ5Ub4kJTqU78OOYVJk6dg2Zf14S5UETqBRx9UsN/3b13I0rY7KsKOAYDQJZV+rLmdl0qA==}
     engines: {node: '>=12'}
     dev: false
 
