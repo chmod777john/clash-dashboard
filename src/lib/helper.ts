@@ -13,7 +13,7 @@ export function partition<T> (arr: T[], fn: (arg: T) => boolean): [T[], T[]] {
 }
 
 export function formatTraffic (num: number) {
-    const s = ['B', 'KB', 'MB', 'GB', 'TB']
+    const s = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
     const exp = Math.floor(Math.log(num || 1) / Math.log(1024))
     return `${floor(num / Math.pow(1024, exp), 2).toFixed(2)} ${s?.[exp] ?? ''}`
 }
