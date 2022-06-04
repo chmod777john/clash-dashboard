@@ -8,5 +8,5 @@ dayjs.extend(relativeTime)
 
 export function fromNow (date: Date, lang: Lang): string {
     const locale = lang === 'en_US' ? 'en' : 'zh-cn'
-    return dayjs().locale(locale).from(date)
+    return dayjs(date).locale(locale).from(dayjs())
 }
