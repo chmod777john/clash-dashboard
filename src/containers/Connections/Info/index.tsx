@@ -55,7 +55,7 @@ export function ConnectionInfo (props: ConnectionsInfoProps) {
             </div>
             <div className="flex my-3">
                 <span className="font-bold w-20">{t('info.process')}</span>
-                <span className="font-mono">{
+                <span className="font-mono flex-1 break-all">{
                     props.connection.metadata?.processPath
                         ? `${basePath(props.connection.metadata.processPath)}`
                         : t('info.hostEmpty')

@@ -14,14 +14,14 @@ jobs:
     - name: Setup Nodejs
       uses: actions/setup-node@v3
       with:
-        node-version: '17.x'
+        node-version: '18.x'
         cache: pnpm
     - name: Install package and build
       run: |
-        pnpm install
+        pnpm install --frozen-lockfile
         pnpm build
     - name: Deploy
-      uses: crazy-max/ghaction-github-pages@v2
+      uses: crazy-max/ghaction-github-pages@v3
       with:
         target_branch: gh-pages
         build_dir: dist
