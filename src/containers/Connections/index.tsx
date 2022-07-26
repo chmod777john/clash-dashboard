@@ -1,5 +1,5 @@
 import { useIntersectionObserver, useSyncedRef, useUnmountEffect } from '@react-hookz/web/esm'
-import { useTableInstance, createTable, getSortedRowModel, getFilteredRowModel, getCoreRowModel } from '@tanstack/react-table'
+import { useReactTable, getSortedRowModel, getFilteredRowModel, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table'
 import classnames from 'classnames'
 import { groupBy } from 'lodash-es'
 import { useMemo, useLayoutEffect, useRef, useState, useEffect } from 'react'
@@ -45,7 +45,7 @@ function formatSpeed (upload: number, download: number) {
     }
 }
 
-const table = createTable().setRowType<FormatConnection>()
+const columnHelper = createColumnHelper<FormatConnection>()
 
 export default function Connections () {
     const { translation, lang } = useI18n()
@@ -99,13 +99,13 @@ export default function Connections () {
     const intersection = useIntersectionObserver(pinRef, { threshold: [1] })
     const columns = useMemo(
         () => [
-            table.createDataColumn(Columns.Host, { minSize: 260, size: 260, header: t(`columns.${Columns.Host}`) }),
-            table.createDataColumn(Columns.Network, { minSize: 80, size: 80, header: t(`columns.${Columns.Network}`) }),
-            table.createDataColumn(Columns.Type, { minSize: 100, size: 100, header: t(`columns.${Columns.Type}`) }),
-            table.createDataColumn(Columns.Chains, { minSize: 200, size: 200, header: t(`columns.${Columns.Chains}`) }),
-            table.createDataColumn(Columns.Rule, { minSize: 140, size: 140, header: t(`columns.${Columns.Rule}`) }),
-            table.createDataColumn(Columns.Process, { minSize: 100, size: 100, header: t(`columns.${Columns.Process}`), cell: cell => cell.getValue() ? basePath(cell.getValue()!) : '-' }),
-            table.createDataColumn(
+            columnHelper.accessor(Columns.Host, { minSize: 260, size: 260, header: t(`columns.${Columns.Host}`) }),
+            columnHelper.accessor(Columns.Network, { minSize: 80, size: 80, header: t(`columns.${Columns.Network}`) }),
+            columnHelper.accessor(Columns.Type, { minSize: 100, size: 100, header: t(`columns.${Columns.Type}`) }),
+            columnHelper.accessor(Columns.Chains, { minSize: 200, size: 200, header: t(`columns.${Columns.Chains}`) }),
+            columnHelper.accessor(Columns.Rule, { minSize: 140, size: 140, header: t(`columns.${Columns.Rule}`) }),
+            columnHelper.accessor(Columns.Process, { minSize: 100, size: 100, header: t(`columns.${Columns.Process}`), cell: cell => cell.getValue() ? basePath(cell.getValue()!) : '-' }),
+            columnHelper.accessor(
                 row => [row.speed.upload, row.speed.download],
                 {
                     id: Columns.Speed,
@@ -123,10 +123,10 @@ export default function Connections () {
                     cell: cell => formatSpeed(cell.getValue()[0], cell.getValue()[1]),
                 },
             ),
-            table.createDataColumn(Columns.Upload, { minSize: 100, size: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.getValue()) }),
-            table.createDataColumn(Columns.Download, { minSize: 100, size: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.getValue()) }),
-            table.createDataColumn(Columns.SourceIP, { minSize: 140, size: 140, header: t(`columns.${Columns.SourceIP}`), filterFn: 'equals' }),
-            table.createDataColumn(
+            columnHelper.accessor(Columns.Upload, { minSize: 100, size: 100, header: t(`columns.${Columns.Upload}`), cell: cell => formatTraffic(cell.getValue()) }),
+            columnHelper.accessor(Columns.Download, { minSize: 100, size: 100, header: t(`columns.${Columns.Download}`), cell: cell => formatTraffic(cell.getValue()) }),
+            columnHelper.accessor(Columns.SourceIP, { minSize: 140, size: 140, header: t(`columns.${Columns.SourceIP}`), filterFn: 'equals' }),
+            columnHelper.accessor(
                 Columns.Time,
                 {
                     minSize: 120,
@@ -161,7 +161,7 @@ export default function Connections () {
         readerRef.current?.destory()
     })
 
-    const instance = useTableInstance(table, {
+    const instance = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
@@ -223,7 +223,7 @@ export default function Connections () {
                 ref={column.id === Columns.Host ? pinRef : undefined}
                 key={id}>
                 <div onClick={column.getToggleSortingHandler()}>
-                    {header.renderHeader()}
+                    { flexRender(header.column.columnDef.header, header.getContext()) }
                     {
                         column.getIsSorted() !== false
                             ? column.getIsSorted() === 'desc' ? ' ↓' : ' ↑'
@@ -261,7 +261,7 @@ export default function Connections () {
                                 className={classname}
                                 style={{ width: cell.column.getSize() }}
                                 key={cell.column.id}>
-                                { cell.renderCell() }
+                                { flexRender(cell.column.columnDef.cell, cell.getContext()) }
                             </td>
                         )
                     })

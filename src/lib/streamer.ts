@@ -28,6 +28,10 @@ export class StreamReader<T> {
     }
 
     protected connectWebsocket () {
+        if (!this.url) {
+            return
+        }
+
         const url = new URL(this.url)
 
         this.connection = new WebSocket(url.toString())

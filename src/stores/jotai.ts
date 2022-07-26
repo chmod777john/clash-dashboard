@@ -169,7 +169,7 @@ export function useProxy () {
             .filter(key => !unUsedProxy.has(key))
             .map(key => ({ ...allProxies.data.proxies[key], name: key }))
         const [proxy, groups] = partition(proxies, proxy => !policyGroup.has(proxy.type))
-        set({ proxies: proxy as API.Proxy[], groups: groups as API.Group[], global: global })
+        set({ proxies: proxy as API.Proxy[], groups: groups as API.Group[], global })
     })
 
     const markProxySelected = useCallback((name: string, selected: string) => {

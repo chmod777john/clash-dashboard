@@ -30,6 +30,9 @@ export default defineConfig(
             }),
             splitVendorChunkPlugin(),
         ],
+        server: {
+            port: 3000,
+        },
         base: './',
         css: {
             preprocessorOptions: {
