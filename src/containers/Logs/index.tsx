@@ -58,7 +58,7 @@ export default function Logs () {
     return (
         <div className="page">
             <Header title={ t('title') } >
-                <span className="text-sm text-primary-darken mr-2">{t('levelLabel')}:</span>
+                <span className="text-primary-darken mr-2 text-sm">{t('levelLabel')}:</span>
                 <Select
                     options={logLevelOptions}
                     value={camelCase(logLevel)}
@@ -66,12 +66,12 @@ export default function Logs () {
                 />
             </Header>
 
-            <Card className="flex flex-col flex-1 mt-2.5 md:mt-4">
+            <Card className="mt-2.5 flex flex-1 flex-col md:mt-4">
                 <ul className="logs-panel" ref={listRef}>
                     {
                         logs.map(
                             (log, index) => (
-                                <li className="leading-5 inline-block text-[11px]" key={index}>
+                                <li className="inline-block text-[11px] leading-5" key={index}>
                                     <span className="mr-2 text-orange-400">[{ dayjs(log.time).format('YYYY-MM-DD HH:mm:ss') }]</span>
                                     <span className={logMap.get(log.type)}>[{ log.type.toUpperCase() }]</span>
                                     <span> { log.payload }</span>

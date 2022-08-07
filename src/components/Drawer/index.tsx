@@ -24,7 +24,7 @@ export function Drawer (props: DrawerProps) {
     const cardStyle = 'absolute h-full right-0 transition-transform transform translate-x-full duration-100 pointer-events-auto'
 
     const container = (
-        <div className={classnames(props.className, 'absolute inset-0 pointer-events-none z-9999')}>
+        <div className={classnames(props.className, 'z-9999 pointer-events-none absolute inset-0')}>
             <Card className={classnames(cardStyle, props.bodyClassName, { 'translate-x-0': props.visible })} style={{ width: props.width ?? 400 }}>{props.children}</Card>
         </div>
     )

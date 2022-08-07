@@ -23,7 +23,7 @@ export function Devices (props: DevicesProps) {
 
     return (
         <div className={classname} style={style}>
-            <div className={classnames('connections-devices-item pt-2 mb-2', { selected: props.selected === '' })} onClick={() => handleSelected('')}>
+            <div className={classnames('connections-devices-item mb-2 pt-2', { selected: props.selected === '' })} onClick={() => handleSelected('')}>
                 { t('filter.all') }
             </div>
             {
@@ -31,7 +31,7 @@ export function Devices (props: DevicesProps) {
                     device => (
                         <div
                             key={device.label}
-                            className={classnames('connections-devices-item pt-2 mb-2', { selected: props.selected === device.label })}
+                            className={classnames('connections-devices-item mb-2 pt-2', { selected: props.selected === device.label })}
                             onClick={() => handleSelected(device.label)}>
                             { device.label } ({ device.number })
                         </div>

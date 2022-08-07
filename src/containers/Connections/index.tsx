@@ -273,7 +273,7 @@ export default function Connections () {
     return (
         <div className="page !h-100vh">
             <Header title={t('title')}>
-                <span className="cursor-default flex-1 connections-filter">
+                <span className="connections-filter flex-1 cursor-default">
                     {`(${t('total.text')}: ${t('total.upload')} ${formatTraffic(traffic.uploadTotal)} ${t('total.download')} ${formatTraffic(traffic.downloadTotal)})`}
                 </span>
                 <Checkbox className="connections-filter" checked={save} onChange={toggleSave}>{t('keepClosed')}</Checkbox>
@@ -281,7 +281,7 @@ export default function Connections () {
             </Header>
             { devices.length > 1 && <Devices devices={devices} selected={device} onChange={handleDeviceSelected} /> }
             <Card ref={cardRef} className="connections-card relative">
-                <div className="overflow-auto min-h-full min-w-full">
+                <div className="min-h-full min-w-full overflow-auto">
                     <table>
                         <thead>
                             <tr className="connections-header">
@@ -296,12 +296,12 @@ export default function Connections () {
             </Card>
             <Modal title={t('closeAll.title')} show={visible} onClose={hide} onOk={handleCloseConnections}>{t('closeAll.content')}</Modal>
             <Drawer containerRef={cardRef} bodyClassName="flex flex-col" visible={drawerState.visible} width={450}>
-                <div className="flex h-8 justify-between items-center">
-                    <span className="font-bold pl-3">{t('info.title')}</span>
+                <div className="flex h-8 items-center justify-between">
+                    <span className="pl-3 font-bold">{t('info.title')}</span>
                     <Icon type="close" size={16} className="cursor-pointer" onClick={() => setDrawerState('visible', false)} />
                 </div>
                 <ConnectionInfo className="mt-3 px-5" connection={drawerState.connection} />
-                <div className="flex mt-3 pr-3 justify-end">
+                <div className="mt-3 flex justify-end pr-3">
                     <Button type="danger" disiabled={drawerState.connection.completed} onClick={() => handleConnectionClosed()}>{ t('info.closeConnection') }</Button>
                 </div>
             </Drawer>

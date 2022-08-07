@@ -18,7 +18,7 @@ function RuleProviders () {
             providers.length !== 0 &&
             <div className="flex flex-col">
                 <Header title={t('providerTitle')} />
-                <Card className="divide-y rounded shadow-primary mt-4 p-0">
+                <Card className="shadow-primary mt-4 divide-y rounded p-0">
                     {
                         providers.map(p => (
                             <Provider key={p.name} provider={p} />
@@ -42,9 +42,9 @@ export default function Rules () {
         return (
             <li className="rule-item" style={style}>
                 <div className="flex py-1">
-                    <div className="text-center w-40 rule-type">{ rule.type }</div>
-                    <div className="flex-1 text-center payload">{ rule.payload }</div>
-                    <div className="text-center w-40 rule-proxy">{ rule.proxy }</div>
+                    <div className="rule-type w-40 text-center">{ rule.type }</div>
+                    <div className="payload flex-1 text-center">{ rule.payload }</div>
+                    <div className="rule-proxy w-40 text-center">{ rule.proxy }</div>
                 </div>
             </li>
         )
@@ -54,7 +54,7 @@ export default function Rules () {
         <div className="page">
             <RuleProviders />
             <Header className="not-first:mt-7.5" title={t('title')} />
-            <Card className="flex flex-col flex-1 mt-2.5 p-0 md:mt-4 focus:outline-none">
+            <Card className="mt-2.5 flex flex-1 flex-col p-0 focus:outline-none md:mt-4">
                 <AutoSizer className="min-h-120">
                     {
                         ({ height, width }) => (
