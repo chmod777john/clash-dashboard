@@ -68,12 +68,21 @@ export function Proxy (props: ProxyProps) {
         [delay],
     )
 
-    const backgroundColor = hasError ? undefined : color
+    const backgroundColor = hasError ? '#E5E7EB' : color
     return (
-        <div className={classnames('proxy-item', { 'proxy-error': hasError }, className)}>
-            <span className="proxy-type" style={{ backgroundColor }}>{config.type}</span>
-            <p className="proxy-name">{config.name}</p>
-            <p className="proxy-delay">{delay === 0 ? '-' : `${delay}ms`}</p>
+        <div className={classnames('proxy-item', { 'opacity-50': hasError }, className)}>
+            <div className="flex-1">
+                <span
+                    className={classnames('rounded-sm py-[3px] px-1 text-[10px] text-white', { 'text-gray-600': hasError })}
+                    style={{ backgroundColor }}>
+                    {config.type}
+                </span>
+                <p className="proxy-name">{config.name}</p>
+            </div>
+            <div className="flex h-full flex-col items-center justify-center space-y-3 text-[10px] md:h-[18px] md:flex-row md:justify-between md:space-y-0">
+                <p>{delay === 0 ? '-' : `${delay}ms`}</p>
+                { config.udp && <p className="rounded bg-gray-200 p-[3px] text-gray-600">UDP</p> }
+            </div>
         </div>
     )
 }

@@ -41,7 +41,7 @@ export function Provider (props: ProvidersProps) {
     return (
         <Card className="proxy-provider">
             <Loading visible={visible} />
-            <div className="md:(flex-row items-center) flex flex-col justify-between ">
+            <div className="md:(flex-row items-center) flex flex-col justify-between">
                 <div className="flex items-center">
                     <span className="mr-6">{ provider.name }</span>
                     <Tag>{ provider.vehicleType }</Tag>
