@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
-import { camelCase } from 'lodash-es'
+import { lowerCase } from 'lodash-es'
 import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 
 import { Select, Card, Header } from '@components'
 import { Log } from '@models/Log'
-import { useConfig, useI18n, useLogsStreamReader } from '@stores'
+import { useConfig, useGeneral, useI18n, useLogsStreamReader } from '@stores'
 
 import './style.scss'
 
@@ -29,9 +29,12 @@ export default function Logs () {
     const [logs, setLogs] = useState<Log[]>([])
     const { translation } = useI18n()
     const { data: { logLevel }, set: setConfig } = useConfig()
+    const { general: { logLevel: configLevel } } = useGeneral()
     const { t } = translation('Logs')
     const logsStreamReader = useLogsStreamReader()
     const scrollHeightRef = useRef(listRef.current?.scrollHeight ?? 0)
+
+    const isConfigSilent = lowerCase(configLevel) === 'silent'
 
     useLayoutEffect(() => {
         const ul = listRef.current
@@ -60,8 +63,9 @@ export default function Logs () {
             <Header title={ t('title') } >
                 <span className="text-primary-darken mr-2 text-sm">{t('levelLabel')}:</span>
                 <Select
+                    disabled={isConfigSilent}
                     options={logLevelOptions}
-                    value={camelCase(logLevel)}
+                    value={isConfigSilent ? 'silent' : logLevel}
                     onSelect={level => setConfig(c => { c.logLevel = level })}
                 />
             </Header>

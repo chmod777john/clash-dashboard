@@ -10,6 +10,10 @@
         margin-left: 5px;
         color: $color-primary-darken;
     }
+
+    &.disabled {
+        cursor: not-allowed;
+    }
 }
 
 .select-list {
@@ -24,7 +28,7 @@
         max-height: 300px;
         overflow: auto;
         background: $color-white;
-        padding: 5px 0;
+        padding: 0;
         transition: all 200ms ease;
 
         > .option {

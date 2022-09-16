@@ -24,11 +24,13 @@ interface SelectProps<T extends string | number> extends BaseComponentProps {
 
     options: Array<SelectOptions<T>>
 
+    disabled?: boolean
+
     onSelect?: (value: T, e: React.MouseEvent<HTMLLIElement>) => void
 }
 
 export function Select<T extends string | number> (props: SelectProps<T>) {
-    const { value, options, onSelect, className: cn, style } = props
+    const { value, options, onSelect, disabled, className: cn, style } = props
 
     const portalRef = useRef(document.createElement('div'))
     const targetRef = useRef<HTMLDivElement>(null)
@@ -52,6 +54,9 @@ export function Select<T extends string | number> (props: SelectProps<T>) {
     }, [])
 
     function handleShowDropList () {
+        if (disabled) {
+            return
+        }
         setShowDropDownList(!showDropDownList)
     }
 
@@ -88,7 +93,7 @@ export function Select<T extends string | number> (props: SelectProps<T>) {
     return (
         <>
             <div
-                className={classnames('select', cn)}
+                className={classnames('select', { disabled }, cn)}
                 style={style}
                 ref={targetRef}
                 onClick={handleShowDropList}
