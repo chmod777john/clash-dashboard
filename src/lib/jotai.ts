@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 export type WritableDraft<T> = (draft: Draft<T>) => void
 
-export function useWarpImmerSetter<T> (setter: (f: WritableDraft<T>) => void) {
+export function useWarpImmerSetter<T extends object> (setter: (f: WritableDraft<T>) => void) {
     const set = useMemo(() => {
         function set<K extends keyof Draft<T>> (key: K, value: Draft<T>[K]): void
         function set (data: Partial<T>): void

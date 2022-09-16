@@ -33,3 +33,4 @@ rules:
   '@typescript-eslint/no-floating-promises': off
   '@typescript-eslint/no-invalid-void-type': off
   '@typescript-eslint/no-misused-promises': off
+  '@typescript-eslint/comma-dangle': [error, only-multiline]
