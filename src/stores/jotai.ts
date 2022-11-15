@@ -32,8 +32,8 @@ export function useI18n () {
 
     const translation = useCallback(
         function <Namespace extends keyof typeof Language['en_US']>(namespace: Namespace) {
-            function t<Path extends string> (path: Path): Get<typeof Language['en_US'][Namespace], Path> {
-                return get(Language[lang][namespace], path)
+            function t<Path extends string> (path: Path) {
+                return get(Language[lang][namespace], path) as unknown as Get<typeof Language['en_US'][Namespace], Path>
             }
             return { t }
         },
