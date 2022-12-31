@@ -9,7 +9,7 @@
 
 <p align="center">
     <a href="https://github.com/Dreamacro/clash-dashboard/actions">
-        <img src="https://img.shields.io/github/workflow/status/Dreamacro/clash-dashboard/Deploy?style=flat-square" alt="Github Actions">
+        <img src="https://img.shields.io/github/actions/workflow/status/Dreamacro/clash-dashboard/ghpages.yml?branch=master&style=flat-square" alt="Github Actions">
     </a>
 </p>
 
