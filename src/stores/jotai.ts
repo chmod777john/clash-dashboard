@@ -10,13 +10,14 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
 import { Get } from 'type-fest'
 
-import { Language, locales, Lang, getDefaultLanguage } from '@i18n'
+import { Language, locales, Lang, getDefaultLanguage, LocalizedType } from '@i18n'
 import { partition } from '@lib/helper'
 import { useWarpImmerSetter, WritableDraft } from '@lib/jotai'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { Snapshot } from '@lib/request'
 import * as API from '@lib/request'
 import { StreamReader } from '@lib/streamer'
+import Infer from '@lib/type'
 import * as Models from '@models'
 import { Log } from '@models/Log'
 
@@ -31,9 +32,9 @@ export function useI18n () {
     const lang = useMemo(() => defaultLang ?? getDefaultLanguage(), [defaultLang])
 
     const translation = useCallback(
-        function <Namespace extends keyof typeof Language['en_US']>(namespace: Namespace) {
-            function t<Path extends string> (path: Path) {
-                return get(Language[lang][namespace], path) as unknown as Get<typeof Language['en_US'][Namespace], Path>
+        function <Namespace extends keyof LocalizedType>(namespace: Namespace) {
+            function t<Path extends Infer<LocalizedType[Namespace]>> (path: Path) {
+                return get(Language[lang][namespace], path) as unknown as Get<LocalizedType[Namespace], Path>
             }
             return { t }
         },
