@@ -1,5 +1,7 @@
-type InferRecursion<K extends string, T> = T extends object ? { [P in keyof T]: P extends string ? InferRecursion<`${K}.${P}`, T[P]> : K }[keyof T] : K
+type InferRecursion<T, K extends string> =
+    T extends object
+        ? { [P in keyof T]: P extends string ? InferRecursion<T[P], `${K}.${P}`> : K }[keyof T]
+        : K
 
-type Infer<T> = Extract<{ [K in keyof T]: K extends string ? InferRecursion<K, T[K]> : unknown }[keyof T], string>
-
-export default Infer
+export type Infer<T> =
+    Extract<{ [K in keyof T]: K extends string ? InferRecursion<T[K], K> : unknown }[keyof T], string>

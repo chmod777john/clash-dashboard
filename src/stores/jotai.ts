@@ -17,7 +17,7 @@ import { isClashX, jsBridge } from '@lib/jsBridge'
 import { Snapshot } from '@lib/request'
 import * as API from '@lib/request'
 import { StreamReader } from '@lib/streamer'
-import Infer from '@lib/type'
+import { Infer } from '@lib/type'
 import * as Models from '@models'
 import { Log } from '@models/Log'
 
