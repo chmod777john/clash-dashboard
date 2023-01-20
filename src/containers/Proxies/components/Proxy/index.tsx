@@ -1,4 +1,4 @@
-import type{ AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 import { ResultAsync } from 'neverthrow'
 import { useMemo, useLayoutEffect, useCallback } from 'react'

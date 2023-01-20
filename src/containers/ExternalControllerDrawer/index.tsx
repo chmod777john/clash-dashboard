@@ -1,4 +1,4 @@
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 
 import { Modal, Input, Alert, Button, error } from '@components'

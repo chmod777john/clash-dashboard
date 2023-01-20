@@ -1,4 +1,4 @@
-import { useIntersectionObserver, useSyncedRef, useUnmountEffect } from '@react-hookz/web/esm'
+import { useIntersectionObserver, useSyncedRef, useUnmountEffect } from '@react-hookz/web'
 import { useReactTable, getSortedRowModel, getFilteredRowModel, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table'
 import classnames from 'classnames'
 import { groupBy } from 'lodash-es'

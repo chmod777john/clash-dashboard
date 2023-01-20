@@ -7,7 +7,7 @@ import { Header, Card, Switch, ButtonSelect, ButtonSelectOptions, Input, Select 
 import { Lang } from '@i18n'
 import { useObject } from '@lib/hook'
 import { jsBridge } from '@lib/jsBridge'
-import { useI18n, useClashXData, useAPIInfo, useGeneral, useVersion, useClient, identityAtom, hostSelectIdxStorageAtom, hostsStorageAtom } from '@stores'
+import { useI18n, useClashXData, useGeneral, useVersion, useClient, identityAtom, hostSelectIdxStorageAtom, hostsStorageAtom } from '@stores'
 import './style.scss'
 
 const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]
@@ -19,7 +19,6 @@ export default function Settings () {
     const setIdentity = useSetAtom(identityAtom)
     const [hostSelectIdx, setHostSelectIdx] = useAtom(hostSelectIdxStorageAtom)
     const hostsStorage = useAtomValue(hostsStorageAtom)
-    const apiInfo = useAPIInfo()
     const { translation, setLang, lang } = useI18n()
     const { t } = translation('Settings')
     const client = useClient()
@@ -73,11 +72,6 @@ export default function Settings () {
         await client.updateConfig({ 'allow-lan': state })
         await fetchGeneral()
     }
-
-    const {
-        hostname: externalControllerHost,
-        port: externalControllerPort,
-    } = apiInfo
 
     const { allowLan, mode } = general
 
