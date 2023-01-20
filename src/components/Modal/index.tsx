@@ -27,6 +27,9 @@ interface ModalProps extends BaseComponentProps {
     // show footer
     footer?: boolean
 
+    // footer extra
+    footerExtra?: React.ReactNode
+
     // on click ok
     onOk?: typeof noop
 
@@ -45,6 +48,7 @@ export function Modal (props: ModalProps) {
         bodyClassName,
         bodyStyle,
         className,
+        footerExtra,
         style,
         children,
     } = props
@@ -84,9 +88,12 @@ export function Modal (props: ModalProps) {
                 >{children}</div>
                 {
                     footer && (
-                        <div className="footer">
-                            <Button onClick={() => onClose()}>{ t('cancel') }</Button>
-                            <Button type="primary" onClick={() => onOk()}>{ t('ok') }</Button>
+                        <div className="flex items-center justify-between">
+                            {footerExtra}
+                            <div className="flex flex-1 justify-end space-x-3">
+                                <Button onClick={() => onClose()}>{ t('cancel') }</Button>
+                                <Button type="primary" onClick={() => onOk()}>{ t('ok') }</Button>
+                            </div>
                         </div>
                     )
                 }

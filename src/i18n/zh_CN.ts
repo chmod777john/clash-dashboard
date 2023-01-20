@@ -37,6 +37,9 @@ const CN = {
             host: 'Host',
             port: '端口',
             secret: '密钥',
+            addText: '添 加',
+            deleteText: '删 除',
+            deleteErrorText: '没有找到该 Host',
         },
     },
     Logs: {

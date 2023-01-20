@@ -1,9 +1,9 @@
 import { usePreviousDistinct, useSyncedRef } from '@react-hookz/web/esm'
 import { AxiosError } from 'axios'
 import produce from 'immer'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithImmer } from 'jotai-immer'
-import { atomWithStorage, useUpdateAtom } from 'jotai/utils'
+import { atomWithStorage } from 'jotai/utils'
 import { get } from 'lodash-es'
 import { ResultAsync } from 'neverthrow'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
@@ -52,7 +52,7 @@ export const version = atom({
 export function useVersion () {
     const [data, set] = useAtom(version)
     const client = useClient()
-    const setIdentity = useUpdateAtom(identityAtom)
+    const setIdentity = useSetAtom(identityAtom)
 
     useSWR([client], async function () {
         const result = await ResultAsync.fromPromise(client.getVersion(), e => e as AxiosError)

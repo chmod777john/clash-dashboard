@@ -8,19 +8,19 @@ import './style.scss'
 interface ButtonProps extends BaseComponentProps {
     type?: 'primary' | 'normal' | 'danger' | 'success' | 'warning'
     onClick?: MouseEventHandler<HTMLButtonElement>
-    disiabled?: boolean
+    disabled?: boolean
 }
 
 export function Button (props: ButtonProps) {
-    const { type = 'normal', onClick = noop, children, className, style, disiabled } = props
-    const classname = classnames('button', `button-${type}`, className, { 'button-disabled': disiabled })
+    const { type = 'normal', onClick = noop, children, className, style, disabled } = props
+    const classname = classnames('button', `button-${type}`, className, { 'button-disabled': disabled })
 
     return (
         <button
             className={classname}
             style={style}
             onClick={onClick}
-            disabled={disiabled}
+            disabled={disabled}
         >{children}</button>
     )
 }

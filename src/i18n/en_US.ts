@@ -37,6 +37,9 @@ const EN = {
             host: 'Host',
             port: 'Port',
             secret: 'Secret',
+            addText: 'Add',
+            deleteText: 'Delete',
+            deleteErrorText: 'Host not found',
         },
     },
     Logs: {

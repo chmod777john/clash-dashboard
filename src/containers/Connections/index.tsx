@@ -302,7 +302,7 @@ export default function Connections () {
                 </div>
                 <ConnectionInfo className="mt-3 px-5" connection={drawerState.connection} />
                 <div className="mt-3 flex justify-end pr-3">
-                    <Button type="danger" disiabled={drawerState.connection.completed} onClick={() => handleConnectionClosed()}>{ t('info.closeConnection') }</Button>
+                    <Button type="danger" disabled={drawerState.connection.completed} onClick={() => handleConnectionClosed()}>{ t('info.closeConnection') }</Button>
                 </div>
             </Drawer>
         </div>

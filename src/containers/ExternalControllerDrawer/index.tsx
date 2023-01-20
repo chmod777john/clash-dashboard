@@ -1,11 +1,10 @@
-import { useAtom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useAtom, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 
-import { Modal, Input, Alert } from '@components'
+import { Modal, Input, Alert, Button, error } from '@components'
 import { useObject } from '@lib/hook'
 import { useI18n, useAPIInfo, identityAtom } from '@stores'
-import { localStorageAtom } from '@stores/request'
+import { hostSelectIdxStorageAtom, hostsStorageAtom } from '@stores/request'
 import './style.scss'
 
 export default function ExternalController () {
@@ -23,18 +22,50 @@ export default function ExternalController () {
         set({ hostname, port, secret })
     }, [hostname, port, secret, set])
 
-    const setter = useUpdateAtom(localStorageAtom)
+    const [hosts, setter] = useAtom(hostsStorageAtom)
+    const [hostSelectIdx, setHostSelectIdx] = useAtom(hostSelectIdxStorageAtom)
 
     function handleOk () {
         const { hostname, port, secret } = value
         setter([{ hostname, port, secret }])
     }
 
+    function handleAdd () {
+        const { hostname, port, secret } = value
+        const nextHosts = [...hosts, { hostname, port, secret }]
+        setter(nextHosts)
+        setHostSelectIdx(nextHosts.length - 1)
+    }
+
+    function handleDelete () {
+        const { hostname, port } = value
+        const idx = hosts.findIndex(h => h.hostname === hostname && h.port === port)
+        if (idx === -1) {
+            error(t('externalControllerSetting.deleteErrorText'))
+            return
+        }
+
+        const nextHosts = [...hosts.slice(0, idx), ...hosts.slice(idx + 1)]
+        setter(nextHosts)
+        if (hostSelectIdx >= idx) {
+            setHostSelectIdx(0)
+        }
+    }
+
+    const footerExtra = (
+        <div className="space-x-3">
+            <Button type="primary" onClick={() => handleAdd()}>{ t('externalControllerSetting.addText') }</Button>
+            <Button type="danger" disabled={hosts.length < 2} onClick={() => handleDelete()}>{ t('externalControllerSetting.deleteText') }</Button>
+        </div>
+    )
+
     return (
         <Modal
+            className="!w-105 !<sm:w-84"
             show={!identity}
             title={t('externalControllerSetting.title')}
             bodyClassName="external-controller"
+            footerExtra={footerExtra}
             onClose={() => setIdentity(true)}
             onOk={handleOk}
         >

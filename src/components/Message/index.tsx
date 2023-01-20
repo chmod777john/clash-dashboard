@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import { useLayoutEffect } from 'react'
-import { unmountComponentAtNode, render } from 'react-dom'
+import { unmountComponentAtNode } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
@@ -89,7 +90,7 @@ export function showMessage (args: ArgsProps) {
         onClose,
     }
 
-    render(<Message {...props} />, container)
+    createRoot(container).render(<Message {...props} />)
 }
 
 export const info = (

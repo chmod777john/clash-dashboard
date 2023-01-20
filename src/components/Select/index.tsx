@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { useRef, useState, useMemo, useLayoutEffect } from 'react'
+import { useRef, useState, useMemo, useLayoutEffect, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Icon } from '@components'
@@ -9,7 +9,7 @@ import { BaseComponentProps } from '@models'
 import './style.scss'
 
 export interface SelectOptions<T extends string | number> {
-    label: string
+    label: ReactNode
     value: T
     disabled?: boolean
     key?: React.Key
@@ -37,13 +37,6 @@ export function Select<T extends string | number> (props: SelectProps<T>) {
 
     const [showDropDownList, setShowDropDownList] = useState(false)
     const [dropdownListStyles, setDropdownListStyles] = useState<React.CSSProperties>({})
-    useLayoutEffect(() => {
-        const targetRectInfo = targetRef.current!.getBoundingClientRect()
-        setDropdownListStyles({
-            top: Math.floor(targetRectInfo.top + targetRectInfo.height) + 6,
-            left: Math.floor(targetRectInfo.left) - 10,
-        })
-    }, [])
 
     useLayoutEffect(() => {
         const current = portalRef.current
@@ -56,6 +49,14 @@ export function Select<T extends string | number> (props: SelectProps<T>) {
     function handleShowDropList () {
         if (disabled) {
             return
+        }
+
+        if (!showDropDownList) {
+            const targetRectInfo = targetRef.current!.getBoundingClientRect()
+            setDropdownListStyles({
+                top: Math.floor(targetRectInfo.top + targetRectInfo.height) + 6,
+                left: Math.floor(targetRectInfo.left) - 10,
+            })
         }
         setShowDropDownList(!showDropDownList)
     }
@@ -98,7 +99,7 @@ export function Select<T extends string | number> (props: SelectProps<T>) {
                 ref={targetRef}
                 onClick={handleShowDropList}
             >
-                {matchChild?.label}
+                <span className="select-none">{matchChild?.label}</span>
                 <Icon type="triangle-down" />
             </div>
             {createPortal(dropDownList, portalRef.current)}

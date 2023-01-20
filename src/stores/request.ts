@@ -19,16 +19,18 @@ const clashxConfigAtom = atom(async () => {
     }
 })
 
-export const localStorageAtom = atomWithStorage<Array<{
+export const hostsStorageAtom = atomWithStorage<Array<{
     hostname: string
     port: string
     secret: string
 }>>('externalControllers', [])
+export const hostSelectIdxStorageAtom = atomWithStorage<number>('externalControllerIndex', 0)
 
 export function useAPIInfo () {
     const clashx = useAtomValue(clashxConfigAtom)
     const location = useLocation()
-    const localStorage = useAtomValue(localStorageAtom)
+    const hostSelectIdxStorage = useAtomValue(hostSelectIdxStorageAtom)
+    const hostsStorage = useAtomValue(hostsStorageAtom)
 
     if (clashx != null) {
         return clashx
@@ -45,9 +47,9 @@ export function useAPIInfo () {
 
     const qs = new URLSearchParams(location.search)
 
-    const hostname = qs.get('host') ?? localStorage?.[0]?.hostname ?? url?.hostname ?? '127.0.0.1'
-    const port = qs.get('port') ?? localStorage?.[0]?.port ?? url?.port ?? '9090'
-    const secret = qs.get('secret') ?? localStorage?.[0]?.secret ?? url?.username ?? ''
+    const hostname = qs.get('host') ?? hostsStorage?.[hostSelectIdxStorage]?.hostname ?? url?.hostname ?? '127.0.0.1'
+    const port = qs.get('port') ?? hostsStorage?.[hostSelectIdxStorage]?.port ?? url?.port ?? '9090'
+    const secret = qs.get('secret') ?? hostsStorage?.[hostSelectIdxStorage]?.secret ?? url?.username ?? ''
     const protocol = qs.get('protocol') ?? hostname === '127.0.0.1' ? 'http:' : (url?.protocol ?? window.location.protocol)
 
     return { hostname, port, secret, protocol }
