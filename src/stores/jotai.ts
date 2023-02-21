@@ -1,5 +1,5 @@
 import { usePreviousDistinct, useSyncedRef } from '@react-hookz/web'
-import { AxiosError } from 'axios'
+import { type AxiosError } from 'axios'
 import produce from 'immer'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -8,18 +8,17 @@ import { get } from 'lodash-es'
 import { ResultAsync } from 'neverthrow'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
-import { Get } from 'type-fest'
+import { type Get } from 'type-fest'
 
-import { Language, locales, Lang, getDefaultLanguage, LocalizedType } from '@i18n'
+import { Language, locales, type Lang, getDefaultLanguage, type LocalizedType } from '@i18n'
 import { partition } from '@lib/helper'
-import { useWarpImmerSetter, WritableDraft } from '@lib/jotai'
+import { useWarpImmerSetter, type WritableDraft } from '@lib/jotai'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { Snapshot } from '@lib/request'
-import * as API from '@lib/request'
+import type * as API from '@lib/request'
 import { StreamReader } from '@lib/streamer'
-import { Infer } from '@lib/type'
-import * as Models from '@models'
-import { Log } from '@models/Log'
+import { type Infer } from '@lib/type'
+import type * as Models from '@models'
+import { type Log } from '@models/Log'
 
 import { useAPIInfo, useClient } from './request'
 
@@ -277,7 +276,7 @@ export function useLogsStreamReader () {
 export function useConnectionStreamReader () {
     const apiInfo = useAPIInfo()
 
-    const connection = useRef(new StreamReader<Snapshot>({ bufferLength: 200 }))
+    const connection = useRef(new StreamReader<API.Snapshot>({ bufferLength: 200 }))
 
     const protocol = apiInfo.protocol === 'http:' ? 'ws:' : 'wss:'
     const url = `${protocol}//${apiInfo.hostname}:${apiInfo.port}/connections?token=${encodeURIComponent(apiInfo.secret)}`

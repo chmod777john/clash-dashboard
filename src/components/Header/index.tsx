@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { BaseComponentProps } from '@models/BaseProps'
+import { type BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface HeaderProps extends BaseComponentProps {

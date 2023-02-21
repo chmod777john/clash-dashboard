@@ -1,9 +1,10 @@
+import presetWind from '@unocss/preset-wind'
 import react from '@vitejs/plugin-react'
 import jotaiDebugLabel from 'jotai/babel/plugin-debug-label'
 import jotaiReactRefresh from 'jotai/babel/plugin-react-refresh'
+import UnoCSS from 'unocss/vite'
 import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import windiCSS from 'vite-plugin-windicss'
 import tsConfigPath from 'vite-tsconfig-paths'
 
 export default defineConfig(
@@ -14,7 +15,26 @@ export default defineConfig(
                 babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] },
             }),
             tsConfigPath(),
-            windiCSS(),
+            UnoCSS({
+                presets: [presetWind()],
+                theme: {
+                    colors: {
+                        primary: {
+                            500: '#57befc',
+                            600: '#2c8af8',
+                            darken: '#54759a',
+                        },
+                        red: '#f56c6c',
+                        green: '#67c23a',
+                    },
+                    boxShadow: {
+                        primary: '2px 5px 20px -3px rgb(44 138 248 / 18%)',
+                    },
+                    textShadow: {
+                        primary: '0 0 6px rgb(44 138 248 / 40%)',
+                    },
+                },
+            }),
             VitePWA({
                 injectRegister: 'inline',
                 manifest: {

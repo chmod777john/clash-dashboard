@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3'
-import { SetRequired } from 'type-fest'
+import { type SetRequired } from 'type-fest'
 
 export interface Config {
     bufferLength?: number

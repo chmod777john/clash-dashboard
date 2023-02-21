@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { Tag, Icon } from '@components'
 import { fromNow } from '@lib/date'
 import { useVisible } from '@lib/hook'
-import { RuleProvider } from '@lib/request'
+import { type RuleProvider } from '@lib/request'
 import { useClient, useI18n, useRuleProviders } from '@stores'
 import './style.scss'
 

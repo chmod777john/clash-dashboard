@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import { Icon } from '@components'
-import { BaseComponentProps } from '@models'
+import { type BaseComponentProps } from '@models'
 import './style.scss'
 
 interface AlertProps extends BaseComponentProps {

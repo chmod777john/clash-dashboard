@@ -5,8 +5,8 @@ import { useMemo, useLayoutEffect, useCallback } from 'react'
 
 import EE, { Action } from '@lib/event'
 import { isClashX, jsBridge } from '@lib/jsBridge'
-import { Proxy as IProxy } from '@lib/request'
-import { BaseComponentProps } from '@models'
+import { type Proxy as IProxy } from '@lib/request'
+import { type BaseComponentProps } from '@models'
 import { useClient, useProxy } from '@stores'
 
 import './style.scss'
@@ -79,9 +79,9 @@ export function Proxy (props: ProxyProps) {
                 </span>
                 <p className="proxy-name">{config.name}</p>
             </div>
-            <div className="flex h-full flex-col items-center justify-center space-y-3 text-[10px] md:h-[18px] md:flex-row md:justify-between md:space-y-0">
+            <div className="flex flex-col h-full items-center justify-center md:flex-row md:h-[18px] md:justify-between md:space-y-0 space-y-3 text-[10px]">
                 <p>{delay === 0 ? '-' : `${delay}ms`}</p>
-                { config.udp && <p className="rounded bg-gray-200 p-[3px] text-gray-600">UDP</p> }
+                { config.udp && <p className="bg-gray-200 p-[3px] rounded text-gray-600">UDP</p> }
             </div>
         </div>
     )

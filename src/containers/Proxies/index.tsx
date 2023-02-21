@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { Card, Header, Icon, Checkbox } from '@components'
 import EE from '@lib/event'
 import { useRound } from '@lib/hook'
-import * as API from '@lib/request'
+import type * as API from '@lib/request'
 import { useI18n, useConfig, useProxy, useProxyProviders, useGeneral } from '@stores'
 
 import { Proxy, Group, Provider } from './components'
@@ -45,14 +45,14 @@ function ProxyGroups () {
             <div className="flex flex-col">
                 <Header title={t('groupTitle')}>
                     <Checkbox
-                        className="text-shadow-primary text-primary-600 cursor-pointer text-sm"
+                        className="cursor-pointer text-sm text-primary-600 text-shadow-primary"
                         checked={config.breakConnections}
                         onChange={value => setConfig('breakConnections', value)}>
                         {t('breakConnectionsText')}
                     </Checkbox>
                 </Header>
-                <Card className="my-2.5 p-0 md:my-4">
-                    <ul className="list-none divide-y divide-gray-300">
+                <Card className="md:my-4 my-2.5 p-0">
+                    <ul className="divide-gray-300 divide-y list-none">
                         {
                             list.map(p => (
                                 <li key={p.name}>
@@ -80,7 +80,7 @@ function ProxyProviders () {
                 <ul className="list-none">
                     {
                         providers.map(p => (
-                            <li className="my-2.5 md:my-4" key={p.name}>
+                            <li className="md:my-4 my-2.5" key={p.name}>
                                 <Provider provider={p} />
                             </li>
                         ))

@@ -4,7 +4,8 @@ import { HashRouter } from 'react-router-dom'
 
 import { Loading } from '@components'
 import App from '@containers/App'
-import 'virtual:windi.css'
+import '@unocss/reset/tailwind.css'
+import 'uno.css'
 
 export default function renderApp () {
     const rootEl = document.getElementById('root')

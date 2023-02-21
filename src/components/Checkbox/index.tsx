@@ -2,7 +2,7 @@ import classnames from 'classnames'
 
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
-import { BaseComponentProps } from '@models/BaseProps'
+import { type BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface CheckboxProps extends BaseComponentProps {

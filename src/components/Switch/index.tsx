@@ -2,7 +2,7 @@ import classnames from 'classnames'
 
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
-import { BaseComponentProps } from '@models/BaseProps'
+import { type BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface SwitchProps extends BaseComponentProps {
@@ -23,7 +23,7 @@ export function Switch (props: SwitchProps) {
 
     return (
         <div className={classname} onClick={handleClick}>
-            <Icon className="switch-icon font-bold" type="check" size={20} />
+            <Icon className="font-bold switch-icon" type="check" size={20} />
         </div>
     )
 }

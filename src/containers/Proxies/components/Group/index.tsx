@@ -2,7 +2,7 @@ import { useAtom } from 'jotai'
 import { useMemo } from 'react'
 
 import { Tags, Tag } from '@components'
-import { Group as IGroup } from '@lib/request'
+import { type Group as IGroup } from '@lib/request'
 import { useProxy, useConfig, proxyMapping, useClient } from '@stores'
 
 import './style.scss'
@@ -49,13 +49,13 @@ export function Group (props: GroupProps) {
     const canClick = config.type === 'Selector'
     return (
         <div className="proxy-group">
-            <div className="md:h-15 mt-4 flex h-10 w-full items-center justify-between md:mt-0 md:w-auto">
-                <span className="w-35 md:w-30 h-6 overflow-hidden overflow-ellipsis whitespace-nowrap px-5">{ config.name }</span>
-                <Tag className="mr-5 md:mr-0">{ config.type }</Tag>
+            <div className="flex items-center justify-between h-10 md:h-15 md:mt-0 md:w-auto mt-4 w-full">
+                <span className="px-5 h-6 md:w-30 overflow-ellipsis overflow-hidden w-35 whitespace-nowrap">{ config.name }</span>
+                <Tag className="md:mr-0 mr-5">{ config.type }</Tag>
             </div>
-            <div className="flex-1 py-2 md:py-4">
+            <div className="flex-1 md:py-4 py-2">
                 <Tags
-                    className="ml-5 md:ml-8"
+                    className="md:ml-8 ml-5"
                     data={config.all}
                     onClick={handleChangeProxySelected}
                     errSet={errSet}

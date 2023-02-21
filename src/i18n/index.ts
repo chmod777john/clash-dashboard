@@ -1,6 +1,6 @@
-import { IsEqual } from 'type-fest'
+import { type IsEqual } from 'type-fest'
 
-import { Infer } from '@lib/type'
+import { type Infer } from '@lib/type'
 
 import en_US from './en_US'
 import zh_CN from './zh_CN'

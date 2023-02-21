@@ -5,7 +5,7 @@ import { compareDesc } from '@containers/Proxies'
 import { Proxy } from '@containers/Proxies/components/Proxy'
 import { fromNow } from '@lib/date'
 import { useVisible } from '@lib/hook'
-import { Provider as IProvider, Proxy as IProxy } from '@lib/request'
+import { type Provider as IProvider, type Proxy as IProxy } from '@lib/request'
 import { useClient, useI18n, useProxyProviders } from '@stores'
 
 import './style.scss'
@@ -41,17 +41,17 @@ export function Provider (props: ProvidersProps) {
     return (
         <Card className="proxy-provider">
             <Loading visible={visible} />
-            <div className="md:(flex-row items-center) flex flex-col justify-between">
+            <div className="flex flex-col justify-between md:flex-row md:items-center">
                 <div className="flex items-center">
                     <span className="mr-6">{ provider.name }</span>
                     <Tag>{ provider.vehicleType }</Tag>
                 </div>
-                <div className="flex items-center pt-3 md:pt-0">
+                <div className="flex items-center md:pt-0 pt-3">
                     {
                         provider.updatedAt &&
                         <span className="text-sm">{ `${t('providerUpdateTime')}: ${fromNow(new Date(provider.updatedAt), lang)}`}</span>
                     }
-                    <Icon className="text-red cursor-pointer pl-5" type="healthcheck" size={18} onClick={handleHealthChech} />
+                    <Icon className="cursor-pointer text-red pl-5" type="healthcheck" size={18} onClick={handleHealthChech} />
                     <Icon className="cursor-pointer pl-5" type="update" size={18} onClick={handleUpdate} />
                 </div>
             </div>

@@ -3,7 +3,7 @@ import { lowerCase } from 'lodash-es'
 import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 
 import { Select, Card, Header } from '@components'
-import { Log } from '@models/Log'
+import { type Log } from '@models/Log'
 import { useConfig, useGeneral, useI18n, useLogsStreamReader } from '@stores'
 
 import './style.scss'
@@ -61,7 +61,7 @@ export default function Logs () {
     return (
         <div className="page">
             <Header title={ t('title') } >
-                <span className="text-primary-darken mr-2 text-sm">{t('levelLabel')}:</span>
+                <span className="mr-2 text-primary-darken text-sm">{t('levelLabel')}:</span>
                 <Select
                     disabled={isConfigSilent}
                     options={logLevelOptions}
@@ -70,12 +70,12 @@ export default function Logs () {
                 />
             </Header>
 
-            <Card className="mt-2.5 flex flex-1 flex-col md:mt-4">
+            <Card className="flex flex-1 flex-col md:mt-4 mt-2.5">
                 <ul className="logs-panel" ref={listRef}>
                     {
                         logs.map(
                             (log, index) => (
-                                <li className="inline-block text-[11px] leading-5" key={index}>
+                                <li className="inline-block leading-5 text-[11px]" key={index}>
                                     <span className="mr-2 text-orange-400">[{ dayjs(log.time).format('YYYY-MM-DD HH:mm:ss') }]</span>
                                     <span className={logMap.get(log.type)}>[{ log.type.toUpperCase() }]</span>
                                     <span> { log.payload }</span>

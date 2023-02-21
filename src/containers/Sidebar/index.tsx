@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import { NavLink, useLocation } from 'react-router-dom'
 
 import logo from '@assets/logo.png'
-import { Lang, Language } from '@i18n'
+import { type Lang, type Language } from '@i18n'
 import { useI18n, useVersion, useClashXData } from '@stores'
 import './style.scss'
 

@@ -1,10 +1,10 @@
 import classnames from 'classnames'
-import { useRef, useLayoutEffect, MouseEvent } from 'react'
+import { useRef, useLayoutEffect, type MouseEvent } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Button } from '@components'
 import { noop } from '@lib/helper'
-import { BaseComponentProps } from '@models'
+import { type BaseComponentProps } from '@models'
 import { useI18n } from '@stores'
 import './style.scss'
 
@@ -90,7 +90,7 @@ export function Modal (props: ModalProps) {
                     footer && (
                         <div className="flex items-center justify-between">
                             {footerExtra}
-                            <div className="flex flex-1 justify-end space-x-3">
+                            <div className="flex justify-end flex-1 space-x-3">
                                 <Button onClick={() => onClose()}>{ t('cancel') }</Button>
                                 <Button type="primary" onClick={() => onOk()}>{ t('ok') }</Button>
                             </div>

@@ -1,8 +1,8 @@
 import classnames from 'classnames'
-import { KeyboardEvent, FocusEvent, ChangeEvent } from 'react'
+import { type KeyboardEvent, type FocusEvent, type ChangeEvent } from 'react'
 
 import { noop } from '@lib/helper'
-import { BaseComponentProps } from '@models/BaseProps'
+import { type BaseComponentProps } from '@models/BaseProps'
 import './style.scss'
 
 interface InputProps extends BaseComponentProps {

@@ -1,8 +1,8 @@
 import classnames from 'classnames'
-import { MouseEventHandler } from 'react'
+import { type MouseEventHandler } from 'react'
 
 import { noop } from '@lib/helper'
-import { BaseComponentProps } from '@models'
+import { type BaseComponentProps } from '@models'
 import './style.scss'
 
 interface ButtonProps extends BaseComponentProps {

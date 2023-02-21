@@ -1,7 +1,7 @@
-import * as API from '@lib/request'
+import type * as API from '@lib/request'
 
-import { Proxy, ProxyGroup } from './Proxy'
-import { Rule } from './Rule'
+import { type Proxy, type ProxyGroup } from './Proxy'
+import { type Rule } from './Rule'
 
 /**
  * clash config

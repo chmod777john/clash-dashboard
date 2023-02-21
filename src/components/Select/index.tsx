@@ -1,10 +1,10 @@
 import classnames from 'classnames'
-import { useRef, useState, useMemo, useLayoutEffect, ReactNode } from 'react'
+import { useRef, useState, useMemo, useLayoutEffect, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Icon } from '@components'
 import { noop } from '@lib/helper'
-import { BaseComponentProps } from '@models'
+import { type BaseComponentProps } from '@models'
 
 import './style.scss'
 
