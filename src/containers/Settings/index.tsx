@@ -7,7 +7,7 @@ import { Header, Card, Switch, ButtonSelect, type ButtonSelectOptions, Input, Se
 import { type Lang } from '@i18n'
 import { useObject } from '@lib/hook'
 import { jsBridge } from '@lib/jsBridge'
-import { useI18n, useClashXData, useGeneral, useVersion, useClient, identityAtom, hostSelectIdxStorageAtom, hostsStorageAtom } from '@stores'
+import { useI18n, useClashXData, useGeneral, useVersion, useClient, identityAtom, hostSelectIdxStorageAtom, hostsStorageAtom, useAPIInfo } from '@stores'
 import './style.scss'
 
 const languageOptions: ButtonSelectOptions[] = [{ label: '中文', value: 'zh_CN' }, { label: 'English', value: 'en_US' }]
@@ -19,6 +19,7 @@ export default function Settings () {
     const setIdentity = useSetAtom(identityAtom)
     const [hostSelectIdx, setHostSelectIdx] = useAtom(hostSelectIdxStorageAtom)
     const hostsStorage = useAtomValue(hostsStorageAtom)
+    const apiInfo = useAPIInfo()
     const { translation, setLang, lang } = useI18n()
     const { t } = translation('Settings')
     const client = useClient()
@@ -73,6 +74,11 @@ export default function Settings () {
         await fetchGeneral()
     }
 
+    const {
+        hostname: externalControllerHost,
+        port: externalControllerPort,
+    } = apiInfo
+
     const { allowLan, mode } = general
 
     const startAtLogin = clashXData?.startAtLogin ?? false
@@ -94,6 +100,24 @@ export default function Settings () {
     const controllerOptions = hostsStorage.map(
         (h, idx) => ({ value: idx, label: <span className="text-right truncate">{h.hostname}</span> }),
     )
+
+    const controllers = isClashX
+        ? <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
+        : (
+            <>
+                <Select
+                    disabled={hostsStorage.length < 2 && !isClashX}
+                    options={controllerOptions}
+                    value={hostSelectIdx}
+                    onSelect={idx => setHostSelectIdx(idx)}
+                />
+                <span
+                    className={classnames({ 'modify-btn': !isClashX }, 'external-controller')}
+                    onClick={() => !isClashX && setIdentity(false)}>
+                    编辑
+                </span>
+            </>
+        )
 
     return (
         <div className="page">
@@ -172,17 +196,7 @@ export default function Settings () {
                     <div className="flex items-center justify-between md:w-1/2 px-8 py-3 w-full">
                         <span className="font-bold label">{t('labels.externalController')}</span>
                         <div className="flex items-center space-x-2">
-                            <Select
-                                disabled={hostsStorage.length < 2 && !isClashX}
-                                options={controllerOptions}
-                                value={hostSelectIdx}
-                                onSelect={idx => setHostSelectIdx(idx)}
-                            />
-                            <span
-                                className={classnames({ 'modify-btn': !isClashX }, 'external-controller')}
-                                onClick={() => !isClashX && setIdentity(false)}>
-                                编辑
-                            </span>
+                            { controllers }
                         </div>
                     </div>
                     <div className="px-8 w-1/2"></div>
