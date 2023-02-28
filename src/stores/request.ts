@@ -19,12 +19,16 @@ const clashxConfigAtom = atom(async () => {
     }
 })
 
+// jotai v2 use initialValue first avoid hydration warning, but we don't want that
+const hostsStorageOrigin = localStorage.getItem('externalControllers') ?? '[]'
+const hostSelectIdxStorageOrigin = localStorage.getItem('externalControllerIndex') ?? '0'
+
 export const hostsStorageAtom = atomWithStorage<Array<{
     hostname: string
     port: string
     secret: string
-}>>('externalControllers', [])
-export const hostSelectIdxStorageAtom = atomWithStorage<number>('externalControllerIndex', 0)
+}>>('externalControllers', JSON.parse(hostsStorageOrigin))
+export const hostSelectIdxStorageAtom = atomWithStorage<number>('externalControllerIndex', parseInt(hostSelectIdxStorageOrigin))
 
 export function useAPIInfo () {
     const clashx = useAtomValue(clashxConfigAtom)
