@@ -49,10 +49,11 @@ export function Proxy (props: ProxyProps) {
         })
     }, [config.name, getDelay, set])
 
-    const delay = useMemo(
-        () => config.history?.length ? config.history.slice(-1)[0].delay : 0,
-        [config],
-    )
+    const delay = config.history?.length ? config.history.slice(-1)[0].delay : 0
+    const meanDelay = config.history?.length ? config.history.slice(-1)[0].meanDelay : undefined
+
+    const delayText = delay === 0 ? '-' : `${delay}ms`
+    const meanDelayText = meanDelay === undefined || meanDelay === 0 ? '' : `(${meanDelay}ms)`
 
     useLayoutEffect(() => {
         const handler = () => { speedTest() }
@@ -63,9 +64,9 @@ export function Proxy (props: ProxyProps) {
     const hasError = useMemo(() => delay === 0, [delay])
     const color = useMemo(
         () => Object.keys(TagColors).find(
-            threshold => delay <= TagColors[threshold as keyof typeof TagColors],
+            threshold => (meanDelay ?? delay) <= TagColors[threshold as keyof typeof TagColors],
         ),
-        [delay],
+        [delay, meanDelay],
     )
 
     const backgroundColor = hasError ? '#E5E7EB' : color
@@ -80,7 +81,7 @@ export function Proxy (props: ProxyProps) {
                 <p className="proxy-name">{config.name}</p>
             </div>
             <div className="flex flex-col h-full items-center justify-center md:flex-row md:h-[18px] md:justify-between md:space-y-0 space-y-3 text-[10px]">
-                <p>{delay === 0 ? '-' : `${delay}ms`}</p>
+                <p >{delayText}{meanDelayText}</p>
                 { config.udp && <p className="bg-gray-200 p-[3px] rounded text-gray-600">UDP</p> }
             </div>
         </div>

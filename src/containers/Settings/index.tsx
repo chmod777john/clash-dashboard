@@ -102,7 +102,7 @@ export default function Settings () {
     )
 
     const controllers = isClashX
-        ? <span>{`${externalControllerHost}:${externalControllerPort}`}</span>
+        ? <span className="text-primary-darken text-sm">{`${externalControllerHost}:${externalControllerPort}`}</span>
         : (
             <>
                 <Select

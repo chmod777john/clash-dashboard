@@ -52,6 +52,7 @@ export interface ProxyProviders {
 interface History {
     time: string
     delay: number
+    meanDelay?: number
 }
 
 export interface Proxy {
