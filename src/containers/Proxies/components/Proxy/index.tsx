@@ -53,7 +53,7 @@ export function Proxy (props: ProxyProps) {
     const meanDelay = config.history?.length ? config.history.slice(-1)[0].meanDelay : undefined
 
     const delayText = delay === 0 ? '-' : `${delay}ms`
-    const meanDelayText = meanDelay === undefined || meanDelay === 0 ? '' : `(${meanDelay}ms)`
+    const meanDelayText = !meanDelay ? '' : `(${meanDelay}ms)`
 
     useLayoutEffect(() => {
         const handler = () => { speedTest() }
@@ -64,7 +64,8 @@ export function Proxy (props: ProxyProps) {
     const hasError = useMemo(() => delay === 0, [delay])
     const color = useMemo(
         () => Object.keys(TagColors).find(
-            threshold => (meanDelay ?? delay) <= TagColors[threshold as keyof typeof TagColors],
+            // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+            threshold => (meanDelay || delay) <= TagColors[threshold as keyof typeof TagColors],
         ),
         [delay, meanDelay],
     )
