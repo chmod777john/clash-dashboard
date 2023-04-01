@@ -59,8 +59,8 @@ export default function Rules () {
                     {
                         ({ height, width }) => (
                             <List
-                                height={height}
-                                width={width}
+                                height={height ?? 0}
+                                width={width ?? 0}
                                 itemCount={rules.length}
                                 itemSize={50}
                             >

@@ -1,6 +1,5 @@
 import type * as API from '@lib/request'
 
-import { type Proxy, type ProxyGroup } from './Proxy'
 import { type Rule } from './Rule'
 
 /**
@@ -56,10 +55,6 @@ export interface Config {
          */
         logLevel?: string
     }
-
-    proxy?: Proxy[]
-
-    proxyGroup?: ProxyGroup[]
 
     rules?: Rule[]
 
