@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import { useState, useMemo, useRef, useCallback } from 'react'
 
 import type * as API from '@lib/request'

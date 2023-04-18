@@ -1,4 +1,4 @@
-import produce, { type Draft } from 'immer'
+import { produce, type Draft } from 'immer'
 import { useMemo } from 'react'
 
 export type WritableDraft<T> = (draft: Draft<T>) => void

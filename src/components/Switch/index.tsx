@@ -23,7 +23,7 @@ export function Switch (props: SwitchProps) {
 
     return (
         <div className={classname} onClick={handleClick}>
-            <Icon className="font-bold switch-icon" type="check" size={20} />
+            <Icon className="switch-icon font-bold" type="check" size={20} />
         </div>
     )
 }

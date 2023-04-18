@@ -46,12 +46,12 @@ export function Provider (props: ProvidersProps) {
                     <span className="mr-6">{ provider.name }</span>
                     <Tag>{ provider.vehicleType }</Tag>
                 </div>
-                <div className="flex items-center md:pt-0 pt-3">
+                <div className="flex items-center pt-3 md:pt-0">
                     {
                         provider.updatedAt &&
                         <span className="text-sm">{ `${t('providerUpdateTime')}: ${fromNow(new Date(provider.updatedAt), lang)}`}</span>
                     }
-                    <Icon className="cursor-pointer text-red pl-5" type="healthcheck" size={18} onClick={handleHealthChech} />
+                    <Icon className="cursor-pointer pl-5 text-red" type="healthcheck" size={18} onClick={handleHealthChech} />
                     <Icon className="cursor-pointer pl-5" type="update" size={18} onClick={handleUpdate} />
                 </div>
             </div>

@@ -51,8 +51,8 @@ function ProxyGroups () {
                         {t('breakConnectionsText')}
                     </Checkbox>
                 </Header>
-                <Card className="md:my-4 my-2.5 p-0">
-                    <ul className="divide-gray-300 divide-y list-none">
+                <Card className="my-2.5 p-0 md:my-4">
+                    <ul className="list-none divide-y divide-gray-300">
                         {
                             list.map(p => (
                                 <li key={p.name}>
@@ -80,7 +80,7 @@ function ProxyProviders () {
                 <ul className="list-none">
                     {
                         providers.map(p => (
-                            <li className="md:my-4 my-2.5" key={p.name}>
+                            <li className="my-2.5 md:my-4" key={p.name}>
                                 <Provider provider={p} />
                             </li>
                         ))

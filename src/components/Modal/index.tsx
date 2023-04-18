@@ -90,7 +90,7 @@ export function Modal (props: ModalProps) {
                     footer && (
                         <div className="flex items-center justify-between">
                             {footerExtra}
-                            <div className="flex justify-end flex-1 space-x-3">
+                            <div className="flex flex-1 justify-end space-x-3">
                                 <Button onClick={() => onClose()}>{ t('cancel') }</Button>
                                 <Button type="primary" onClick={() => onOk()}>{ t('ok') }</Button>
                             </div>

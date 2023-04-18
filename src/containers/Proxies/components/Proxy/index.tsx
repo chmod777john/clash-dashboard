@@ -81,9 +81,9 @@ export function Proxy (props: ProxyProps) {
                 </span>
                 <p className="proxy-name">{config.name}</p>
             </div>
-            <div className="flex flex-col h-full items-center justify-center md:flex-row md:h-[18px] md:justify-between md:space-y-0 space-y-3 text-[10px]">
+            <div className="h-full flex flex-col items-center justify-center text-[10px] md:h-[18px] md:flex-row md:justify-between space-y-3 md:space-y-0">
                 <p >{delayText}{meanDelayText}</p>
-                { config.udp && <p className="bg-gray-200 p-[3px] rounded text-gray-600">UDP</p> }
+                { config.udp && <p className="rounded bg-gray-200 p-[3px] text-gray-600">UDP</p> }
             </div>
         </div>
     )

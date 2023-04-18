@@ -52,7 +52,7 @@ export function Tags (props: TagsProps) {
             </ul>
             {
                 showExtend &&
-                <span className="select-none cursor-pointer h-7 leading-7 px-5" onClick={toggleExtend}>{ expand ? t('collapseText') : t('expandText') }</span>
+                <span className="h-7 cursor-pointer select-none px-5 leading-7" onClick={toggleExtend}>{ expand ? t('collapseText') : t('expandText') }</span>
             }
         </div>
     )

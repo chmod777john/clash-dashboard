@@ -1,6 +1,6 @@
 import { usePreviousDistinct, useSyncedRef } from '@react-hookz/web'
 import { type AxiosError } from 'axios'
-import produce from 'immer'
+import { produce } from 'immer'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { atomWithImmer } from 'jotai-immer'
