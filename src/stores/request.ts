@@ -2,6 +2,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { useLocation } from 'react-router-dom'
 
+import { isIP } from '@lib/ip'
 import { isClashX, jsBridge } from '@lib/jsBridge'
 import { Client } from '@lib/request'
 
@@ -19,8 +20,35 @@ const clashxConfigAtom = atom(async () => {
     }
 })
 
+function getControllerFromLocation (): string | null {
+    if (!isIP(location.hostname)) {
+        return null
+    }
+
+    if (location.port !== '') {
+        return JSON.stringify([
+            {
+                hostname: location.hostname,
+                port: +location.port,
+                secret: '',
+            },
+        ])
+    }
+
+    const port = location.protocol === 'https:' ? 443 : 80
+    return JSON.stringify([
+        {
+            hostname: location.hostname,
+            port,
+            secret: '',
+        },
+    ])
+}
+
 // jotai v2 use initialValue first avoid hydration warning, but we don't want that
-const hostsStorageOrigin = localStorage.getItem('externalControllers') ?? '[]'
+const hostsStorageOrigin = localStorage.getItem('externalControllers') ??
+    getControllerFromLocation() ??
+    '[{ "hostname": "127.0.0.1", "port": 7890, "secret": "" }]'
 const hostSelectIdxStorageOrigin = localStorage.getItem('externalControllerIndex') ?? '0'
 
 export const hostsStorageAtom = atomWithStorage<Array<{
