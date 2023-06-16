@@ -60,6 +60,7 @@ export interface Proxy {
     type: 'Direct' | 'Reject' | 'Shadowsocks' | 'Vmess' | 'Trojan' | 'Socks' | 'Http' | 'Snell'
     history: History[]
     udp: boolean
+    alive?: boolean
 }
 
 export interface Group {
