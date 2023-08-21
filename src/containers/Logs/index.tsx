@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import { lowerCase } from 'lodash-es'
 import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 
 import { Select, Card, Header } from '@components'
@@ -34,7 +33,7 @@ export default function Logs () {
     const logsStreamReader = useLogsStreamReader()
     const scrollHeightRef = useRef(listRef.current?.scrollHeight ?? 0)
 
-    const isConfigSilent = lowerCase(configLevel) === 'silent'
+    const isConfigSilent = configLevel?.toLowerCase() === 'silent'
 
     useLayoutEffect(() => {
         const ul = listRef.current

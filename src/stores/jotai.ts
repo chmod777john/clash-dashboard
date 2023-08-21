@@ -4,9 +4,9 @@ import { produce } from 'immer'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { atomWithImmer } from 'jotai-immer'
-import { get } from 'lodash-es'
 import { ResultAsync } from 'neverthrow'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import * as R from 'remeda'
 import useSWR from 'swr'
 import { type Get } from 'type-fest'
 
@@ -33,7 +33,11 @@ export function useI18n () {
     const translation = useCallback(
         function <Namespace extends keyof LocalizedType>(namespace: Namespace) {
             function t<Path extends Infer<LocalizedType[Namespace]>> (path: Path) {
-                return get(Language[lang][namespace], path) as unknown as Get<LocalizedType[Namespace], Path>
+                type returnType = Get<LocalizedType[Namespace], Path>
+                const obj = Language[lang][namespace]
+                const objPath = R.stringToPath(path)
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return R.pathOr(obj, objPath as any, '' as any) as returnType
             }
             return { t }
         },

@@ -1,8 +1,8 @@
 import { useIntersectionObserver, useSyncedRef, useUnmountEffect } from '@react-hookz/web'
 import { useReactTable, getSortedRowModel, getFilteredRowModel, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table'
 import classnames from 'classnames'
-import { groupBy } from 'lodash-es'
 import { useMemo, useLayoutEffect, useRef, useState, useEffect } from 'react'
+import { groupBy } from 'remeda'
 
 import { Header, Checkbox, Modal, Icon, Drawer, Card, Button } from '@components'
 import { fromNow } from '@lib/date'
@@ -88,7 +88,7 @@ export default function Connections () {
         }),
     ), [connections])
     const devices = useMemo(() => {
-        const gb = groupBy(connections, 'metadata.sourceIP')
+        const gb = groupBy(connections, c => c.metadata.sourceIP)
         return Object.keys(gb)
             .map(key => ({ label: key, number: gb[key].length }))
             .sort((a, b) => a.label.localeCompare(b.label))

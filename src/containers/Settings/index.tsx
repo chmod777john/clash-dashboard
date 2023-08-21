@@ -1,6 +1,5 @@
 import classnames from 'classnames'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { capitalize } from 'lodash-es'
 import { useEffect, useMemo } from 'react'
 
 import { Header, Card, Switch, ButtonSelect, type ButtonSelectOptions, Input, Select } from '@components'
@@ -155,7 +154,7 @@ export default function Settings () {
                         <span className="label font-bold">{t('labels.proxyMode')}</span>
                         <ButtonSelect
                             options={proxyModeOptions}
-                            value={capitalize(mode)}
+                            value={mode[0].toLowerCase() + mode.slice(1)}
                             onSelect={handleProxyModeChange}
                         />
                     </div>
