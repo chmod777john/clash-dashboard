@@ -86,12 +86,12 @@ export default function Settings () {
 
     const proxyModeOptions = useMemo(() => {
         const options = [
-            { label: t('values.global'), value: 'Global' },
-            { label: t('values.rules'), value: 'Rule' },
-            { label: t('values.direct'), value: 'Direct' },
+            { label: t('values.global'), value: 'global' },
+            { label: t('values.rules'), value: 'rule' },
+            { label: t('values.direct'), value: 'direct' },
         ] as Array<{ label: string, value: string }>
         if (premium) {
-            options.push({ label: t('values.script'), value: 'Script' })
+            options.push({ label: t('values.script'), value: 'script' })
         }
         return options
     }, [t, premium])
@@ -154,7 +154,7 @@ export default function Settings () {
                         <span className="label font-bold">{t('labels.proxyMode')}</span>
                         <ButtonSelect
                             options={proxyModeOptions}
-                            value={mode[0].toLowerCase() + mode.slice(1)}
+                            value={mode}
                             onSelect={handleProxyModeChange}
                         />
                     </div>
