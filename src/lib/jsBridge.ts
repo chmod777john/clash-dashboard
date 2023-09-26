@@ -12,47 +12,17 @@
  * @author jas0ncn
  */
 
-/**
- * declare javascript bridge API
- */
-export interface JsBridgeAPI {
-
-    /**
-     * Register a javascript bridge event handle
-     */
-    registerHandler: <D, P>(eventName: string, callback?: (data: D, responseCallback: (param: P) => void) => void) => void
-
-    /**
-     * Call a native handle
-     */
-    callHandler: <T, D>(handleName: string, data?: D, responseCallback?: (responseData: T) => void) => void
-
-    /**
-     * Who knows
-     */
-    disableJavscriptAlertBoxSafetyTimeout: () => void
-
-}
-
 declare global {
-
     interface Window {
-
-        /**
-         * Global jsbridge instance
-         */
-        WebViewJavascriptBridge?: JsBridgeAPI | null
-
-        /**
-         * Global jsbridge init callback
-         */
-        WVJBCallbacks?: JsBridgeCallback[]
-
+        webkit?: {
+            messageHandlers: {
+                jsBridge: {
+                    postMessage: (data: object) => void
+                }
+            }
+        }
     }
-
 }
-
-type JsBridgeCallback = (jsbridge: JsBridgeAPI | null) => void
 
 /**
  * Check if perched in ClashX Runtime
@@ -70,58 +40,47 @@ export let jsBridge: JsBridge | null = null
  * JsBridge class
  */
 export class JsBridge {
-    instance: JsBridgeAPI | null = null
-
     constructor (callback: () => void) {
-        if (window.WebViewJavascriptBridge != null) {
-            this.instance = window.WebViewJavascriptBridge
-        }
-
         // init jsbridge
-        this.initBridge(jsBridge => {
-            this.instance = jsBridge
+        this.initBridge(() => {
             callback()
         })
     }
 
+    private readonly callbacksMap = new Map<string, (data: unknown) => void>()
+
     /**
      * setup a jsbridge before app render
      * @param {Function} cb callback when jsbridge initialized
-     * @see https://github.com/marcuswestin/WebViewJavascriptBridge
      */
-    private initBridge (callback: JsBridgeCallback) {
+    private initBridge (callback: () => void) {
         /**
          * You need check if inClashX first
          */
         if (!isClashX()) {
-            return callback?.(null)
+            return callback?.()
         }
-
-        if (window.WebViewJavascriptBridge != null) {
-            return callback(window.WebViewJavascriptBridge)
-        }
-
-        // setup callback
-        if (window.WVJBCallbacks != null) {
-            return window.WVJBCallbacks.push(callback)
-        }
-
-        window.WVJBCallbacks = [callback]
-
-        const WVJBIframe = document.createElement('iframe')
-        WVJBIframe.style.display = 'none'
-        WVJBIframe.src = 'https://__bridge_loaded__'
-        document.documentElement.appendChild(WVJBIframe)
-        setTimeout(() => document.documentElement.removeChild(WVJBIframe), 0)
+        window.addEventListener('message', (event) => {
+            const data = event.data
+            if (data?.id == null) {
+                return
+            }
+            const callback = this.callbacksMap.get(data.id)
+            callback?.(data.data)
+            this.callbacksMap.delete(data.id)
+        })
+        callback?.()
     }
 
     public async callHandler<T, D = unknown> (handleName: string, data?: D) {
+        const eventID = Date.now().toString()
+        const packageData = { id: eventID, data, name: handleName }
+        window.webkit?.messageHandlers.jsBridge.postMessage(packageData)
         return await new Promise<T>((resolve) => {
-            this.instance?.callHandler(
-                handleName,
-                data,
-                resolve,
-            )
+            this.callbacksMap.set(eventID, (data) => {
+                resolve(data as T)
+            })
+            window.webkit?.messageHandlers.jsBridge.postMessage(packageData)
         })
     }
 
